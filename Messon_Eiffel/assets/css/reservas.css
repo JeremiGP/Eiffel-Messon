@@ -1,0 +1,96 @@
+/* ============================================================
+   Mesón Cafetería de Eiffel — Reservas (reservas.html)
+   Depende de: base.css
+   ============================================================ */
+
+/* ── SECCIÓN RESERVAS ────────────────────────────────────── */
+.reservas-section {
+  position: relative;
+  padding: 7rem 4rem;
+  text-align: center;
+  overflow: hidden;
+  background: var(--carbon);
+}
+.reservas-overlay {
+  position: absolute; inset: 0;
+  background: rgba(26,17,10,0.5);
+  pointer-events: none;
+}
+.reservas-content { position: relative; z-index: 2; }
+.reservas-content .eyebrow {
+  justify-content: center;
+  color: var(--dorado-cl);
+}
+.reservas-content .eyebrow-bar { background: var(--dorado-cl); }
+.reservas-content .section-h { color: #fff; margin-bottom: 1rem; }
+.reservas-content > p {
+  color: rgba(255,255,255,0.65);
+  max-width: 440px; margin: 0 auto 3rem;
+  line-height: 1.8; font-size: 1rem;
+}
+
+/* ── FORMULARIO ──────────────────────────────────────────── */
+.reserva-form {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+  padding: 3rem;
+  max-width: 680px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  border-radius: 12px;
+}
+.ff { display: flex; flex-direction: column; gap: 0.5rem; }
+.ff.full { grid-column: 1 / -1; }
+.ff label {
+  font-size: 0.65rem; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(255,255,255,0.45);
+}
+.ff input,
+.ff select,
+.ff textarea {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff; font-family: 'Inter', sans-serif;
+  font-size: 0.9rem; font-weight: 300;
+  padding: 0.85rem 1.1rem; outline: none;
+  transition: border-color 0.3s, background 0.3s;
+  width: 100%; border-radius: 6px;
+}
+.ff input::placeholder,
+.ff textarea::placeholder { color: rgba(255,255,255,0.22); }
+.ff input:focus,
+.ff select:focus,
+.ff textarea:focus {
+  border-color: var(--dorado);
+  background: rgba(255,255,255,0.1);
+}
+.ff select option { background: var(--carbon); }
+.ff textarea { resize: vertical; min-height: 85px; }
+
+.form-submit {
+  grid-column: 1 / -1;
+  background: var(--dorado); color: var(--carbon);
+  border: none; font-family: 'Inter', sans-serif;
+  font-weight: 500; font-size: 0.72rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 1.2rem 2rem; cursor: pointer;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  border-radius: 6px;
+}
+.form-submit:hover {
+  background: var(--dorado-cl);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(184,131,58,0.4);
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .reservas-section { padding: 6rem 1.5rem; }
+  .reserva-form {
+    grid-template-columns: 1fr;
+    padding: 2rem 1.5rem;
+  }
+}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Reserva tu mesa en el Mesón Cafetería de Eiffel, Motril. Formulario online rápido y sencillo.">
+  <title>Reservas — Mesón Cafetería de Eiffel</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/reservas.css">
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a href="../index.html" class="nav-logo">Mesón <span>de Eiffel</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="carta.html">Carta</a></li>
+    <li><a href="reservas.html">Reservas</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── CABECERA DE PÁGINA ── -->
+<div class="page-hero">
+  <div class="page-hero-content">
+    <div class="eyebrow"><div class="eyebrow-bar"></div>Tu mesa te espera</div>
+    <h1 class="section-h display">Reserva <em>tu mesa</em></h1>
+  </div>
+</div>
+
+<!-- ── FORMULARIO ── -->
+<section class="reservas-section">
+  <div class="reservas-overlay"></div>
+  <div class="reservas-content reveal">
+    <form class="reserva-form" id="reservaForm" novalidate>
+
+      <div class="ff">
+        <label for="nombre">Nombre completo *</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+      </div>
+
+      <div class="ff">
+        <label for="telefono">Teléfono *</label>
+        <input type="tel" id="telefono" name="telefono" placeholder="600 000 000" required>
+      </div>
+
+      <div class="ff full">
+        <label for="email">Email (opcional)</label>
+        <input type="email" id="email" name="email" placeholder="correo@ejemplo.com">
+      </div>
+
+      <div class="ff">
+        <label for="fecha">Fecha *</label>
+        <input type="date" id="fecha" name="fecha" required>
+      </div>
+
+      <div class="ff">
+        <label for="hora">Hora *</label>
+        <select id="hora" name="hora" required>
+          <option value="" disabled selected>Selecciona una hora</option>
+          <optgroup label="Desayuno">
+            <option value="08:30">08:30</option>
+            <option value="09:00">09:00</option>
+            <option value="09:30">09:30</option>
+            <option value="10:00">10:00</option>
+            <option value="10:30">10:30</option>
+            <option value="11:00">11:00</option>
+            <option value="11:30">11:30</option>
+            <option value="12:00">12:00</option>
+          </optgroup>
+          <optgroup label="Comida">
+            <option value="13:00">13:00</option>
+            <option value="13:30">13:30</option>
+            <option value="14:00">14:00</option>
+            <option value="14:30">14:30</option>
+            <option value="15:00">15:00</option>
+            <option value="15:30">15:30</option>
+          </optgroup>
+          <optgroup label="Cena">
+            <option value="20:00">20:00</option>
+            <option value="20:30">20:30</option>
+            <option value="21:00">21:00</option>
+            <option value="21:30">21:30</option>
+            <option value="22:00">22:00</option>
+            <option value="22:30">22:30</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="ff">
+        <label for="personas">Número de personas *</label>
+        <select id="personas" name="personas" required>
+          <option value="" disabled selected>¿Cuántos sois?</option>
+          <option value="1">1 persona</option>
+          <option value="2">2 personas</option>
+          <option value="3">3 personas</option>
+          <option value="4">4 personas</option>
+          <option value="5">5 personas</option>
+          <option value="6">6 personas</option>
+          <option value="7">7 personas</option>
+          <option value="8">8 personas</option>
+          <option value="9+">Más de 8 — contactar por teléfono</option>
+        </select>
+      </div>
+
+      <div class="ff full">
+        <label for="notas">Notas o peticiones especiales</label>
+        <textarea id="notas" name="notas" rows="4" placeholder="Alergias, cumpleaños, zona preferida…"></textarea>
+      </div>
+
+      <div class="ff full">
+        <button type="submit" class="form-submit">Solicitar reserva</button>
+        <p class="form-aviso">Recibirás confirmación por teléfono. Para grupos grandes llámanos directamente al <a href="tel:+34958872424">958 87 24 24</a>.</p>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Mesón <span>de Eiffel</span></div>
+      <p class="footer-about">Cocina andaluza de siempre en el corazón de Motril. Desayunos, brasas y buena compañía. Abiertos todos los días.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <ul>
+        <li>C/ Rio Mundo, Local 2<br>Motril, Granada</li>
+        <li><a href="tel:+34958872424">958 87 24 24</a></li>
+        <li><a href="https://www.instagram.com/meson_cafeteria_de_eiffel" target="_blank">@meson_cafeteria_de_eiffel</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Reservas</h4>
+      <ul>
+        <li>Por teléfono o mediante el <a href="reservas.html">formulario online</a></li>
+        <li>Grupos grandes: contactar directamente</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Mesón Cafetería de Eiffel · Motril, Granada</span>
+    <a class="footer-ig" href="https://www.instagram.com/meson_cafeteria_de_eiffel" target="_blank">
+      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      Instagram
+    </a>
+  </div>
+</footer>
+
+<script src="../assets/js/nav.js"></script>
+<script src="../assets/js/reservas.js"></script>
+</body>
+</html>

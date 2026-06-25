@@ -1,0 +1,222 @@
+/* ============================================================
+   Mesón Cafetería de Eiffel — Estilos base compartidos
+   Incluir en TODAS las páginas antes del CSS específico
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --tierra:    #5C3317;
+  --tierra-md: #8B4E23;
+  --arena:     #F5EDE0;
+  --arena-cl:  #FAF5EE;
+  --hueso:     #E8D9C4;
+  --carbon:    #1A110A;
+  --gris:      #6B5C4E;
+  --dorado:    #B8833A;
+  --dorado-cl: #D4A55A;
+  --crema:     #FEFAF5;
+  --blanco:    #FFFFFF;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  background: var(--crema);
+  color: var(--carbon);
+  overflow-x: hidden;
+  line-height: 1;
+}
+
+/* ── TIPOGRAFÍA BASE ──────────────────────────────────────── */
+.display {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+.display em { font-style: italic; color: var(--dorado-cl); }
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--tierra-md);
+  margin-bottom: 1.5rem;
+}
+.eyebrow-bar { width: 32px; height: 1px; background: var(--tierra-md); flex-shrink: 0; }
+
+.section-h {
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  color: var(--tierra);
+  margin-bottom: 2rem;
+}
+
+/* ── NAV ─────────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.6rem 4rem;
+  transition: padding 0.5s ease, background 0.5s ease;
+}
+nav.scrolled {
+  padding: 1rem 4rem;
+  background: rgba(26, 17, 10, 0.94);
+  backdrop-filter: blur(12px);
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; font-weight: 400;
+  color: #fff; text-decoration: none;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.nav-logo span { color: var(--dorado-cl); font-style: italic; }
+
+.nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+.nav-links a {
+  color: rgba(255,255,255,0.7); text-decoration: none;
+  font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+  transition: color 0.3s; position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute;
+  bottom: -3px; left: 0; right: 100%;
+  height: 1px; background: var(--dorado-cl);
+  transition: right 0.3s ease;
+}
+.nav-links a:hover,
+.nav-links a.active { color: #fff; }
+.nav-links a:hover::after,
+.nav-links a.active::after { right: 0; }
+
+.nav-toggle {
+  display: none; background: none; border: none; cursor: pointer;
+  gap: 5px; padding: 4px; flex-direction: column;
+}
+.nav-toggle span {
+  display: block; width: 22px; height: 1.5px;
+  background: #fff; transition: all 0.3s;
+}
+
+/* ── BOTONES ─────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  text-decoration: none; font-size: 0.72rem; letter-spacing: 0.16em;
+  text-transform: uppercase; cursor: pointer; border: none;
+  font-family: 'Inter', sans-serif; font-weight: 400;
+  transition: all 0.35s ease; padding: 1rem 2.2rem; border-radius: 6px;
+}
+.btn-solid { background: var(--dorado); color: var(--carbon); }
+.btn-solid:hover {
+  background: var(--dorado-cl);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(184,131,58,0.35);
+}
+.btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.4); }
+.btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+.btn-tierra { background: var(--tierra); color: #fff; }
+.btn-tierra:hover { background: var(--tierra-md); transform: translateY(-2px); }
+
+/* ── CABECERA PÁGINAS INTERIORES ─────────────────────────── */
+.page-hero {
+  background: var(--carbon);
+  min-height: 280px;
+  display: flex;
+  align-items: flex-end;
+  padding: 7rem 4rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(92,51,23,0.2) 0%, transparent 60%);
+  pointer-events: none;
+}
+.page-hero-content { position: relative; z-index: 1; }
+.page-hero .eyebrow        { color: var(--dorado-cl); }
+.page-hero .eyebrow-bar    { background: var(--dorado-cl); }
+.page-hero .section-h      { color: #fff; margin-bottom: 0; }
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+footer { background: var(--carbon); padding: 5rem 4rem 2.5rem; }
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 4rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 2rem;
+}
+.footer-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 300;
+  color: #fff; letter-spacing: 0.06em;
+  text-transform: uppercase; margin-bottom: 1rem;
+}
+.footer-brand span { color: var(--dorado-cl); font-style: italic; }
+.footer-about {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.38);
+  line-height: 1.75; max-width: 280px;
+}
+.footer-col h4 {
+  font-size: 0.65rem; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--dorado); margin-bottom: 1.4rem;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li {
+  margin-bottom: 0.6rem;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.48);
+  line-height: 1.6;
+}
+.footer-col ul li a { color: inherit; text-decoration: none; transition: color 0.25s; }
+.footer-col ul li a:hover { color: var(--dorado-cl); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.72rem; color: rgba(255,255,255,0.2);
+}
+.footer-ig {
+  display: flex; align-items: center; gap: 0.5rem;
+  color: rgba(255,255,255,0.3); text-decoration: none;
+  font-size: 0.72rem; transition: color 0.25s;
+}
+.footer-ig:hover { color: var(--dorado-cl); }
+.footer-ig svg {
+  width: 15px; height: 15px;
+  stroke: currentColor; fill: none; stroke-width: 1.5;
+}
+
+/* ── SCROLL REVEAL ───────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  nav, nav.scrolled { padding: 1rem 1.5rem; }
+  .nav-links {
+    display: none; flex-direction: column;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: rgba(26,17,10,0.97);
+    padding: 2rem 1.5rem; gap: 1.5rem;
+  }
+  .nav-links.open { display: flex; }
+  .nav-toggle { display: flex; }
+  .page-hero { padding: 6rem 1.5rem 3rem; min-height: 220px; }
+  footer { padding: 4rem 1.5rem 2rem; }
+  .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { animation: none; transition: none; }
+}

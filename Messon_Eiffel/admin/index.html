@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Panel Admin — Mesón de Eiffel</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Estilos del panel -->
+  <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════
+       LOGIN
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="loginSection" class="login-wrap">
+    <div class="login-box">
+      <div class="login-logo">Mesón <span>de Eiffel</span></div>
+      <div class="login-sub">Panel de administración</div>
+
+      <form id="loginForm" autocomplete="off">
+        <div class="field">
+          <label for="login-usuario">Usuario</label>
+          <input
+            id="login-usuario"
+            type="text"
+            placeholder="ADMIN"
+            required
+            autocomplete="username"
+            spellcheck="false"
+          >
+        </div>
+        <div class="field">
+          <label for="login-password">Contraseña</label>
+          <input
+            id="login-password"
+            type="password"
+            placeholder="••••••••"
+            required
+            autocomplete="current-password"
+          >
+        </div>
+        <p id="login-error" class="login-error hidden" role="alert"></p>
+        <button type="submit" class="login-btn">Acceder</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       DASHBOARD
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="dashboardSection" class="hidden">
+
+    <!-- Cabecera -->
+    <header class="admin-header">
+      <div class="admin-logo">
+        <span class="admin-logo-text">Mesón <em>de Eiffel</em></span>
+        <span class="admin-logo-tag">Panel de administración</span>
+      </div>
+      <button id="btn-logout" class="btn-logout" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Cerrar sesión
+      </button>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="admin-main">
+
+      <!-- Estadísticas -->
+      <div class="stats-bar" role="region" aria-label="Resumen de reservas">
+        <div class="stat-card">
+          <div class="stat-val" id="stat-total">0</div>
+          <div class="stat-lbl">Total reservas</div>
+        </div>
+        <div class="stat-card stat-card--pendiente">
+          <div class="stat-val" id="stat-pendientes">0</div>
+          <div class="stat-lbl">Pendientes</div>
+        </div>
+        <div class="stat-card stat-card--confirmada">
+          <div class="stat-val" id="stat-confirmadas">0</div>
+          <div class="stat-lbl">Confirmadas</div>
+        </div>
+        <div class="stat-card stat-card--cancelada">
+          <div class="stat-val" id="stat-canceladas">0</div>
+          <div class="stat-lbl">Canceladas</div>
+        </div>
+      </div>
+
+      <!-- Controles -->
+      <div class="controls-bar">
+        <div class="controls-filters">
+          <select id="filtro-estado" class="ctrl-select" aria-label="Filtrar por estado">
+            <option value="">Todos los estados</option>
+            <option value="pendiente">Pendientes</option>
+            <option value="confirmada">Confirmadas</option>
+            <option value="cancelada">Canceladas</option>
+          </select>
+          <input
+            id="filtro-fecha"
+            type="date"
+            class="ctrl-input"
+            aria-label="Filtrar por fecha"
+          >
+          <input
+            id="filtro-texto"
+            type="text"
+            class="ctrl-input"
+            placeholder="Buscar nombre o teléfono…"
+            aria-label="Buscar reservas"
+          >
+          <button id="btn-limpiar" class="btn-clear" type="button">Limpiar</button>
+        </div>
+        <button id="btn-nueva" class="btn-nueva" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Nueva reserva
+        </button>
+      </div>
+
+      <!-- Tabla de reservas -->
+      <div class="table-wrap" role="region" aria-label="Tabla de reservas">
+        <table class="reservas-table">
+          <thead>
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Teléfono</th>
+              <th scope="col">Email</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Hora</th>
+              <th scope="col">Personas</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="reservas-tbody"></tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       MODAL — AÑADIR / EDITAR RESERVA
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="modal-title" class="modal-title">Nueva reserva</h2>
+        <button id="modal-close" class="modal-close" type="button" aria-label="Cerrar">
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <form id="reserva-form" class="modal-form" novalidate>
+
+        <!-- Fila 1: Nombre + Teléfono -->
+        <div class="form-row">
+          <div class="ff">
+            <label for="f-nombre">Nombre completo *</label>
+            <input id="f-nombre" name="nombre" type="text" placeholder="Nombre del cliente" required>
+          </div>
+          <div class="ff">
+            <label for="f-telefono">Teléfono *</label>
+            <input id="f-telefono" name="telefono" type="tel" placeholder="600 000 000" required>
+          </div>
+        </div>
+
+        <!-- Fila 2: Email + Estado -->
+        <div class="form-row">
+          <div class="ff">
+            <label for="f-email">Email</label>
+            <input id="f-email" name="email" type="email" placeholder="cliente@email.com">
+          </div>
+          <div class="ff">
+            <label for="f-estado">Estado</label>
+            <select id="f-estado" name="estado">
+              <option value="pendiente">Pendiente</option>
+              <option value="confirmada">Confirmada</option>
+              <option value="cancelada">Cancelada</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Fila 3: Fecha + Hora + Personas -->
+        <div class="form-row form-row--3">
+          <div class="ff">
+            <label for="f-fecha">Fecha *</label>
+            <input id="f-fecha" name="fecha" type="date" required>
+          </div>
+          <div class="ff">
+            <label for="f-hora">Hora *</label>
+            <select id="f-hora" name="hora" required>
+              <option value="">Elige hora</option>
+              <option>9:00</option>
+              <option>9:30</option>
+              <option>10:00</option>
+              <option>13:00</option>
+              <option>13:30</option>
+              <option>14:00</option>
+              <option>14:30</option>
+              <option>15:00</option>
+              <option>20:00</option>
+              <option>20:30</option>
+              <option>21:00</option>
+              <option>21:30</option>
+              <option>22:00</option>
+            </select>
+          </div>
+          <div class="ff">
+            <label for="f-personas">Personas *</label>
+            <select id="f-personas" name="personas" required>
+              <option value="">Cuántos</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option value="9+">Más de 8</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Fila 4: Notas (ancho completo) -->
+        <div class="form-row form-row--full">
+          <div class="ff">
+            <label for="f-notas">Notas / Comentarios</label>
+            <textarea id="f-notas" name="notas" placeholder="Alergias, ocasión especial, necesidades concretas…"></textarea>
+          </div>
+        </div>
+
+        <!-- Acciones del formulario -->
+        <div class="modal-actions">
+          <button id="btn-cancelar-form" type="button" class="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn-guardar">Guardar reserva</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       MODAL — CONFIRMAR ELIMINACIÓN
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="confirmModal" class="modal-overlay hidden" role="alertdialog" aria-modal="true">
+    <div class="modal-box modal-box--sm">
+      <div class="modal-header">
+        <h2 class="modal-title">Eliminar reserva</h2>
+      </div>
+      <p class="confirm-text">
+        ¿Seguro que quieres eliminar la reserva de
+        <strong id="confirm-nombre"></strong>?
+        Esta acción no se puede deshacer.
+      </p>
+      <div class="modal-actions">
+        <button id="btn-cancelar-delete" type="button" class="btn-cancelar">Cancelar</button>
+        <button id="btn-confirmar-delete" type="button" class="btn-eliminar">Sí, eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TOAST DE NOTIFICACIONES
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Lógica del panel -->
+  <script src="../assets/js/admin.js"></script>
+</body>
+</html>

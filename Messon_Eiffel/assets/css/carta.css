@@ -1,0 +1,234 @@
+/* ============================================================
+   Mesón Cafetería de Eiffel — Carta (carta.html)
+   Depende de: base.css
+   ============================================================ */
+
+/* ── SECCIÓN CARTA ───────────────────────────────────────── */
+.carta-section { padding: 6rem 0; background: var(--crema); }
+.carta-intro { text-align: center; padding: 0 2rem; margin-bottom: 5rem; }
+.carta-intro .section-h { margin-bottom: 1rem; }
+.carta-intro p {
+  font-size: 1rem; color: var(--gris);
+  max-width: 480px; margin: 0 auto; line-height: 1.75;
+}
+
+/* ── SELECTOR PRINCIPAL (Desayunos / Comidas) ─────────────── */
+.main-tabs-wrap {
+  display: flex; justify-content: center;
+  margin-bottom: 0; padding: 0 2rem;
+}
+.main-tabs {
+  display: flex;
+  border: 1px solid var(--hueso);
+  border-radius: 8px; overflow: hidden;
+}
+.main-tab {
+  padding: 1rem 3.5rem;
+  font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gris);
+  cursor: pointer; border: none;
+  background: var(--blanco); font-family: 'Inter', sans-serif;
+  transition: background 0.35s, color 0.35s;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.main-tab svg {
+  width: 16px; height: 16px;
+  stroke: currentColor; fill: none;
+  stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
+}
+.main-tab:first-child { border-right: 1px solid var(--hueso); }
+.main-tab.active { background: var(--tierra); color: #fff; }
+.main-tab:not(.active):hover { background: var(--arena); color: var(--tierra); }
+
+.main-panel { display: none; }
+.main-panel.active { display: block; animation: panel-in 0.45s ease; }
+@keyframes panel-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SUB-TABS (Para compartir / Brasas / etc.) ─────────────── */
+.sub-tabs-wrap { padding: 3rem 4rem 0; }
+.sub-tabs {
+  display: flex; flex-wrap: wrap; gap: 0;
+  border-bottom: 1px solid var(--hueso);
+}
+.sub-tab {
+  padding: 0.9rem 1.8rem;
+  font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gris); cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.25s, border-color 0.25s;
+  background: none;
+  border-top: none; border-left: none; border-right: none;
+  font-family: 'Inter', sans-serif; font-weight: 400;
+}
+.sub-tab.active,
+.sub-tab:hover { color: var(--tierra); border-bottom-color: var(--dorado); }
+
+.sub-panel { display: none; }
+.sub-panel.active { display: block; animation: panel-in 0.4s ease; }
+.platos-wrap { padding: 3rem 4rem; }
+
+/* ── GRID DE PLATOS ──────────────────────────────────────── */
+.platos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  background: transparent;
+  border: none;
+}
+.plato {
+  background: var(--blanco);
+  padding: 1.75rem 1.75rem 1.5rem;
+  transition: background 0.3s, box-shadow 0.3s;
+  cursor: default;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(92,51,23,0.06);
+}
+.plato::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 1.75rem; right: 1.75rem;
+  height: 1px; background: var(--dorado);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.35s ease;
+}
+.plato:hover { background: var(--arena-cl); box-shadow: 0 8px 28px rgba(92,51,23,0.12); }
+.plato:hover::after { transform: scaleX(1); }
+
+.plato-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; gap: 1rem; margin-bottom: 0.5rem;
+}
+.plato-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; font-weight: 400;
+  color: var(--tierra); line-height: 1.25;
+}
+.plato-precio {
+  font-size: 0.95rem; font-weight: 500;
+  color: var(--dorado); white-space: nowrap;
+  flex-shrink: 0; letter-spacing: 0.02em;
+}
+.plato-desc {
+  font-size: 0.8rem; color: var(--gris);
+  line-height: 1.6; margin-bottom: 0.85rem;
+}
+.plato-especial {
+  font-size: 0.62rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--dorado);
+  font-weight: 500; margin-bottom: 0.4rem;
+}
+
+/* ── ALÉRGENOS ───────────────────────────────────────────── */
+.alergenos {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-top: 0.75rem;
+}
+.alergeno {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 1px solid var(--hueso);
+  display: flex; align-items: center; justify-content: center;
+  cursor: help;
+  transition: border-color 0.2s, background 0.2s;
+  position: relative;
+}
+.alergeno:hover { border-color: var(--dorado); background: var(--arena); }
+.alergeno svg { width: 13px; height: 13px; fill: var(--gris); }
+.alergeno:hover svg { fill: var(--tierra); }
+.alergeno-tip {
+  display: none;
+  position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%);
+  background: var(--carbon); color: #fff;
+  font-size: 0.62rem; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 4px 8px;
+  border-radius: 2px; white-space: nowrap; z-index: 10;
+}
+.alergeno:hover .alergeno-tip { display: block; }
+
+/* ── DESAYUNOS ───────────────────────────────────────────── */
+.des-wrap { padding: 3rem 4rem; }
+.des-bloque { margin-bottom: 3.5rem; }
+.des-bloque:last-child { margin-bottom: 0; }
+.des-h {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-weight: 300;
+  color: var(--tierra); margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--hueso);
+  letter-spacing: 0.02em;
+}
+.tag-precio {
+  display: inline-flex; gap: 1rem; align-items: center;
+  font-size: 0.65rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--gris); margin-bottom: 1rem;
+}
+.tag-precio span { color: var(--dorado); font-weight: 500; }
+
+.tostadas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 3rem; }
+.tostada-item {
+  display: flex; justify-content: space-between;
+  align-items: baseline; padding: 0.65rem 0;
+  border-bottom: 1px solid var(--hueso); gap: 0.5rem;
+}
+.tostada-item:last-child { border-bottom: none; }
+.tostada-nombre { font-size: 0.88rem; color: var(--carbon); }
+.tostada-precios {
+  font-size: 0.82rem; color: var(--dorado);
+  font-weight: 500; white-space: nowrap; letter-spacing: 0.02em;
+}
+
+.lista-simple { border: 1px solid var(--hueso); border-radius: 8px; overflow: hidden; }
+.lista-item {
+  display: flex; justify-content: space-between;
+  align-items: baseline; padding: 0.8rem 1.25rem;
+  border-bottom: 1px solid var(--hueso); gap: 1rem;
+  transition: background 0.25s;
+}
+.lista-item:last-child { border-bottom: none; }
+.lista-item:hover { background: var(--arena-cl); }
+.lista-nombre { font-size: 0.88rem; color: var(--carbon); }
+.lista-desc   { font-size: 0.78rem; color: var(--gris); flex: 2; }
+.lista-precio {
+  font-size: 0.88rem; color: var(--dorado);
+  font-weight: 500; white-space: nowrap;
+}
+
+.cafe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  border: 1px solid var(--hueso);
+  border-radius: 8px; overflow: hidden;
+}
+.cafe-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--hueso);
+  border-right: 1px solid var(--hueso);
+  font-size: 0.86rem;
+  transition: background 0.25s;
+}
+.cafe-item:hover { background: var(--arena-cl); }
+.cafe-precio {
+  color: var(--dorado); font-weight: 500;
+  white-space: nowrap; margin-left: 0.5rem;
+}
+
+.nota-pie {
+  font-size: 0.73rem; color: var(--gris);
+  margin-top: 0.75rem; font-style: italic; line-height: 1.5;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .carta-intro,
+  .sub-tabs-wrap,
+  .platos-wrap,
+  .des-wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .main-tab { padding: 0.9rem 1.5rem; font-size: 0.68rem; }
+  .tostadas-grid { grid-template-columns: 1fr; }
+  .platos-grid   { grid-template-columns: 1fr; }
+  .lista-desc    { display: none; }
+}
