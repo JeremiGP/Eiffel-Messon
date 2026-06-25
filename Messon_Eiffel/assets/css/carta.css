@@ -1,234 +1,538 @@
 /* ============================================================
-   Mesón Cafetería de Eiffel — Carta (carta.html)
-   Depende de: base.css
+   Mesón de Eiffel — Carta
+   Sidebar oscuro (como header/footer) + contenido claro (arena)
    ============================================================ */
 
-/* ── SECCIÓN CARTA ───────────────────────────────────────── */
-.carta-section { padding: 6rem 0; background: var(--crema); }
-.carta-intro { text-align: center; padding: 0 2rem; margin-bottom: 5rem; }
-.carta-intro .section-h { margin-bottom: 1rem; }
-.carta-intro p {
-  font-size: 1rem; color: var(--gris);
-  max-width: 480px; margin: 0 auto; line-height: 1.75;
+/* ── VARIABLES ──────────────────────────────────────────────── */
+:root {
+  --carta-sidebar-bg:    #1A110A;          /* carbon = mismo que nav y footer */
+  --carta-sidebar-bd:    rgba(184,131,58,0.18);
+  --carta-content-bg:    #F5EDE0;          /* arena cálida */
+  --carta-card-bg:       #FFFFFF;
+  --carta-card-bd:       #E8D9C4;          /* hueso */
+  --carta-card-bd-hover: rgba(92,51,23,0.3);
+  --carta-text:          #1A110A;          /* carbon */
+  --carta-text-muted:    #6B5C4E;          /* gris */
+  --carta-text-dim:      rgba(92,51,23,0.45);
+  --carta-divider:       rgba(92,51,23,0.12);
 }
 
-/* ── SELECTOR PRINCIPAL (Desayunos / Comidas) ─────────────── */
-.main-tabs-wrap {
-  display: flex; justify-content: center;
-  margin-bottom: 0; padding: 0 2rem;
+/* ── BODY ───────────────────────────────────────────────────── */
+body { background: var(--carta-content-bg); }
+
+/* ── LAYOUT PRINCIPAL ───────────────────────────────────────── */
+.carta-layout {
+  display: flex;              /* flex en lugar de grid — evita bugs de sticky en Safari */
+  align-items: flex-start;
 }
-.main-tabs {
-  display: flex;
-  border: 1px solid var(--hueso);
-  border-radius: 8px; overflow: hidden;
-}
-.main-tab {
-  padding: 1rem 3.5rem;
-  font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--gris);
-  cursor: pointer; border: none;
-  background: var(--blanco); font-family: 'Inter', sans-serif;
-  transition: background 0.35s, color 0.35s;
-  display: flex; align-items: center; gap: 0.6rem;
-}
-.main-tab svg {
-  width: 16px; height: 16px;
-  stroke: currentColor; fill: none;
-  stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+
+/* ── SIDEBAR ─────────────────────────────────────────────────── */
+.carta-sidebar {
+  width: 260px;
   flex-shrink: 0;
+  position: sticky;
+  top: 72px;                 /* debajo del nav fijo */
+  height: calc(100vh - 72px);
+  overflow-y: auto;          /* TODO el sidebar hace scroll si no cabe */
+  overflow-x: hidden;
+  background: var(--carta-sidebar-bg);
+  border-right: 1px solid var(--carta-sidebar-bd);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(184,131,58,0.2) transparent;
 }
-.main-tab:first-child { border-right: 1px solid var(--hueso); }
-.main-tab.active { background: var(--tierra); color: #fff; }
-.main-tab:not(.active):hover { background: var(--arena); color: var(--tierra); }
+.carta-sidebar::-webkit-scrollbar { width: 3px; }
+.carta-sidebar::-webkit-scrollbar-thumb { background: rgba(184,131,58,0.2); border-radius: 2px; }
 
-.main-panel { display: none; }
-.main-panel.active { display: block; animation: panel-in 0.45s ease; }
-@keyframes panel-in {
-  from { opacity: 0; transform: translateY(12px); }
+.sidebar-head {
+  padding: 2rem 1.6rem 1.4rem;
+  border-bottom: 1px solid var(--carta-sidebar-bd);
+}
+.sidebar-pretitle {
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dorado);
+  margin-bottom: 0.3rem;
+}
+.sidebar-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: #fff;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+.sidebar-title em { font-style: italic; color: var(--dorado-cl); }
+
+.sidebar-nav {
+  padding: 0.8rem 0 2rem;
+}
+
+.sidebar-group { margin-bottom: 0.4rem; }
+
+.sidebar-group-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 1.5rem 0.4rem;
+  font-size: 0.54rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dorado);
+}
+.sidebar-group-label span {
+  flex: 1;
+  height: 1px;
+  background: var(--carta-sidebar-bd);
+}
+
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  padding: 0.6rem 1.5rem;
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.77rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.52);
+  letter-spacing: 0.03em;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+.sidebar-btn:hover {
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.04);
+}
+.sidebar-btn.active {
+  color: var(--dorado-cl);
+  background: rgba(184,131,58,0.1);
+  border-left-color: var(--dorado);
+}
+
+.sidebar-btn-ico {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.4;
+  opacity: 0.65;
+}
+.sidebar-btn.active .sidebar-btn-ico { opacity: 1; }
+
+/* ── CONTENIDO ───────────────────────────────────────────────── */
+.carta-content {
+  flex: 1;                   /* ocupa todo el espacio restante al sidebar */
+  min-width: 0;              /* evita desbordamiento en flex */
+  background: var(--carta-content-bg);
+  padding: 3rem 3.5rem 3rem;
+  min-height: 100vh;
+}
+
+/* ── BRIDGE: banda oscura de cierre (misma color que footer) ─── */
+.carta-bridge {
+  background: var(--carbon);
+  padding: 3.5rem 4rem 4rem;
+  border-top: 1px solid rgba(184,131,58,0.12);
+  text-align: center;
+}
+
+/* Paneles */
+.carta-panel { display: none; }
+.carta-panel.active { display: block; animation: panelIn 0.32s ease; }
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── SUB-TABS (Para compartir / Brasas / etc.) ─────────────── */
-.sub-tabs-wrap { padding: 3rem 4rem 0; }
-.sub-tabs {
-  display: flex; flex-wrap: wrap; gap: 0;
-  border-bottom: 1px solid var(--hueso);
+/* Cabecera de panel */
+.panel-header {
+  margin-bottom: 2.2rem;
+  padding-bottom: 1.6rem;
+  border-bottom: 1px solid var(--carta-divider);
 }
-.sub-tab {
-  padding: 0.9rem 1.8rem;
-  font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--gris); cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: color 0.25s, border-color 0.25s;
-  background: none;
-  border-top: none; border-left: none; border-right: none;
-  font-family: 'Inter', sans-serif; font-weight: 400;
+.panel-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--tierra-md);
+  margin-bottom: 0.5rem;
 }
-.sub-tab.active,
-.sub-tab:hover { color: var(--tierra); border-bottom-color: var(--dorado); }
+.panel-eyebrow-bar { width: 22px; height: 1px; background: var(--tierra-md); flex-shrink: 0; }
+.panel-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.9rem, 3vw, 2.7rem);
+  font-weight: 300;
+  color: var(--tierra);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.panel-title em { font-style: italic; color: var(--dorado); }
+.panel-subtitle {
+  margin-top: 0.45rem;
+  font-size: 0.82rem;
+  color: var(--carta-text-muted);
+  line-height: 1.65;
+}
 
-.sub-panel { display: none; }
-.sub-panel.active { display: block; animation: panel-in 0.4s ease; }
-.platos-wrap { padding: 3rem 4rem; }
-
-/* ── GRID DE PLATOS ──────────────────────────────────────── */
+/* ── GRID DE PLATOS ──────────────────────────────────────────── */
 .platos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: 1rem;
-  background: transparent;
-  border: none;
+  margin-bottom: 2rem;
 }
+
 .plato {
-  background: var(--blanco);
-  padding: 1.75rem 1.75rem 1.5rem;
-  transition: background 0.3s, box-shadow 0.3s;
-  cursor: default;
+  background: var(--carta-card-bg);
+  border: 1px solid var(--carta-card-bd);
+  border-radius: 8px;
+  padding: 1.3rem 1.4rem 1.1rem;
+  transition: border-color 0.22s, box-shadow 0.22s, transform 0.22s;
   position: relative;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(92,51,23,0.06);
 }
-.plato::after {
-  content: ''; position: absolute;
-  bottom: 0; left: 1.75rem; right: 1.75rem;
-  height: 1px; background: var(--dorado);
-  transform: scaleX(0); transform-origin: left;
-  transition: transform 0.35s ease;
+.plato:hover {
+  border-color: var(--carta-card-bd-hover);
+  box-shadow: 0 6px 22px rgba(92,51,23,0.1);
+  transform: translateY(-2px);
 }
-.plato:hover { background: var(--arena-cl); box-shadow: 0 8px 28px rgba(92,51,23,0.12); }
-.plato:hover::after { transform: scaleX(1); }
 
 .plato-top {
-  display: flex; justify-content: space-between;
-  align-items: flex-start; gap: 1rem; margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.8rem;
+  margin-bottom: 0.4rem;
 }
 .plato-name {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.15rem; font-weight: 400;
-  color: var(--tierra); line-height: 1.25;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--tierra);
+  line-height: 1.25;
+  flex: 1;
 }
 .plato-precio {
-  font-size: 0.95rem; font-weight: 500;
-  color: var(--dorado); white-space: nowrap;
-  flex-shrink: 0; letter-spacing: 0.02em;
-}
-.plato-desc {
-  font-size: 0.8rem; color: var(--gris);
-  line-height: 1.6; margin-bottom: 0.85rem;
+  font-size: 0.92rem;
+  color: var(--dorado);
+  font-weight: 500;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
 }
 .plato-especial {
-  font-size: 0.62rem; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--dorado);
-  font-weight: 500; margin-bottom: 0.4rem;
+  display: inline-block;
+  font-size: 0.56rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dorado);
+  background: rgba(184,131,58,0.1);
+  border: 1px solid rgba(184,131,58,0.28);
+  border-radius: 3px;
+  padding: 0.12rem 0.48rem;
+  margin-bottom: 0.4rem;
+}
+.plato-desc {
+  font-size: 0.79rem;
+  color: var(--carta-text-muted);
+  line-height: 1.6;
+  margin-bottom: 0.6rem;
 }
 
-/* ── ALÉRGENOS ───────────────────────────────────────────── */
+/* ── ALÉRGENOS ───────────────────────────────────────────────── */
 .alergenos {
-  display: flex; flex-wrap: wrap; gap: 4px; margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 0.55rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--carta-divider);
 }
-.alergeno {
-  width: 26px; height: 26px; border-radius: 50%;
-  border: 1px solid var(--hueso);
-  display: flex; align-items: center; justify-content: center;
+
+.alg-wrap { position: relative; display: inline-flex; }
+
+.alg-ico {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: contain;
+  opacity: 0.7;
+  transition: opacity 0.18s, transform 0.18s;
   cursor: help;
-  transition: border-color 0.2s, background 0.2s;
-  position: relative;
+  display: block;
+  border: 1px solid var(--carta-card-bd);
 }
-.alergeno:hover { border-color: var(--dorado); background: var(--arena); }
-.alergeno svg { width: 13px; height: 13px; fill: var(--gris); }
-.alergeno:hover svg { fill: var(--tierra); }
-.alergeno-tip {
+.alg-wrap:hover .alg-ico { opacity: 1; transform: scale(1.18); }
+
+.alg-tip {
   display: none;
-  position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%);
-  background: var(--carbon); color: #fff;
-  font-size: 0.62rem; letter-spacing: 0.08em;
-  text-transform: uppercase; padding: 4px 8px;
-  border-radius: 2px; white-space: nowrap; z-index: 10;
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--carbon);
+  color: var(--dorado-cl);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  padding: 0.22rem 0.5rem;
+  border-radius: 3px;
+  pointer-events: none;
+  z-index: 30;
 }
-.alergeno:hover .alergeno-tip { display: block; }
+.alg-wrap:hover .alg-tip { display: block; }
 
-/* ── DESAYUNOS ───────────────────────────────────────────── */
-.des-wrap { padding: 3rem 4rem; }
-.des-bloque { margin-bottom: 3.5rem; }
-.des-bloque:last-child { margin-bottom: 0; }
-.des-h {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.5rem; font-weight: 300;
-  color: var(--tierra); margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--hueso);
-  letter-spacing: 0.02em;
+/* ── TABLA TOSTADAS ──────────────────────────────────────────── */
+.tostadas-nota {
+  font-size: 0.7rem;
+  color: var(--carta-text-muted);
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
 }
-.tag-precio {
-  display: inline-flex; gap: 1rem; align-items: center;
-  font-size: 0.65rem; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--gris); margin-bottom: 1rem;
-}
-.tag-precio span { color: var(--dorado); font-weight: 500; }
+.tostadas-nota strong { color: var(--tierra-md); }
 
-.tostadas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 3rem; }
-.tostada-item {
-  display: flex; justify-content: space-between;
-  align-items: baseline; padding: 0.65rem 0;
-  border-bottom: 1px solid var(--hueso); gap: 0.5rem;
+.tostadas-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--carta-card-bg);
+  border: 1px solid var(--carta-card-bd);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.2rem;
 }
-.tostada-item:last-child { border-bottom: none; }
-.tostada-nombre { font-size: 0.88rem; color: var(--carbon); }
-.tostada-precios {
-  font-size: 0.82rem; color: var(--dorado);
-  font-weight: 500; white-space: nowrap; letter-spacing: 0.02em;
+.tostadas-table thead {
+  background: var(--arena);
+  border-bottom: 1px solid var(--carta-card-bd);
+}
+.tostadas-table thead th {
+  padding: 0.7rem 1rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--tierra-md);
+  font-weight: 500;
+  text-align: left;
+}
+.tostadas-table thead th.th-r { text-align: right; }
+
+.tostadas-table tbody tr {
+  border-bottom: 1px solid var(--carta-divider);
+  transition: background 0.15s;
+}
+.tostadas-table tbody tr:last-child { border-bottom: none; }
+.tostadas-table tbody tr:hover { background: var(--arena-cl); }
+
+.tostadas-table td {
+  padding: 0.7rem 1rem;
+  font-size: 0.83rem;
+  color: var(--carta-text);
+  vertical-align: middle;
+}
+.tostadas-table td.td-r {
+  text-align: right;
+  color: var(--dorado);
+  font-size: 0.81rem;
+  white-space: nowrap;
 }
 
-.lista-simple { border: 1px solid var(--hueso); border-radius: 8px; overflow: hidden; }
-.lista-item {
-  display: flex; justify-content: space-between;
-  align-items: baseline; padding: 0.8rem 1.25rem;
-  border-bottom: 1px solid var(--hueso); gap: 1rem;
-  transition: background 0.25s;
-}
-.lista-item:last-child { border-bottom: none; }
-.lista-item:hover { background: var(--arena-cl); }
-.lista-nombre { font-size: 0.88rem; color: var(--carbon); }
-.lista-desc   { font-size: 0.78rem; color: var(--gris); flex: 2; }
-.lista-precio {
-  font-size: 0.88rem; color: var(--dorado);
-  font-weight: 500; white-space: nowrap;
-}
-
+/* ── CAFÉ / BEBIDAS GRID ─────────────────────────────────────── */
 .cafe-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  border: 1px solid var(--hueso);
-  border-radius: 8px; overflow: hidden;
+  background: var(--carta-card-bg);
+  border: 1px solid var(--carta-card-bd);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.2rem;
 }
 .cafe-item {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 0.75rem 1.25rem;
-  border-bottom: 1px solid var(--hueso);
-  border-right: 1px solid var(--hueso);
-  font-size: 0.86rem;
-  transition: background 0.25s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.1rem;
+  border-bottom: 1px solid var(--carta-divider);
+  border-right: 1px solid var(--carta-divider);
+  font-size: 0.83rem;
+  color: var(--carta-text);
+  transition: background 0.15s;
 }
 .cafe-item:hover { background: var(--arena-cl); }
 .cafe-precio {
-  color: var(--dorado); font-weight: 500;
-  white-space: nowrap; margin-left: 0.5rem;
+  color: var(--dorado);
+  font-weight: 500;
+  font-size: 0.81rem;
+  margin-left: 0.8rem;
+  flex-shrink: 0;
 }
 
+/* ── NOTA PIE ────────────────────────────────────────────────── */
 .nota-pie {
-  font-size: 0.73rem; color: var(--gris);
-  margin-top: 0.75rem; font-style: italic; line-height: 1.5;
+  font-size: 0.72rem;
+  color: var(--carta-text-dim);
+  line-height: 1.7;
+  padding-top: 0.7rem;
+  margin-top: 0.2rem;
+  border-top: 1px solid var(--carta-divider);
+}
+.nota-pie strong { color: var(--carta-text-muted); }
+
+/* ── DIVISOR DE SECCIÓN ──────────────────────────────────────── */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 1.8rem 0 1.1rem;
+}
+.section-divider h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 300;
+  color: var(--tierra);
+  white-space: nowrap;
+}
+.section-divider-line {
+  flex: 1;
+  height: 1px;
+  background: var(--carta-card-bd);
 }
 
-/* ── RESPONSIVE ──────────────────────────────────────────── */
+/* ── LEYENDA ALÉRGENOS ───────────────────────────────────────── */
+.alergenos-leyenda {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.leyenda-pretitle {
+  font-size: 0.56rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dorado);
+  margin-bottom: 0.3rem;
+}
+.leyenda-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 1.8rem;
+  line-height: 1.15;
+}
+.leyenda-sub em { font-style: italic; color: var(--dorado-cl); }
+
+/* Tabla de alérgenos 7 × 2 */
+.leyenda-tabla {
+  margin: 0 auto 1.6rem;
+  border-collapse: separate;
+  border-spacing: 0.5rem;
+}
+.leyenda-tabla td {
+  text-align: center;
+  padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  transition: border-color 0.18s, background 0.18s;
+  vertical-align: middle;
+  min-width: 90px;
+}
+.leyenda-tabla td:hover {
+  border-color: rgba(184,131,58,0.35);
+  background: rgba(184,131,58,0.06);
+}
+.leyenda-tabla td img {
+  width: 30px;
+  height: 30px;
+  display: block;
+  margin: 0 auto 0.4rem;
+}
+.leyenda-tabla td span {
+  display: block;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.04em;
+}
+
+.leyenda-aviso {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.32);
+  line-height: 1.75;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.leyenda-aviso strong { color: var(--dorado-cl); }
+
+/* ── RESPONSIVE (< 900px) ────────────────────────────────────── */
 @media (max-width: 900px) {
-  .carta-intro,
-  .sub-tabs-wrap,
-  .platos-wrap,
-  .des-wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
-  .main-tab { padding: 0.9rem 1.5rem; font-size: 0.68rem; }
-  .tostadas-grid { grid-template-columns: 1fr; }
-  .platos-grid   { grid-template-columns: 1fr; }
-  .lista-desc    { display: none; }
+  /* En móvil: layout vertical (columna única) */
+  .carta-layout {
+    flex-direction: column;
+  }
+
+  .carta-sidebar {
+    width: 100%;
+    position: relative;
+    top: 0;
+    height: auto;
+    overflow-x: auto;
+    overflow-y: visible;
+    border-right: none;
+    border-bottom: 1px solid var(--carta-sidebar-bd);
+  }
+
+  .sidebar-head { padding: 1.4rem 1.2rem 1rem; }
+  .sidebar-title { font-size: 1.05rem; }
+
+  /* Nav horizontal con scroll */
+  .sidebar-nav {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0;
+    scrollbar-width: none;
+  }
+  .sidebar-nav::-webkit-scrollbar { display: none; }
+
+  /* Los grupos quedan aplanados (sus hijos van directo al flex row) */
+  .sidebar-group { display: contents; }
+  .sidebar-group-label { display: none; }
+
+  .sidebar-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 0.85rem 1rem;
+    font-size: 0.72rem;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    border-top: none;
+    border-right: none;
+  }
+  .sidebar-btn.active {
+    border-left: none;
+    border-bottom-color: var(--dorado);
+    background: rgba(184,131,58,0.08);
+  }
+  .sidebar-btn-ico { display: none; }
+
+  .carta-content { padding: 2rem 1.2rem 2.5rem; }
+  .carta-bridge  { padding: 2rem 1.2rem 2.5rem; }
+  .panel-title { font-size: 1.7rem; }
+  .platos-grid { grid-template-columns: 1fr; }
+  .cafe-grid   { grid-template-columns: 1fr; }
+  .leyenda-tabla { border-spacing: 0.3rem; }
+  .leyenda-tabla td { min-width: 60px; padding: 0.55rem 0.4rem; }
+  .leyenda-tabla td img { width: 24px; height: 24px; }
+  .leyenda-tabla td span { font-size: 0.6rem; }
+  .tostadas-table td { font-size: 0.78rem; padding: 0.6rem 0.7rem; }
 }

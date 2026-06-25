@@ -19,8 +19,9 @@
 <nav id="nav">
   <a href="../index.html" class="nav-logo">Mesón <span>de Eiffel</span></a>
   <ul class="nav-links" id="navLinks">
+    <li><a href="../index.html" class="nav-link-home">Mesón <em>de Eiffel</em></a></li>
     <li><a href="nosotros.html">Nosotros</a></li>
-    <li><a href="carta.html">Carta</a></li>
+    <li><a href="carta.html" class="active">Carta</a></li>
     <li><a href="reservas.html">Reservas</a></li>
     <li><a href="contacto.html">Contacto</a></li>
   </ul>
@@ -29,7 +30,7 @@
   </button>
 </nav>
 
-<!-- ── CABECERA DE PÁGINA ── -->
+<!-- ── CABECERA ── -->
 <div class="page-hero">
   <div class="page-hero-content">
     <div class="eyebrow"><div class="eyebrow-bar"></div>Lo que cocinamos</div>
@@ -37,248 +38,909 @@
   </div>
 </div>
 
-<!-- ── CARTA ── -->
-<section class="carta-section">
-  <div class="carta-intro reveal">
-    <p>Desayunos, tapas, brasas y dulces — todo con producto de calidad y elaboración propia.</p>
-  </div>
+<!-- ── CARTA LAYOUT ── -->
+<div class="carta-layout">
 
-  <!-- Selector principal -->
-  <div class="main-tabs-wrap">
-    <div class="main-tabs">
-      <button class="main-tab active" data-main="desayunos">
-        <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-        Desayunos
-      </button>
-      <button class="main-tab" data-main="comidas">
-        <svg viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
-        Comidas
-      </button>
+  <!-- ── SIDEBAR ── -->
+  <aside class="carta-sidebar">
+    <div class="sidebar-head">
+      <div class="sidebar-pretitle">Menú</div>
+      <div class="sidebar-title">Mesón&nbsp;<em>de Eiffel</em></div>
     </div>
-  </div>
 
-  <!-- ── PANEL DESAYUNOS ── -->
-  <div class="main-panel active" id="main-desayunos">
-    <div class="des-wrap">
+    <div class="sidebar-nav" aria-label="Categorías de la carta">
 
-      <div class="des-bloque reveal">
-        <div class="des-h">Tostadas y Molletes</div>
-        <div class="tag-precio">½ tostada <span>·</span> Tostada entera</div>
-        <div class="tostadas-grid">
-          <div>
-            <div class="tostada-item"><span class="tostada-nombre">De mantequilla o tomate</span><span class="tostada-precios">1,20 € &nbsp;·&nbsp; 2,40 €</span></div>
-            <div class="tostada-item"><span class="tostada-nombre">De sobrasada o paté</span><span class="tostada-precios">1,40 € &nbsp;·&nbsp; 2,80 €</span></div>
-            <div class="tostada-item"><span class="tostada-nombre">De mantequilla con mermelada</span><span class="tostada-precios">1,40 € &nbsp;·&nbsp; 2,80 €</span></div>
-            <div class="tostada-item"><span class="tostada-nombre">De jamón de york o queso</span><span class="tostada-precios">1,80 € &nbsp;·&nbsp; 3,60 €</span></div>
-            <div class="tostada-item"><span class="tostada-nombre">De jamón de york y queso</span><span class="tostada-precios">2,30 € &nbsp;·&nbsp; 4,60 €</span></div>
-            <div class="tostada-item"><span class="tostada-nombre">De serrano o queso manchego</span><span class="tostada-precios">2,40 € &nbsp;·&nbsp; 4,80 €</span></div>
-            <div class="tostada-item"><span class="tostada-nombre">De serrano y queso manchego</span><span class="tostada-precios">3,60 € &nbsp;·&nbsp; 7,20 €</span></div>
+      <!-- DESAYUNOS -->
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">
+          Desayunos <span></span>
+        </div>
+        <button class="sidebar-btn active" data-panel="tostadas">
+          <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="8" rx="2"/><path d="M3 11V9a2 2 0 012-2h14a2 2 0 012 2v2"/><line x1="12" y1="7" x2="12" y2="3"/></svg>
+          Tostadas &amp; Molletes
+        </button>
+        <button class="sidebar-btn" data-panel="croissants">
+          <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M3 17c0-4 4-8 9-8s9 4 9 8"/><path d="M7 17c0-2 2-4 5-4s5 2 5 4"/></svg>
+          Croissants
+        </button>
+        <button class="sidebar-btn" data-panel="suizos">
+          <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M4 20h16M4 20V12a8 8 0 0 1 16 0v8"/></svg>
+          Suizos
+        </button>
+        <button class="sidebar-btn" data-panel="sandwiches">
+          <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="4" rx="1"/><rect x="2" y="14" width="20" height="4" rx="1"/><line x1="6" y1="10" x2="18" y2="10"/><line x1="6" y1="14" x2="18" y2="14"/></svg>
+          Sándwiches
+        </button>
+        <button class="sidebar-btn" data-panel="crepes">
+          <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>
+          Crepes, Gofres &amp; Tortitas
+        </button>
+        <button class="sidebar-btn" data-panel="cafes">
+          <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          Cafés &amp; Bebidas
+        </button>
+        <button class="sidebar-btn" data-panel="chocolates">
+          <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 8l1 12h14l1-12"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Chocolates especiales
+        </button>
+        <button class="sidebar-btn" data-panel="tes">
+          <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M17 8h2a2 2 0 0 1 0 4h-2"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+          Tés &amp; Infusiones
+        </button>
+      </div>
+
+      <!-- COMIDAS -->
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">
+          Comidas <span></span>
+        </div>
+        <button class="sidebar-btn" data-panel="compartimos">
+          <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Para compartir
+        </button>
+        <button class="sidebar-btn" data-panel="huevos">
+          <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M12 22C6.5 22 4 17.5 4 13C4 7.5 7.5 2 12 2s8 5.5 8 11c0 4.5-2.5 9-8 9z"/></svg>
+          Con dos huevos
+        </button>
+        <button class="sidebar-btn" data-panel="brasas">
+          <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M12 2c0 0-6 6-6 11a6 6 0 0 0 12 0c0-5-6-11-6-11z"/><path d="M9 13c0 0 1.5-2 3-2s3 2 3 2"/></svg>
+          Nuestras brasas
+        </button>
+        <button class="sidebar-btn" data-panel="dulces">
+          <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5c0 4-5 10-5 10S7 11 7 7a5 5 0 0 1 5-5z"/><path d="M4 20h16"/></svg>
+          Dulces
+        </button>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ── CONTENT ── -->
+  <main class="carta-content">
+
+    <!-- ════ TOSTADAS & MOLLETES ════ -->
+    <section class="carta-panel active" id="panel-tostadas">
+      <div class="panel-header">
+        <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
+        <h2 class="panel-title">Tostadas &amp; <em>Molletes</em></h2>
+        <p class="panel-subtitle">Pan de pueblo tostado al momento. Disponible en media tostada o tostada entera. Suplemento pan sin gluten: rebanada +0,30 € · bollito +0,50 €</p>
+      </div>
+
+      <div class="tostadas-nota"><strong>½ Tostada</strong> · <strong>Tostada entera</strong></div>
+
+      <table class="tostadas-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th class="th-r">½</th>
+            <th class="th-r">Entera</th>
+            <th class="th-r">Alérgenos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>De mantequilla o tomate</td>
+            <td class="td-r">1,20 €</td>
+            <td class="td-r">2,40 €</td>
+            <td class="td-r">
+              <div class="alergenos" style="justify-content:flex-end">
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>De sobrasada o paté</td>
+            <td class="td-r">1,40 €</td>
+            <td class="td-r">2,80 €</td>
+            <td class="td-r">
+              <div class="alergenos" style="justify-content:flex-end">
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>De mantequilla con mermelada</td>
+            <td class="td-r">1,40 €</td>
+            <td class="td-r">2,80 €</td>
+            <td class="td-r">
+              <div class="alergenos" style="justify-content:flex-end">
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>De jamón de york o queso</td>
+            <td class="td-r">1,80 €</td>
+            <td class="td-r">3,60 €</td>
+            <td class="td-r">
+              <div class="alergenos" style="justify-content:flex-end">
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>De jamón de york y queso</td>
+            <td class="td-r">2,30 €</td>
+            <td class="td-r">4,60 €</td>
+            <td class="td-r">
+              <div class="alergenos" style="justify-content:flex-end">
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>De serrano o queso manchego</td>
+            <td class="td-r">2,40 €</td>
+            <td class="td-r">4,80 €</td>
+            <td class="td-r">
+              <div class="alergenos" style="justify-content:flex-end">
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>De serrano y queso manchego</td>
+            <td class="td-r">3,60 €</td>
+            <td class="td-r">7,20 €</td>
+            <td class="td-r">
+              <div class="alergenos" style="justify-content:flex-end">
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>De atún</td>
+            <td class="td-r">2,30 €</td>
+            <td class="td-r">4,60 €</td>
+            <td class="td-r">
+              <div class="alergenos" style="justify-content:flex-end">
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/pescado.svg" alt="Pescado"><span class="alg-tip">Pescado</span></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>De atún y aguacate</td>
+            <td class="td-r">3,30 €</td>
+            <td class="td-r">6,60 €</td>
+            <td class="td-r">
+              <div class="alergenos" style="justify-content:flex-end">
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/pescado.svg" alt="Pescado"><span class="alg-tip">Pescado</span></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>De atún, aguacate y queso</td>
+            <td class="td-r">3,90 €</td>
+            <td class="td-r">7,80 €</td>
+            <td class="td-r">
+              <div class="alergenos" style="justify-content:flex-end">
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/pescado.svg" alt="Pescado"><span class="alg-tip">Pescado</span></span>
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>De pavo</td>
+            <td class="td-r">2,00 €</td>
+            <td class="td-r">4,00 €</td>
+            <td class="td-r">
+              <div class="alergenos" style="justify-content:flex-end">
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>De pavo y queso</td>
+            <td class="td-r">2,60 €</td>
+            <td class="td-r">5,20 €</td>
+            <td class="td-r">
+              <div class="alergenos" style="justify-content:flex-end">
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>De jamón asado</td>
+            <td class="td-r">3,00 €</td>
+            <td class="td-r">6,00 €</td>
+            <td class="td-r">
+              <div class="alergenos" style="justify-content:flex-end">
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Pintxo de tortilla de patatas</td>
+            <td class="td-r">—</td>
+            <td class="td-r">3,50 €</td>
+            <td class="td-r">
+              <div class="alergenos" style="justify-content:flex-end">
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+                <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="nota-pie">Suplemento pan sin gluten: rebanada +0,30 € · bollito +0,50 € · IVA incluido en todos los precios</p>
+    </section>
+
+    <!-- ════ CROISSANTS ════ -->
+    <section class="carta-panel" id="panel-croissants">
+      <div class="panel-header">
+        <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
+        <h2 class="panel-title"><em>Croissants</em></h2>
+        <p class="panel-subtitle">Hojaldre artesanal tostado al momento. Todos elaborados con mantequilla.</p>
+      </div>
+      <div class="platos-grid">
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Croissant</span><span class="plato-precio">2,50 €</span></div>
+          <div class="plato-desc">Hojaldre tostado con mantequilla, crujiente por fuera y tierno por dentro.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
           </div>
-          <div>
-            <div class="tostada-item"><span class="tostada-nombre">De atún</span><span class="tostada-precios">2,30 € &nbsp;·&nbsp; 4,60 €</span></div>
-            <div class="tostada-item"><span class="tostada-nombre">De atún y aguacate</span><span class="tostada-precios">3,30 € &nbsp;·&nbsp; 6,60 €</span></div>
-            <div class="tostada-item"><span class="tostada-nombre">De atún, aguacate y queso</span><span class="tostada-precios">3,90 € &nbsp;·&nbsp; 7,80 €</span></div>
-            <div class="tostada-item"><span class="tostada-nombre">De pavo</span><span class="tostada-precios">2,00 € &nbsp;·&nbsp; 4,00 €</span></div>
-            <div class="tostada-item"><span class="tostada-nombre">De pavo y queso</span><span class="tostada-precios">2,60 € &nbsp;·&nbsp; 5,20 €</span></div>
-            <div class="tostada-item"><span class="tostada-nombre">De jamón asado</span><span class="tostada-precios">3,00 € &nbsp;·&nbsp; 6,00 €</span></div>
-            <div class="tostada-item"><span class="tostada-nombre">Pintxo de tortilla de patatas</span><span class="tostada-precios">3,50 €</span></div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Croissant mixto</span><span class="plato-precio">3,00 €</span></div>
+          <div class="plato-desc">Hojaldre tostado con mantequilla y mermelada de frutas de temporada.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
           </div>
         </div>
-        <p class="nota-pie">Suplemento pan sin gluten: rebanada +0,30 € · bollito +0,50 €</p>
-      </div>
-
-      <div class="des-bloque reveal">
-        <div class="des-h">Croissants</div>
-        <div class="platos-grid">
-          <div class="plato"><div class="plato-top"><span class="plato-name">Croissant</span><span class="plato-precio">2,50 €</span></div><div class="plato-desc">Tostado con mantequilla</div><div class="alergenos"><div class="alergeno" title="Gluten"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/><line x1="12" y1="13" x2="12" y2="20" stroke="var(--gris)" stroke-width="1.5" fill="none"/></svg><span class="alergeno-tip">Gluten</span></div><div class="alergeno" title="Lácteos"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 3h8l1 5H7L8 3z"/><path d="M7 8c0 8 10 8 10 0"/></svg><span class="alergeno-tip">Lácteos</span></div></div></div>
-          <div class="plato"><div class="plato-top"><span class="plato-name">Croissant mixto</span><span class="plato-precio">3,00 €</span></div><div class="plato-desc">Tostado con mantequilla y mermelada</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/><line x1="12" y1="13" x2="12" y2="20" stroke="var(--gris)" stroke-width="1.5" fill="none"/></svg><span class="alergeno-tip">Gluten</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M8 3h8l1 5H7L8 3z"/><path d="M7 8c0 8 10 8 10 0"/></svg><span class="alergeno-tip">Lácteos</span></div></div></div>
-          <div class="plato"><div class="plato-top"><span class="plato-name">Croissant de york</span><span class="plato-precio">3,50 €</span></div><div class="plato-desc">Tostado con mantequilla, york y queso</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/><line x1="12" y1="13" x2="12" y2="20" stroke="var(--gris)" stroke-width="1.5" fill="none"/></svg><span class="alergeno-tip">Gluten</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M8 3h8l1 5H7L8 3z"/><path d="M7 8c0 8 10 8 10 0"/></svg><span class="alergeno-tip">Lácteos</span></div></div></div>
-          <div class="plato"><div class="plato-top"><span class="plato-name">Croissant Eiffel</span><span class="plato-precio">6,00 €</span></div><div class="plato-especial">Especialidad de la casa</div><div class="plato-desc">Con tomate, atún, queso y aguacate</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/><line x1="12" y1="13" x2="12" y2="20" stroke="var(--gris)" stroke-width="1.5" fill="none"/></svg><span class="alergeno-tip">Gluten</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M8 3h8l1 5H7L8 3z"/><path d="M7 8c0 8 10 8 10 0"/></svg><span class="alergeno-tip">Lácteos</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(-30 12 12)"/><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(30 12 12)"/></svg><span class="alergeno-tip">Pescado</span></div></div></div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Croissant de york</span><span class="plato-precio">3,50 €</span></div>
+          <div class="plato-desc">Tostado con mantequilla, jamón york y queso fundido al momento.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Croissant Eiffel</span><span class="plato-precio">6,00 €</span></div>
+          <div class="plato-especial">Especialidad de la casa</div>
+          <div class="plato-desc">Nuestra estrella: tomate fresco, atún en aceite, queso edam fundido y aguacate maduro.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/pescado.svg" alt="Pescado"><span class="alg-tip">Pescado</span></span>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="des-bloque reveal">
-        <div class="des-h">Suizos</div>
-        <div class="platos-grid">
-          <div class="plato"><div class="plato-top"><span class="plato-name">Suizo mantequilla</span><span class="plato-precio">2,50 €</span></div><div class="plato-desc">Tostado con mantequilla</div></div>
-          <div class="plato"><div class="plato-top"><span class="plato-name">Suizo mixto</span><span class="plato-precio">3,00 €</span></div><div class="plato-desc">Tostado con mantequilla y mermelada</div></div>
-          <div class="plato"><div class="plato-top"><span class="plato-name">Suizo de york</span><span class="plato-precio">3,50 €</span></div><div class="plato-desc">Tostado con mantequilla, york y queso</div></div>
-        </div>
+    <!-- ════ SUIZOS ════ -->
+    <section class="carta-panel" id="panel-suizos">
+      <div class="panel-header">
+        <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
+        <h2 class="panel-title"><em>Suizos</em></h2>
+        <p class="panel-subtitle">Bollo de leche esponjoso, tostado al momento.</p>
       </div>
-
-      <div class="des-bloque reveal">
-        <div class="des-h">Sandwiches</div>
-        <div class="lista-simple">
-          <div class="lista-item"><span class="lista-nombre">Sandwich mixto</span><span class="lista-desc">Pan de molde tostado con mantequilla, york y queso</span><span class="lista-precio">3,00 €</span></div>
-          <div class="lista-item"><span class="lista-nombre">Sandwich de atún</span><span class="lista-desc">Pan de molde tostado con tomate y atún</span><span class="lista-precio">3,00 €</span></div>
-        </div>
-      </div>
-
-      <div class="des-bloque reveal">
-        <div class="des-h">Crepes, Gofres y Tortitas</div>
-        <div class="lista-simple">
-          <div class="lista-item"><span class="lista-nombre">Crepes con sirope</span><span class="lista-desc"></span><span class="lista-precio">3,00 €</span></div>
-          <div class="lista-item"><span class="lista-nombre">Crepes con sirope y nata</span><span class="lista-desc"></span><span class="lista-precio">3,50 €</span></div>
-          <div class="lista-item"><span class="lista-nombre">Gofre con sirope</span><span class="lista-desc"></span><span class="lista-precio">3,00 €</span></div>
-          <div class="lista-item"><span class="lista-nombre">Gofre con sirope y nata</span><span class="lista-desc"></span><span class="lista-precio">3,50 €</span></div>
-          <div class="lista-item"><span class="lista-nombre">Tortitas con sirope</span><span class="lista-desc"></span><span class="lista-precio">3,00 €</span></div>
-          <div class="lista-item"><span class="lista-nombre">Tortitas con sirope y nata</span><span class="lista-desc"></span><span class="lista-precio">3,50 €</span></div>
-        </div>
-      </div>
-
-      <div class="des-bloque reveal">
-        <div class="des-h">Cafés</div>
-        <div class="cafe-grid">
-          <div class="cafe-item"><span>Café solo</span><span class="cafe-precio">1,60 €</span></div>
-          <div class="cafe-item"><span>Café doble</span><span class="cafe-precio">2,40 €</span></div>
-          <div class="cafe-item"><span>Café con leche</span><span class="cafe-precio">1,60 €</span></div>
-          <div class="cafe-item"><span>Café bombón</span><span class="cafe-precio">2,00 €</span></div>
-          <div class="cafe-item"><span>Capuchino de la casa</span><span class="cafe-precio">4,00 €</span></div>
-          <div class="cafe-item"><span>Café Irlandés</span><span class="cafe-precio">5,00 €</span></div>
-          <div class="cafe-item"><span>Carajillo Bayleis</span><span class="cafe-precio">2,60 €</span></div>
-          <div class="cafe-item"><span>Carajillo Bayleis en hielo</span><span class="cafe-precio">3,00 €</span></div>
-          <div class="cafe-item"><span>Carajillo (Coñac, Anís o Ron)</span><span class="cafe-precio">2,20 €</span></div>
-          <div class="cafe-item"><span>Batido (choco, fresa, vainilla)</span><span class="cafe-precio">2,60 €</span></div>
-          <div class="cafe-item"><span>Cola-Cao</span><span class="cafe-precio">2,30 €</span></div>
-          <div class="cafe-item"><span>Zumo naranja natural pequeño</span><span class="cafe-precio">2,50 €</span></div>
-          <div class="cafe-item"><span>Zumo naranja natural grande</span><span class="cafe-precio">3,00 €</span></div>
-        </div>
-      </div>
-
-      <div class="des-bloque reveal">
-        <div class="des-h">Chocolates especiales</div>
-        <div class="cafe-grid">
-          <div class="cafe-item"><span>Chocolate normal</span><span class="cafe-precio">2,50 €</span></div>
-          <div class="cafe-item"><span>Con nata montada</span><span class="cafe-precio">3,00 €</span></div>
-          <div class="cafe-item"><span>Chocolate blanco</span><span class="cafe-precio">2,50 €</span></div>
-          <div class="cafe-item"><span>Chocolate naranja</span><span class="cafe-precio">2,50 €</span></div>
-          <div class="cafe-item"><span>Chocolate menta</span><span class="cafe-precio">2,50 €</span></div>
-          <div class="cafe-item"><span>Chocolate coco</span><span class="cafe-precio">2,50 €</span></div>
-          <div class="cafe-item"><span>Chocolate avellana</span><span class="cafe-precio">2,50 €</span></div>
-        </div>
-      </div>
-
-      <div class="des-bloque reveal">
-        <div class="des-h">Tés e Infusiones</div>
-        <div class="cafe-grid">
-          <div class="cafe-item"><span>Té o infusión en agua</span><span class="cafe-precio">1,80 €</span></div>
-          <div class="cafe-item"><span>Té o infusión en agua y leche</span><span class="cafe-precio">2,00 €</span></div>
-          <div class="cafe-item"><span>Té o infusión en leche</span><span class="cafe-precio">2,20 €</span></div>
-        </div>
-        <p class="nota-pie">Leches especiales (avena, almendras, soja): +0,20 € de suplemento · IVA incluido en todos los precios</p>
-      </div>
-
-    </div>
-  </div><!-- /desayunos -->
-
-  <!-- ── PANEL COMIDAS ── -->
-  <div class="main-panel" id="main-comidas">
-    <div class="sub-tabs-wrap">
-      <div class="sub-tabs">
-        <button class="sub-tab active" data-sub="compartimos">Para compartir</button>
-        <button class="sub-tab" data-sub="huevos">Con dos huevos</button>
-        <button class="sub-tab" data-sub="brasas">Nuestras brasas</button>
-        <button class="sub-tab" data-sub="dulces">Dulces</button>
-      </div>
-    </div>
-
-    <!-- COMPARTIMOS -->
-    <div class="sub-panel active platos-wrap" id="sub-compartimos">
       <div class="platos-grid">
-        <div class="plato"><div class="plato-top"><span class="plato-name">Jamón asado</span><span class="plato-precio">15,00 €</span></div><div class="plato-especial">Especialidad de la casa</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="alergeno-tip">Sin alérgenos principales</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Tomate aliñao</span><span class="plato-precio">12,00 €</span></div><div class="plato-desc">Tomate, aguacate y melva</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(-30 12 12)"/><ellipse cx="12" cy="12" rx="4" ry="8" transform="rotate(30 12 12)"/></svg><span class="alergeno-tip">Pescado</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Ensalada de pollo crujiente</span><span class="plato-precio">15,00 €</span></div><div class="plato-desc">Lechugas, cherry, aguacate, queso edam y cabra, frutos secos, pollo crujiente y nuestra salsa</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/><line x1="12" y1="13" x2="12" y2="20" stroke="var(--gris)" stroke-width="1.5" fill="none"/></svg><span class="alergeno-tip">Gluten</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M8 3h8l1 5H7L8 3z"/><path d="M7 8c0 8 10 8 10 0"/></svg><span class="alergeno-tip">Lácteos</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="alergeno-tip">Frutos secos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Pimientos del padrón</span><span class="plato-precio">10,00 €</span></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Parrillada de verduras</span><span class="plato-precio">15,00 €</span></div><div class="plato-desc">Verduras en nuestras ascuas con queso de cabra y huevo frito</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M8 3h8l1 5H7L8 3z"/><path d="M7 8c0 8 10 8 10 0"/></svg><span class="alergeno-tip">Lácteos</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span class="alergeno-tip">Huevos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Alcachofa XL (unidad)</span><span class="plato-precio">8,00 €</span></div><div class="plato-desc">Confitada en AOVE, plancha, yema de huevo, jamón y parmesano</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M8 3h8l1 5H7L8 3z"/><path d="M7 8c0 8 10 8 10 0"/></svg><span class="alergeno-tip">Lácteos</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span class="alergeno-tip">Huevos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Jamón Juviles Oro (150 gr)</span><span class="plato-precio">15,00 €</span></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Jamón ibérico bellota (150 gr)</span><span class="plato-precio">24,00 €</span></div><div class="plato-desc">Cebo de campo</div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Tabla ibérica media (250 gr)</span><span class="plato-precio">16,00 €</span></div><div class="plato-desc">Selección de embutidos cebo campo</div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Tabla ibérica entera (400 gr)</span><span class="plato-precio">28,00 €</span></div><div class="plato-desc">Selección de embutidos cebo campo</div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Nuestra provoleta</span><span class="plato-precio">13,00 €</span></div><div class="plato-desc">Queso provolone a la plancha con cherrys salteados</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M8 3h8l1 5H7L8 3z"/><path d="M7 8c0 8 10 8 10 0"/></svg><span class="alergeno-tip">Lácteos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Steak tartar de ternera</span><span class="plato-precio">26,00 €</span></div><div class="plato-desc">Daditos de solomillo aliñados con nuestra emulsión de encurtidos</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3z" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg><span class="alergeno-tip">Mostaza</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Steak tartar de salchichón</span><span class="plato-precio">15,00 €</span></div><div class="plato-desc">Daditos de espetec aliñados con nuestra emulsión de encurtidos</div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Gambas arrieras</span><span class="plato-precio">19,00 €</span></div><div class="plato-desc">Patatas caseras con gambas al ajillo y nuestro alioli</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="alergeno-tip">Crustáceos</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span class="alergeno-tip">Huevos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Pulpo a la brasa</span><span class="plato-precio">22,00 €</span></div><div class="plato-desc">Pulpo a la brasa con puré de patatas</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="alergeno-tip">Moluscos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Habas con jamón</span><span class="plato-precio">15,00 €</span></div><div class="plato-desc">Habas salteadas con ajo, huevo frito y tacos de jamón</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span class="alergeno-tip">Huevos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Esas croquetas</span><span class="plato-precio">14,00 €</span></div><div class="plato-desc">6 croquetas de elaboración propia (de cocido o de txuleta)</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/><line x1="12" y1="13" x2="12" y2="20" stroke="var(--gris)" stroke-width="1.5" fill="none"/></svg><span class="alergeno-tip">Gluten</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M8 3h8l1 5H7L8 3z"/><path d="M7 8c0 8 10 8 10 0"/></svg><span class="alergeno-tip">Lácteos</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span class="alergeno-tip">Huevos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Tiritas de pollo frito</span><span class="plato-precio">12,00 €</span></div><div class="plato-desc">Pechuga empanada y frita con salsa de mostaza y miel</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/><line x1="12" y1="13" x2="12" y2="20" stroke="var(--gris)" stroke-width="1.5" fill="none"/></svg><span class="alergeno-tip">Gluten</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span class="alergeno-tip">Huevos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Que albóndigas</span><span class="plato-precio">13,00 €</span></div><div class="plato-desc">Albóndigas guisadas con salsa de almendras</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="alergeno-tip">Frutos secos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Pollo al curry</span><span class="plato-precio">12,00 €</span></div><div class="plato-desc">Pollo salteado con nuestro curry</div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Pimientos del piquillo</span><span class="plato-precio">16,00 €</span></div><div class="plato-desc">4 pimientos rellenos de cremoso de carne sobre puré y salsa de piquillo</div></div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Suizo con mantequilla</span><span class="plato-precio">2,50 €</span></div>
+          <div class="plato-desc">Bollo de leche suave tostado y untado con mantequilla.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Suizo mixto</span><span class="plato-precio">3,00 €</span></div>
+          <div class="plato-desc">Bollo de leche tostado con mantequilla y mermelada de frutas.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Suizo de york</span><span class="plato-precio">3,50 €</span></div>
+          <div class="plato-desc">Bollo de leche tostado con mantequilla, jamón york y queso tierno.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <!-- CON DOS HUEVOS -->
-    <div class="sub-panel platos-wrap" id="sub-huevos">
+    <!-- ════ SÁNDWICHES ════ -->
+    <section class="carta-panel" id="panel-sandwiches">
+      <div class="panel-header">
+        <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
+        <h2 class="panel-title"><em>Sándwiches</em></h2>
+        <p class="panel-subtitle">Pan de molde tostado en plancha, dorado por fuera y caliente por dentro.</p>
+      </div>
       <div class="platos-grid">
-        <div class="plato"><div class="plato-top"><span class="plato-name">Huevos rotos con jamón</span><span class="plato-precio">15,00 €</span></div><div class="plato-desc">Patatas caseras, 2 huevos fritos y jamón</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span class="alergeno-tip">Huevos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Huevos rotos con picadillo</span><span class="plato-precio">15,00 €</span></div><div class="plato-desc">Patatas caseras, 2 huevos fritos y picadillo de chorizo</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span class="alergeno-tip">Huevos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Huevos con ajos</span><span class="plato-precio">15,00 €</span></div><div class="plato-desc">Patatas caseras, 3 huevos fritos con puntilla y chips de ajos</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span class="alergeno-tip">Huevos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Tortilla estilo Betanzos</span><span class="plato-precio">15,00 €</span></div><div class="plato-desc">Tortilla de patatas con cebolleta, hecha al momento, poco cuajada</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span class="alergeno-tip">Huevos</span></div></div></div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Sándwich mixto</span><span class="plato-precio">3,00 €</span></div>
+          <div class="plato-desc">Pan de molde tostado con mantequilla, jamón york y queso fundido.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Sándwich de atún</span><span class="plato-precio">3,00 €</span></div>
+          <div class="plato-desc">Pan de molde tostado con tomate natural rallado y atún en aceite de oliva.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/pescado.svg" alt="Pescado"><span class="alg-tip">Pescado</span></span>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <!-- BRASAS -->
-    <div class="sub-panel platos-wrap" id="sub-brasas">
+    <!-- ════ CREPES, GOFRES & TORTITAS ════ -->
+    <section class="carta-panel" id="panel-crepes">
+      <div class="panel-header">
+        <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
+        <h2 class="panel-title">Crepes, Gofres <em>&amp; Tortitas</em></h2>
+        <p class="panel-subtitle">Elaborados al momento en nuestra plancha. Masa propia con huevo, leche y harina.</p>
+      </div>
       <div class="platos-grid">
-        <div class="plato"><div class="plato-top"><span class="plato-name">Pluma de cerdo bellota (350 gr)</span><span class="plato-precio">23,00 €</span></div><div class="plato-desc">Cerdo ibérico de bellota a la brasa</div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Entrecot de ternera (350–400 gr)</span><span class="plato-precio">24,00 €</span></div><div class="plato-desc">Brasa de leña al punto que elijas</div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Solomillo de ternera (250 gr)</span><span class="plato-precio">25,00 €</span></div><div class="plato-desc">El corte más tierno, a la brasa</div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Chuletón de ternera (800 gr)</span><span class="plato-precio">50,00 €</span></div><div class="plato-desc">Para compartir — brasa de leña, sal en escamas</div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Surtido de brasas (500 gr)</span><span class="plato-precio">25,00 €</span></div><div class="plato-desc">Surtido de carnes, chorizo parrilero y longaniza</div></div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Crepes con sirope</span><span class="plato-precio">3,00 €</span></div>
+          <div class="plato-desc">Crêpe fino y dorado bañado en sirope de arce o chocolate.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Crepes con sirope y nata</span><span class="plato-precio">3,50 €</span></div>
+          <div class="plato-desc">Crêpe con sirope y nata montada fresca.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Gofre con sirope</span><span class="plato-precio">3,00 €</span></div>
+          <div class="plato-desc">Gofre crujiente recién hecho con sirope a elegir.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Gofre con sirope y nata</span><span class="plato-precio">3,50 €</span></div>
+          <div class="plato-desc">Gofre con sirope y nata montada.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Tortitas con sirope</span><span class="plato-precio">3,00 €</span></div>
+          <div class="plato-desc">Pancakes esponjosos con sirope a elegir. Ración de 3 unidades.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Tortitas con sirope y nata</span><span class="plato-precio">3,50 €</span></div>
+          <div class="plato-desc">Pancakes esponjosos con sirope y nata montada fresca.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <!-- DULCES -->
-    <div class="sub-panel platos-wrap" id="sub-dulces">
+    <!-- ════ CAFÉS & BEBIDAS ════ -->
+    <section class="carta-panel" id="panel-cafes">
+      <div class="panel-header">
+        <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
+        <h2 class="panel-title">Cafés <em>&amp; Bebidas</em></h2>
+        <p class="panel-subtitle">Café de tueste natural. Leches especiales (avena, almendras, soja) con suplemento de +0,20 €.</p>
+      </div>
+
+      <div class="section-divider"><h3>Cafés</h3><div class="section-divider-line"></div></div>
+      <div class="cafe-grid">
+        <div class="cafe-item"><span>Café solo</span><span class="cafe-precio">1,60 €</span></div>
+        <div class="cafe-item"><span>Café doble</span><span class="cafe-precio">2,40 €</span></div>
+        <div class="cafe-item"><span>Café con leche</span><span class="cafe-precio">1,60 €</span></div>
+        <div class="cafe-item"><span>Café bombón</span><span class="cafe-precio">2,00 €</span></div>
+        <div class="cafe-item"><span>Capuchino de la casa</span><span class="cafe-precio">4,00 €</span></div>
+        <div class="cafe-item"><span>Café Irlandés</span><span class="cafe-precio">5,00 €</span></div>
+        <div class="cafe-item"><span>Carajillo Bayleis</span><span class="cafe-precio">2,60 €</span></div>
+        <div class="cafe-item"><span>Carajillo Bayleis en hielo</span><span class="cafe-precio">3,00 €</span></div>
+        <div class="cafe-item"><span>Carajillo (Coñac, Anís o Ron)</span><span class="cafe-precio">2,20 €</span></div>
+      </div>
+
+      <div class="section-divider"><h3>Batidos &amp; Zumos</h3><div class="section-divider-line"></div></div>
+      <div class="cafe-grid">
+        <div class="cafe-item"><span>Batido de chocolate</span><span class="cafe-precio">2,60 €</span></div>
+        <div class="cafe-item"><span>Batido de fresa</span><span class="cafe-precio">2,60 €</span></div>
+        <div class="cafe-item"><span>Batido de vainilla</span><span class="cafe-precio">2,60 €</span></div>
+        <div class="cafe-item"><span>Cola-Cao</span><span class="cafe-precio">2,30 €</span></div>
+        <div class="cafe-item"><span>Zumo de naranja natural (pequeño)</span><span class="cafe-precio">2,50 €</span></div>
+        <div class="cafe-item"><span>Zumo de naranja natural (grande)</span><span class="cafe-precio">3,00 €</span></div>
+      </div>
+
+      <p class="nota-pie">IVA incluido en todos los precios · Leches especiales: avena, almendras o soja +0,20 € de suplemento</p>
+    </section>
+
+    <!-- ════ CHOCOLATES ESPECIALES ════ -->
+    <section class="carta-panel" id="panel-chocolates">
+      <div class="panel-header">
+        <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
+        <h2 class="panel-title">Chocolates <em>especiales</em></h2>
+        <p class="panel-subtitle">Elaborados en casa con coberturas de calidad. Siete variedades para elegir.</p>
+      </div>
+      <div class="cafe-grid">
+        <div class="cafe-item"><span>Chocolate normal</span><span class="cafe-precio">2,50 €</span></div>
+        <div class="cafe-item"><span>Con nata montada</span><span class="cafe-precio">3,00 €</span></div>
+        <div class="cafe-item"><span>Chocolate blanco</span><span class="cafe-precio">2,50 €</span></div>
+        <div class="cafe-item"><span>Chocolate naranja</span><span class="cafe-precio">2,50 €</span></div>
+        <div class="cafe-item"><span>Chocolate menta</span><span class="cafe-precio">2,50 €</span></div>
+        <div class="cafe-item"><span>Chocolate coco</span><span class="cafe-precio">2,50 €</span></div>
+        <div class="cafe-item"><span>Chocolate avellana</span><span class="cafe-precio">2,50 €</span></div>
+      </div>
+      <p class="nota-pie">Todos los chocolates contienen <strong>Lácteos</strong>. El chocolate avellana también contiene <strong>Frutos secos</strong>.</p>
+    </section>
+
+    <!-- ════ TÉS & INFUSIONES ════ -->
+    <section class="carta-panel" id="panel-tes">
+      <div class="panel-header">
+        <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
+        <h2 class="panel-title">Tés <em>&amp; Infusiones</em></h2>
+        <p class="panel-subtitle">Amplia selección de tés e infusiones. Servidos en agua, leche o combinados.</p>
+      </div>
+      <div class="cafe-grid">
+        <div class="cafe-item"><span>Té o infusión en agua</span><span class="cafe-precio">1,80 €</span></div>
+        <div class="cafe-item"><span>Té o infusión en agua y leche</span><span class="cafe-precio">2,00 €</span></div>
+        <div class="cafe-item"><span>Té o infusión en leche</span><span class="cafe-precio">2,20 €</span></div>
+      </div>
+      <p class="nota-pie">Leches especiales (avena, almendras, soja): +0,20 € de suplemento · IVA incluido</p>
+    </section>
+
+    <!-- ════ PARA COMPARTIR ════ -->
+    <section class="carta-panel" id="panel-compartimos">
+      <div class="panel-header">
+        <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Comidas</div>
+        <h2 class="panel-title">Para <em>compartir</em></h2>
+        <p class="panel-subtitle">Platos pensados para poner en el centro de la mesa y que todo el mundo coma bien.</p>
+      </div>
       <div class="platos-grid">
-        <div class="plato"><div class="plato-top"><span class="plato-name">Tarta de queso con crema de Lotus</span><span class="plato-precio">7,00 €</span></div><div class="plato-desc">Elaboración propia</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/><line x1="12" y1="13" x2="12" y2="20" stroke="var(--gris)" stroke-width="1.5" fill="none"/></svg><span class="alergeno-tip">Gluten</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M8 3h8l1 5H7L8 3z"/><path d="M7 8c0 8 10 8 10 0"/></svg><span class="alergeno-tip">Lácteos</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span class="alergeno-tip">Huevos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Tarta de queso, choco blanco y pistacho</span><span class="plato-precio">8,00 €</span></div><div class="plato-desc">Elaboración propia</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/><line x1="12" y1="13" x2="12" y2="20" stroke="var(--gris)" stroke-width="1.5" fill="none"/></svg><span class="alergeno-tip">Gluten</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M8 3h8l1 5H7L8 3z"/><path d="M7 8c0 8 10 8 10 0"/></svg><span class="alergeno-tip">Lácteos</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="alergeno-tip">Frutos secos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Coulant de chocolate</span><span class="plato-precio">6,00 €</span></div><div class="plato-desc">Corazón fundido de chocolate negro</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/><line x1="12" y1="13" x2="12" y2="20" stroke="var(--gris)" stroke-width="1.5" fill="none"/></svg><span class="alergeno-tip">Gluten</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M8 3h8l1 5H7L8 3z"/><path d="M7 8c0 8 10 8 10 0"/></svg><span class="alergeno-tip">Lácteos</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span class="alergeno-tip">Huevos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Torrija clásica</span><span class="plato-precio">7,50 €</span></div><div class="plato-desc">La receta de siempre</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/><line x1="12" y1="13" x2="12" y2="20" stroke="var(--gris)" stroke-width="1.5" fill="none"/></svg><span class="alergeno-tip">Gluten</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M8 3h8l1 5H7L8 3z"/><path d="M7 8c0 8 10 8 10 0"/></svg><span class="alergeno-tip">Lácteos</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span class="alergeno-tip">Huevos</span></div></div></div>
-        <div class="plato"><div class="plato-top"><span class="plato-name">Torrija con Nutella</span><span class="plato-precio">8,00 €</span></div><div class="plato-desc">Para los más golosos</div><div class="alergenos"><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/><line x1="12" y1="13" x2="12" y2="20" stroke="var(--gris)" stroke-width="1.5" fill="none"/></svg><span class="alergeno-tip">Gluten</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M8 3h8l1 5H7L8 3z"/><path d="M7 8c0 8 10 8 10 0"/></svg><span class="alergeno-tip">Lácteos</span></div><div class="alergeno"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="alergeno-tip">Frutos secos</span></div></div></div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Jamón asado</span><span class="plato-precio">15,00 €</span></div>
+          <div class="plato-especial">Especialidad de la casa</div>
+          <div class="plato-desc">Nuestro jamón asado lentamente al horno con sus jugos, cortado al momento y servido templado.</div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Tomate aliñao</span><span class="plato-precio">12,00 €</span></div>
+          <div class="plato-desc">Tomate madurado al sol, aguacate cremoso y melva de almadraba, aliñados con AOVE y sal en escamas.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/pescado.svg" alt="Pescado"><span class="alg-tip">Pescado</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Ensalada de pollo crujiente</span><span class="plato-precio">15,00 €</span></div>
+          <div class="plato-desc">Lechugas variadas, tomates cherry, aguacate, queso edam y de cabra, frutos secos, pollo crujiente empanado y nuestra salsa.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/frutos-secos.svg" alt="Frutos secos"><span class="alg-tip">Frutos secos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Pimientos del padrón</span><span class="plato-precio">10,00 €</span></div>
+          <div class="plato-desc">Pimientos de Herbón fritos en aceite de oliva virgen extra con sal gruesa. Unos pican y otros no.</div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Parrillada de verduras</span><span class="plato-precio">15,00 €</span></div>
+          <div class="plato-desc">Temporada de verduras en nuestras ascuas de leña, coronadas con queso de cabra y huevo frito.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Alcachofa XL (unidad)</span><span class="plato-precio">8,00 €</span></div>
+          <div class="plato-desc">Confitada en AOVE, dorada a la plancha, con yema de huevo, virutas de jamón y parmesano rallado.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Jamón Juviles Oro (150 g)</span><span class="plato-precio">15,00 €</span></div>
+          <div class="plato-desc">Jamón serrano curado en las sierras granadinas de Juviles. Loncheado al momento y servido con pan de cristal.</div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Jamón ibérico de bellota (150 g)</span><span class="plato-precio">24,00 €</span></div>
+          <div class="plato-desc">Pata negra de cebo de campo, curación mínima 36 meses. Veteado y fundente, loncheado a cuchillo.</div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Tabla ibérica media (250 g)</span><span class="plato-precio">16,00 €</span></div>
+          <div class="plato-desc">Selección de lomo, chorizo y salchichón ibérico de cebo de campo servidos con pan.</div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Tabla ibérica entera (400 g)</span><span class="plato-precio">28,00 €</span></div>
+          <div class="plato-desc">Tabla completa con jamón, lomo, chorizo, salchichón ibérico y queso manchego para compartir.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos (queso)</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Nuestra provoleta</span><span class="plato-precio">13,00 €</span></div>
+          <div class="plato-desc">Queso provolone dorado a la plancha con tomillo fresco y tomates cherry salteados en AOVE.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Steak tartar de ternera</span><span class="plato-precio">26,00 €</span></div>
+          <div class="plato-desc">Daditos de solomillo de ternera aliñados con nuestra emulsión de encurtidos, alcaparras y mostaza. Servido frío.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/mostaza.svg" alt="Mostaza"><span class="alg-tip">Mostaza</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Steak tartar de salchichón</span><span class="plato-precio">15,00 €</span></div>
+          <div class="plato-desc">Daditos de espetec ibérico aliñados con nuestra emulsión de encurtidos y mostaza antigua.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/mostaza.svg" alt="Mostaza"><span class="alg-tip">Mostaza</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Gambas arrieras</span><span class="plato-precio">19,00 €</span></div>
+          <div class="plato-desc">Patatas caseras fritas con gambas al ajillo, guindilla y nuestro alioli de elaboración propia.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/crustaceos.svg" alt="Crustáceos"><span class="alg-tip">Crustáceos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos (alioli)</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Pulpo a la brasa</span><span class="plato-precio">22,00 €</span></div>
+          <div class="plato-desc">Pulpo gallego a las ascuas sobre cama de puré de patata cremoso y pimentón de La Vera.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/moluscos.svg" alt="Moluscos"><span class="alg-tip">Moluscos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Habas con jamón</span><span class="plato-precio">15,00 €</span></div>
+          <div class="plato-desc">Habas tiernas salteadas con ajo, aceite de oliva, tacos de jamón serrano y coronadas con huevo frito.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Esas croquetas</span><span class="plato-precio">14,00 €</span></div>
+          <div class="plato-desc">6 croquetas de elaboración propia. Las pedimos de cocido o de txuleta — el punto de sal lo ponemos nosotros.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Tiritas de pollo frito</span><span class="plato-precio">12,00 €</span></div>
+          <div class="plato-desc">Pechuga de pollo empanada y frita en aceite de oliva, acompañada de salsa de mostaza y miel.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/mostaza.svg" alt="Mostaza"><span class="alg-tip">Mostaza</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Que albóndigas</span><span class="plato-precio">13,00 €</span></div>
+          <div class="plato-desc">Albóndigas de ternera guisadas lentamente en salsa de almendras tostadas y vino blanco.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/frutos-secos.svg" alt="Frutos secos"><span class="alg-tip">Frutos secos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/sulfitos.svg" alt="Sulfitos"><span class="alg-tip">Sulfitos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Pollo al curry</span><span class="plato-precio">12,00 €</span></div>
+          <div class="plato-desc">Pollo de corral salteado con nuestra mezcla de curry, cebolla caramelizada y leche de coco.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/mostaza.svg" alt="Mostaza"><span class="alg-tip">Mostaza (curry)</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Pimientos del piquillo rellenos</span><span class="plato-precio">16,00 €</span></div>
+          <div class="plato-desc">4 pimientos del piquillo asados rellenos de cremoso de carne de ternera sobre puré de patata y salsa de piquillo.</div>
+        </div>
       </div>
-      <p class="nota-pie" style="padding: 0 0 1rem">IVA incluido · Pasa el cursor sobre los iconos para ver los alérgenos · Si tienes alguna alergia avísanos</p>
-    </div>
+    </section>
 
-  </div><!-- /comidas -->
+    <!-- ════ CON DOS HUEVOS ════ -->
+    <section class="carta-panel" id="panel-huevos">
+      <div class="panel-header">
+        <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Comidas</div>
+        <h2 class="panel-title">Con <em>dos huevos</em></h2>
+        <p class="panel-subtitle">Los clásicos de siempre, con huevos frescos de corral y patatas caseras fritas en aceite de oliva.</p>
+      </div>
+      <div class="platos-grid">
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Huevos rotos con jamón</span><span class="plato-precio">15,00 €</span></div>
+          <div class="plato-desc">Patatas caseras fritas, 2 huevos fritos con puntilla y virutas de jamón serrano rotos encima.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Huevos rotos con picadillo</span><span class="plato-precio">15,00 €</span></div>
+          <div class="plato-desc">Patatas caseras fritas, 2 huevos fritos y picadillo de chorizo salteado rotos al momento.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Huevos con ajos</span><span class="plato-precio">15,00 €</span></div>
+          <div class="plato-desc">Patatas caseras fritas, 3 huevos fritos con puntilla dorada y chips de ajo crujientes.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Tortilla estilo Betanzos</span><span class="plato-precio">15,00 €</span></div>
+          <div class="plato-desc">Tortilla de patatas con cebolleta, hecha al momento. Poco cuajada, jugosa y cremosa por dentro como manda Galicia.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-</section>
+    <!-- ════ NUESTRAS BRASAS ════ -->
+    <section class="carta-panel" id="panel-brasas">
+      <div class="panel-header">
+        <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Comidas</div>
+        <h2 class="panel-title">Nuestras <em>brasas</em></h2>
+        <p class="panel-subtitle">Carnes seleccionadas a la brasa de leña. Servidas con patatas caseras o ensalada verde. Punto de cocción a tu gusto.</p>
+      </div>
+      <div class="platos-grid">
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Pluma de cerdo ibérico (350 g)</span><span class="plato-precio">23,00 €</span></div>
+          <div class="plato-desc">Pluma de cerdo ibérico de bellota a las ascuas de leña. Jugosa y con ese punto ahumado único.</div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Entrecot de ternera (350–400 g)</span><span class="plato-precio">24,00 €</span></div>
+          <div class="plato-desc">Corte de lomo bajo de ternera a la brasa de leña. Al punto que elijas, con sal en escamas.</div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Solomillo de ternera (250 g)</span><span class="plato-precio">25,00 €</span></div>
+          <div class="plato-desc">El corte más tierno a la brasa de leña. Sellado por fuera, rosado por dentro.</div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Chuletón de ternera (800 g)</span><span class="plato-precio">50,00 €</span></div>
+          <div class="plato-especial">Para compartir</div>
+          <div class="plato-desc">Chuletón de buey a la brasa de leña, para compartir entre dos. Sal en escamas y una buena compañía.</div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Surtido de brasas (500 g)</span><span class="plato-precio">25,00 €</span></div>
+          <div class="plato-desc">Selección de carnes de la casa: surtido de vacuno, chorizo parrilero y longaniza a las ascuas.</div>
+        </div>
+      </div>
+      <p class="nota-pie">Todas las brasas se sirven con patatas caseras o ensalada verde · IVA incluido</p>
+    </section>
+
+    <!-- ════ DULCES ════ -->
+    <section class="carta-panel" id="panel-dulces">
+      <div class="panel-header">
+        <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Comidas</div>
+        <h2 class="panel-title"><em>Dulces</em></h2>
+        <p class="panel-subtitle">Postres de elaboración propia. Todos frescos, hechos cada día en nuestra cocina.</p>
+      </div>
+      <div class="platos-grid">
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Tarta de queso con crema Lotus</span><span class="plato-precio">7,00 €</span></div>
+          <div class="plato-especial">Elaboración propia</div>
+          <div class="plato-desc">Tarta de queso horneada sobre base de galleta Lotus, cubierta con crema de Biscoff.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/soja.svg" alt="Soja"><span class="alg-tip">Soja</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Tarta de queso, choco blanco y pistacho</span><span class="plato-precio">8,00 €</span></div>
+          <div class="plato-especial">Elaboración propia</div>
+          <div class="plato-desc">Tarta de queso cremosa con cobertura de chocolate blanco y pistacho molido sobre base de galleta.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/frutos-secos.svg" alt="Frutos secos"><span class="alg-tip">Frutos secos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Coulant de chocolate</span><span class="plato-precio">6,00 €</span></div>
+          <div class="plato-especial">Elaboración propia</div>
+          <div class="plato-desc">Bizcocho de chocolate negro con corazón fundente. Servido templado con helado de vainilla.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Torrija clásica</span><span class="plato-precio">7,50 €</span></div>
+          <div class="plato-especial">Elaboración propia</div>
+          <div class="plato-desc">La receta de siempre: pan brioche empapado en leche especiada y huevo, dorado en mantequilla.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+          </div>
+        </div>
+        <div class="plato">
+          <div class="plato-top"><span class="plato-name">Torrija con Nutella</span><span class="plato-precio">8,00 €</span></div>
+          <div class="plato-especial">Elaboración propia</div>
+          <div class="plato-desc">Torrija clásica cubierta con crema de avellana Nutella y avellanas tostadas troceadas.</div>
+          <div class="alergenos">
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span class="alg-tip">Gluten</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span class="alg-tip">Lácteos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span class="alg-tip">Huevos</span></span>
+            <span class="alg-wrap"><img class="alg-ico" src="../assets/img/alergenos/frutos-secos.svg" alt="Frutos secos"><span class="alg-tip">Frutos secos</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- /carta-content -->
+</div><!-- /carta-layout -->
+
+<!-- ── BRIDGE: transición oscura hacia el footer ── -->
+<div class="carta-bridge">
+  <div class="alergenos-leyenda">
+    <div class="leyenda-pretitle">Reglamento UE 1169/2011</div>
+    <div class="leyenda-sub">Guía de <em>alérgenos</em></div>
+    <table class="leyenda-tabla">
+      <tbody>
+        <tr>
+          <td><img src="../assets/img/alergenos/gluten.svg" alt="Gluten"><span>Gluten</span></td>
+          <td><img src="../assets/img/alergenos/crustaceos.svg" alt="Crustáceos"><span>Crustáceos</span></td>
+          <td><img src="../assets/img/alergenos/huevos.svg" alt="Huevos"><span>Huevos</span></td>
+          <td><img src="../assets/img/alergenos/pescado.svg" alt="Pescado"><span>Pescado</span></td>
+          <td><img src="../assets/img/alergenos/cacahuetes.svg" alt="Cacahuetes"><span>Cacahuetes</span></td>
+          <td><img src="../assets/img/alergenos/soja.svg" alt="Soja"><span>Soja</span></td>
+          <td><img src="../assets/img/alergenos/lacteos.svg" alt="Lácteos"><span>Lácteos</span></td>
+        </tr>
+        <tr>
+          <td><img src="../assets/img/alergenos/frutos-secos.svg" alt="Frutos secos"><span>Frutos secos</span></td>
+          <td><img src="../assets/img/alergenos/apio.svg" alt="Apio"><span>Apio</span></td>
+          <td><img src="../assets/img/alergenos/mostaza.svg" alt="Mostaza"><span>Mostaza</span></td>
+          <td><img src="../assets/img/alergenos/sesamo.svg" alt="Sésamo"><span>Sésamo</span></td>
+          <td><img src="../assets/img/alergenos/sulfitos.svg" alt="Sulfitos"><span>Sulfitos</span></td>
+          <td><img src="../assets/img/alergenos/altramuz.svg" alt="Altramuz"><span>Altramuz</span></td>
+          <td><img src="../assets/img/alergenos/moluscos.svg" alt="Moluscos"><span>Moluscos</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="leyenda-aviso">Los iconos sobre cada plato indican la presencia de alérgenos según el <strong>Reglamento UE n.º 1169/2011</strong>. Si tienes alergia o intolerancia alimentaria, <strong>comunícanoslo antes de pedir</strong> — adaptamos los platos siempre que sea posible. La ausencia de icono no garantiza la ausencia total de trazas.</p>
+  </div>
+</div>
 
 <!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-grid">
-    <div>
-      <div class="footer-brand">Mesón <span>de Eiffel</span></div>
-      <p class="footer-about">Cocina andaluza de siempre en el corazón de Motril. Desayunos, brasas y buena compañía. Abiertos todos los días.</p>
+  <div class="footer-top-bar"></div>
+  <div class="footer-inner">
+    <div class="footer-grid">
+
+      <!-- MARCA -->
+      <div>
+        <div class="footer-brand">Mesón <span>de Eiffel</span></div>
+        <p class="footer-about">Cocina andaluza de siempre en el corazón de Motril. Desayunos, brasas y buena compañía. Abiertos todos los días.</p>
+        <a class="footer-ig" href="https://www.instagram.com/meson_cafeteria_de_eiffel" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          @meson_cafeteria_de_eiffel
+        </a>
+      </div>
+
+      <!-- CONTACTO -->
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <ul class="footer-contact-list">
+          <li>
+            <svg class="fc-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <a href="https://maps.google.com/?q=C/+Rio+Mundo+Local+2,+Motril,+Granada" target="_blank" rel="noopener">
+              C/ Rio Mundo, Local 2<br>Motril, Granada
+            </a>
+          </li>
+          <li>
+            <svg class="fc-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.72a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.72 16.92z"/></svg>
+            <a href="tel:+34958872424">958 87 24 24</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- RESERVAS -->
+      <div class="footer-col">
+        <h4>Reservas</h4>
+        <p class="footer-reservas-txt">Llámanos al <a href="tel:+34958872424">958 87 24 24</a> o reserva directamente desde nuestro formulario online. Para grupos grandes, contacta por teléfono.</p>
+        <a href="reservas.html" class="btn btn-solid footer-btn-reserva">
+          Reservar mesa
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
     </div>
-    <div class="footer-col">
-      <h4>Contacto</h4>
-      <ul>
-        <li>C/ Rio Mundo, Local 2<br>Motril, Granada</li>
-        <li><a href="tel:+34958872424">958 87 24 24</a></li>
-        <li><a href="https://www.instagram.com/meson_cafeteria_de_eiffel" target="_blank">@meson_cafeteria_de_eiffel</a></li>
-      </ul>
+    <div class="footer-bottom">
+      <span>© 2025 Mesón Cafetería de Eiffel · Motril, Granada</span>
     </div>
-    <div class="footer-col">
-      <h4>Reservas</h4>
-      <ul>
-        <li>Por teléfono o mediante el <a href="reservas.html">formulario online</a></li>
-        <li>Grupos grandes: contactar directamente</li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2025 Mesón Cafetería de Eiffel · Motril, Granada</span>
-    <a class="footer-ig" href="https://www.instagram.com/meson_cafeteria_de_eiffel" target="_blank">
-      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-      Instagram
-    </a>
   </div>
 </footer>
 
 <script src="../assets/js/nav.js"></script>
-<script src="../assets/js/carta.js"></script>
+<script>
+  // ── Sidebar navigation ─────────────────────────────────────
+  const sidebarBtns = document.querySelectorAll('.sidebar-btn');
+  const cartaPanels = document.querySelectorAll('.carta-panel');
+
+  sidebarBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.panel;
+
+      // Update buttons
+      sidebarBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Update panels
+      cartaPanels.forEach(p => p.classList.remove('active'));
+      const activePanel = document.getElementById('panel-' + target);
+      if (activePanel) activePanel.classList.add('active');
+
+      // On mobile: scroll content into view
+      if (window.innerWidth <= 900) {
+        document.querySelector('.carta-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
 </body>
 </html>

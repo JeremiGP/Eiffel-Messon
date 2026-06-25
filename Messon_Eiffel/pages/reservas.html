@@ -19,9 +19,10 @@
 <nav id="nav">
   <a href="../index.html" class="nav-logo">Mesón <span>de Eiffel</span></a>
   <ul class="nav-links" id="navLinks">
+    <li><a href="../index.html" class="nav-link-home">Mesón <em>de Eiffel</em></a></li>
     <li><a href="nosotros.html">Nosotros</a></li>
     <li><a href="carta.html">Carta</a></li>
-    <li><a href="reservas.html">Reservas</a></li>
+    <li><a href="reservas.html" class="active">Reservas</a></li>
     <li><a href="contacto.html">Contacto</a></li>
   </ul>
   <button class="nav-toggle" id="navToggle" aria-label="Menú">
@@ -29,7 +30,7 @@
   </button>
 </nav>
 
-<!-- ── CABECERA DE PÁGINA ── -->
+<!-- ── CABECERA ── -->
 <div class="page-hero">
   <div class="page-hero-content">
     <div class="eyebrow"><div class="eyebrow-bar"></div>Tu mesa te espera</div>
@@ -37,124 +38,244 @@
   </div>
 </div>
 
-<!-- ── FORMULARIO ── -->
+<!-- ── WIZARD DE RESERVA ── -->
 <section class="reservas-section">
-  <div class="reservas-overlay"></div>
-  <div class="reservas-content reveal">
-    <form class="reserva-form" id="reservaForm" novalidate>
+  <div class="reserva-card">
 
-      <div class="ff">
-        <label for="nombre">Nombre completo *</label>
-        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+  <!-- Indicador de pasos -->
+  <div class="steps-track" aria-label="Progreso del formulario">
+
+    <div class="step-item active" id="si-1">
+      <div class="step-circle">
+        <span class="step-num">1</span>
+        <svg class="step-ico" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
+      <span class="step-label">¿Cuándo?</span>
+    </div>
 
-      <div class="ff">
-        <label for="telefono">Teléfono *</label>
-        <input type="tel" id="telefono" name="telefono" placeholder="600 000 000" required>
+    <div class="step-line" id="sl-1"></div>
+
+    <div class="step-item" id="si-2">
+      <div class="step-circle">
+        <span class="step-num">2</span>
+        <svg class="step-ico" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
+      <span class="step-label">¿Quién?</span>
+    </div>
 
-      <div class="ff full">
-        <label for="email">Email (opcional)</label>
-        <input type="email" id="email" name="email" placeholder="correo@ejemplo.com">
+    <div class="step-line" id="sl-2"></div>
+
+    <div class="step-item" id="si-3">
+      <div class="step-circle">
+        <span class="step-num">3</span>
+        <svg class="step-ico" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
+      <span class="step-label">Detalles</span>
+    </div>
 
-      <div class="ff">
-        <label for="fecha">Fecha *</label>
-        <input type="date" id="fecha" name="fecha" required>
-      </div>
-
-      <div class="ff">
-        <label for="hora">Hora *</label>
-        <select id="hora" name="hora" required>
-          <option value="" disabled selected>Selecciona una hora</option>
-          <optgroup label="Desayuno">
-            <option value="08:30">08:30</option>
-            <option value="09:00">09:00</option>
-            <option value="09:30">09:30</option>
-            <option value="10:00">10:00</option>
-            <option value="10:30">10:30</option>
-            <option value="11:00">11:00</option>
-            <option value="11:30">11:30</option>
-            <option value="12:00">12:00</option>
-          </optgroup>
-          <optgroup label="Comida">
-            <option value="13:00">13:00</option>
-            <option value="13:30">13:30</option>
-            <option value="14:00">14:00</option>
-            <option value="14:30">14:30</option>
-            <option value="15:00">15:00</option>
-            <option value="15:30">15:30</option>
-          </optgroup>
-          <optgroup label="Cena">
-            <option value="20:00">20:00</option>
-            <option value="20:30">20:30</option>
-            <option value="21:00">21:00</option>
-            <option value="21:30">21:30</option>
-            <option value="22:00">22:00</option>
-            <option value="22:30">22:30</option>
-          </optgroup>
-        </select>
-      </div>
-
-      <div class="ff">
-        <label for="personas">Número de personas *</label>
-        <select id="personas" name="personas" required>
-          <option value="" disabled selected>¿Cuántos sois?</option>
-          <option value="1">1 persona</option>
-          <option value="2">2 personas</option>
-          <option value="3">3 personas</option>
-          <option value="4">4 personas</option>
-          <option value="5">5 personas</option>
-          <option value="6">6 personas</option>
-          <option value="7">7 personas</option>
-          <option value="8">8 personas</option>
-          <option value="9+">Más de 8 — contactar por teléfono</option>
-        </select>
-      </div>
-
-      <div class="ff full">
-        <label for="notas">Notas o peticiones especiales</label>
-        <textarea id="notas" name="notas" rows="4" placeholder="Alergias, cumpleaños, zona preferida…"></textarea>
-      </div>
-
-      <div class="ff full">
-        <button type="submit" class="form-submit">Solicitar reserva</button>
-        <p class="form-aviso">Recibirás confirmación por teléfono. Para grupos grandes llámanos directamente al <a href="tel:+34958872424">958 87 24 24</a>.</p>
-      </div>
-
-    </form>
   </div>
+
+  <!-- Formulario -->
+  <form class="reserva-form" id="reservaForm" novalidate>
+
+    <!-- ════ PASO 1 · ¿Cuándo? ════ -->
+    <div class="step-panel active" id="step-1">
+
+      <h2 class="step-title">¿Cuándo quieres <em>venir?</em></h2>
+
+      <div class="ff-grid">
+        <div class="ff">
+          <label for="fecha">Fecha *</label>
+          <input type="date" id="fecha" name="fecha" required>
+        </div>
+        <div class="ff">
+          <label for="hora">Hora *</label>
+          <select id="hora" name="hora" required>
+            <option value="" disabled selected>Selecciona una hora</option>
+            <optgroup label="Desayuno">
+              <option value="08:30">08:30</option>
+              <option value="09:00">09:00</option>
+              <option value="09:30">09:30</option>
+              <option value="10:00">10:00</option>
+              <option value="10:30">10:30</option>
+              <option value="11:00">11:00</option>
+              <option value="11:30">11:30</option>
+              <option value="12:00">12:00</option>
+            </optgroup>
+            <optgroup label="Comida">
+              <option value="13:00">13:00</option>
+              <option value="13:30">13:30</option>
+              <option value="14:00">14:00</option>
+              <option value="14:30">14:30</option>
+              <option value="15:00">15:00</option>
+              <option value="15:30">15:30</option>
+            </optgroup>
+            <optgroup label="Cena">
+              <option value="20:00">20:00</option>
+              <option value="20:30">20:30</option>
+              <option value="21:00">21:00</option>
+              <option value="21:30">21:30</option>
+              <option value="22:00">22:00</option>
+              <option value="22:30">22:30</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+
+      <div class="ff" style="margin-bottom: 0.5rem;">
+        <label>Número de personas *</label>
+        <div class="personas-selector" id="personasSelector" role="group" aria-label="Selecciona el número de personas">
+          <button type="button" class="persona-btn" data-n="1" aria-pressed="false">1</button>
+          <button type="button" class="persona-btn" data-n="2" aria-pressed="false">2</button>
+          <button type="button" class="persona-btn" data-n="3" aria-pressed="false">3</button>
+          <button type="button" class="persona-btn" data-n="4" aria-pressed="false">4</button>
+          <button type="button" class="persona-btn" data-n="5" aria-pressed="false">5</button>
+          <button type="button" class="persona-btn" data-n="6" aria-pressed="false">6</button>
+          <button type="button" class="persona-btn" data-n="7" aria-pressed="false">7</button>
+          <button type="button" class="persona-btn" data-n="8" aria-pressed="false">8</button>
+          <button type="button" class="persona-btn wide" data-n="9+" aria-pressed="false">+8</button>
+        </div>
+        <input type="hidden" id="personas" name="personas">
+      </div>
+
+      <div class="step-nav only-next">
+        <button type="button" class="btn-next" id="next-1">
+          Siguiente
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+
+    </div><!-- /step-1 -->
+
+    <!-- ════ PASO 2 · ¿Quién? ════ -->
+    <div class="step-panel" id="step-2">
+
+      <h2 class="step-title">¿Quién <em>reserva?</em></h2>
+
+      <div class="ff-grid">
+        <div class="ff">
+          <label for="nombre">Nombre *</label>
+          <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" autocomplete="given-name" required>
+        </div>
+        <div class="ff">
+          <label for="apellidos">Apellidos *</label>
+          <input type="text" id="apellidos" name="apellidos" placeholder="Tus apellidos" autocomplete="family-name" required>
+        </div>
+        <div class="ff">
+          <label for="telefono">Teléfono *</label>
+          <input type="tel" id="telefono" name="telefono" placeholder="600000000"
+                 maxlength="9" inputmode="numeric" autocomplete="tel" required>
+        </div>
+        <div class="ff">
+          <label for="email">Email (opcional)</label>
+          <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" autocomplete="email">
+        </div>
+      </div>
+
+      <div class="step-nav between">
+        <button type="button" class="btn-prev" id="prev-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Volver
+        </button>
+        <button type="button" class="btn-next" id="next-2">
+          Siguiente
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+
+    </div><!-- /step-2 -->
+
+    <!-- ════ PASO 3 · Detalles ════ -->
+    <div class="step-panel" id="step-3">
+
+      <h2 class="step-title">Últimos <em>detalles</em></h2>
+
+      <div class="ff" style="margin-bottom: 1.6rem;">
+        <label for="notas">Notas o peticiones especiales</label>
+        <textarea id="notas" name="notas" rows="5" placeholder="Alergias, celebración especial, zona preferida…"></textarea>
+      </div>
+
+      <div class="step-nav between">
+        <button type="button" class="btn-prev" id="prev-3">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Volver
+        </button>
+        <button type="submit" class="btn-submit">Solicitar reserva</button>
+      </div>
+
+      <p class="form-aviso">
+        Recibirás confirmación por teléfono. Para grupos grandes llámanos directamente al
+        <a href="tel:+34958872424">958 87 24 24</a>.
+      </p>
+
+    </div><!-- /step-3 -->
+
+  </form>
+
+  <!-- ── PANTALLA DE CONFIRMACIÓN ── -->
+  <div class="form-confirmado" id="confirmado" role="alert" aria-live="polite">
+    <div class="confirmado-ico">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <p class="confirmado-eyebrow">Solicitud enviada</p>
+    <h2 class="confirmado-title">¡Reserva <em style="color:#B8833A;font-style:italic">recibida!</em></h2>
+    <p class="confirmado-sub">
+      Hemos recibido tu solicitud. Te confirmaremos la disponibilidad<br>
+      en breve por teléfono. ¡Hasta pronto en el Mesón!
+    </p>
+    <p class="confirmado-tel">958 87 24 24</p>
+  </div>
+
+  </div><!-- /reserva-card -->
 </section>
 
 <!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-grid">
-    <div>
-      <div class="footer-brand">Mesón <span>de Eiffel</span></div>
-      <p class="footer-about">Cocina andaluza de siempre en el corazón de Motril. Desayunos, brasas y buena compañía. Abiertos todos los días.</p>
+  <div class="footer-top-bar"></div>
+  <div class="footer-inner">
+    <div class="footer-grid">
+
+      <!-- MARCA -->
+      <div>
+        <div class="footer-brand">Mesón <span>de Eiffel</span></div>
+        <p class="footer-about">Cocina andaluza de siempre en el corazón de Motril. Desayunos, brasas y buena compañía. Abiertos todos los días.</p>
+        <a class="footer-ig" href="https://www.instagram.com/meson_cafeteria_de_eiffel" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          @meson_cafeteria_de_eiffel
+        </a>
+      </div>
+
+      <!-- CONTACTO -->
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <ul class="footer-contact-list">
+          <li>
+            <svg class="fc-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <a href="https://maps.google.com/?q=C/+Rio+Mundo+Local+2,+Motril,+Granada" target="_blank" rel="noopener">
+              C/ Rio Mundo, Local 2<br>Motril, Granada
+            </a>
+          </li>
+          <li>
+            <svg class="fc-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.72a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.72 16.92z"/></svg>
+            <a href="tel:+34958872424">958 87 24 24</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- RESERVAS -->
+      <div class="footer-col">
+        <h4>Reservas</h4>
+        <p class="footer-reservas-txt">Llámanos al <a href="tel:+34958872424">958 87 24 24</a> o reserva directamente desde nuestro formulario online. Para grupos grandes, contacta por teléfono.</p>
+        <a href="reservas.html" class="btn btn-solid footer-btn-reserva">
+          Reservar mesa
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
     </div>
-    <div class="footer-col">
-      <h4>Contacto</h4>
-      <ul>
-        <li>C/ Rio Mundo, Local 2<br>Motril, Granada</li>
-        <li><a href="tel:+34958872424">958 87 24 24</a></li>
-        <li><a href="https://www.instagram.com/meson_cafeteria_de_eiffel" target="_blank">@meson_cafeteria_de_eiffel</a></li>
-      </ul>
+    <div class="footer-bottom">
+      <span>© 2025 Mesón Cafetería de Eiffel · Motril, Granada</span>
     </div>
-    <div class="footer-col">
-      <h4>Reservas</h4>
-      <ul>
-        <li>Por teléfono o mediante el <a href="reservas.html">formulario online</a></li>
-        <li>Grupos grandes: contactar directamente</li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2025 Mesón Cafetería de Eiffel · Motril, Granada</span>
-    <a class="footer-ig" href="https://www.instagram.com/meson_cafeteria_de_eiffel" target="_blank">
-      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-      Instagram
-    </a>
   </div>
 </footer>
 

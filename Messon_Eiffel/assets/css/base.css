@@ -103,6 +103,30 @@ nav.scrolled {
   background: #fff; transition: all 0.3s;
 }
 
+/* ── NAV HOME BUTTON ───────────────────────────────────── */
+.nav-link-home {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: 0.98rem !important;
+  font-weight: 300 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: rgba(255,255,255,0.9) !important;
+  border: 1px solid rgba(184,131,58,0.45);
+  padding: 0.28rem 0.9rem !important;
+  border-radius: 4px;
+  transition: all 0.3s !important;
+}
+.nav-link-home:hover {
+  border-color: var(--dorado-cl) !important;
+  color: var(--dorado-cl) !important;
+  background: rgba(184,131,58,0.08);
+}
+.nav-link-home em {
+  font-style: italic;
+  color: var(--dorado-cl);
+}
+.nav-link-home::after { display: none !important; }
+
 /* ── BOTONES ─────────────────────────────────────────────── */
 .btn {
   display: inline-flex; align-items: center; gap: 0.6rem;
@@ -144,15 +168,24 @@ nav.scrolled {
 .page-hero .section-h      { color: #fff; margin-bottom: 0; }
 
 /* ── FOOTER ──────────────────────────────────────────────── */
-footer { background: var(--carbon); padding: 5rem 4rem 2.5rem; }
+footer { background: var(--carbon); padding: 0; }
+
+.footer-top-bar {
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--dorado) 20%, var(--dorado-cl) 50%, var(--dorado) 80%, transparent 100%);
+}
+
+.footer-inner { padding: 5rem 4rem 2.5rem; }
+
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1.1fr;
   gap: 4rem;
   padding-bottom: 3rem;
   border-bottom: 1px solid rgba(255,255,255,0.06);
   margin-bottom: 2rem;
 }
+
 .footer-brand {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.4rem; font-weight: 300;
@@ -160,30 +193,49 @@ footer { background: var(--carbon); padding: 5rem 4rem 2.5rem; }
   text-transform: uppercase; margin-bottom: 1rem;
 }
 .footer-brand span { color: var(--dorado-cl); font-style: italic; }
+
 .footer-about {
   font-size: 0.85rem;
   color: rgba(255,255,255,0.38);
   line-height: 1.75; max-width: 280px;
+  margin-bottom: 1.6rem;
 }
+
 .footer-col h4 {
   font-size: 0.65rem; letter-spacing: 0.18em;
   text-transform: uppercase; color: var(--dorado); margin-bottom: 1.4rem;
 }
-.footer-col ul { list-style: none; }
-.footer-col ul li {
-  margin-bottom: 0.6rem;
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.48);
-  line-height: 1.6;
+
+/* Contact list with icons */
+.footer-contact-list { list-style: none; }
+.footer-contact-list li {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  margin-bottom: 1.1rem; color: rgba(255,255,255,0.48);
+  font-size: 0.85rem; line-height: 1.6;
 }
-.footer-col ul li a { color: inherit; text-decoration: none; transition: color 0.25s; }
-.footer-col ul li a:hover { color: var(--dorado-cl); }
-.footer-bottom {
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: 0.72rem; color: rgba(255,255,255,0.2);
+.fc-icon {
+  width: 15px; height: 15px; flex-shrink: 0; margin-top: 2px;
+  stroke: var(--dorado); fill: none; stroke-width: 1.5;
 }
+.footer-contact-list a { color: inherit; text-decoration: none; transition: color 0.25s; }
+.footer-contact-list a:hover { color: var(--dorado-cl); }
+
+/* Reservas col */
+.footer-reservas-txt {
+  font-size: 0.82rem; color: rgba(255,255,255,0.38);
+  line-height: 1.8; margin-bottom: 1.6rem;
+}
+.footer-reservas-txt a { color: var(--dorado-cl); text-decoration: none; }
+.footer-reservas-txt a:hover { text-decoration: underline; }
+
+.footer-btn-reserva {
+  font-size: 0.68rem !important;
+  padding: 0.85rem 1.6rem !important;
+}
+
+/* Instagram in brand col */
 .footer-ig {
-  display: flex; align-items: center; gap: 0.5rem;
+  display: inline-flex; align-items: center; gap: 0.5rem;
   color: rgba(255,255,255,0.3); text-decoration: none;
   font-size: 0.72rem; transition: color 0.25s;
 }
@@ -191,6 +243,11 @@ footer { background: var(--carbon); padding: 5rem 4rem 2.5rem; }
 .footer-ig svg {
   width: 15px; height: 15px;
   stroke: currentColor; fill: none; stroke-width: 1.5;
+}
+
+.footer-bottom {
+  display: flex; justify-content: center; align-items: center;
+  font-size: 0.72rem; color: rgba(255,255,255,0.2);
 }
 
 /* ── SCROLL REVEAL ───────────────────────────────────────── */
@@ -213,7 +270,8 @@ footer { background: var(--carbon); padding: 5rem 4rem 2.5rem; }
   .nav-links.open { display: flex; }
   .nav-toggle { display: flex; }
   .page-hero { padding: 6rem 1.5rem 3rem; min-height: 220px; }
-  footer { padding: 4rem 1.5rem 2rem; }
+  footer { padding: 0; }
+  .footer-inner { padding: 4rem 1.5rem 2rem; }
   .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
 }
 

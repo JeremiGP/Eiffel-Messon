@@ -38,6 +38,7 @@
 <nav id="nav">
   <a href="index.html" class="nav-logo">Mesón <span>de Eiffel</span></a>
   <ul class="nav-links" id="navLinks">
+    <li><a href="index.html" class="nav-link-home">Mesón <em>de Eiffel</em></a></li>
     <li><a href="pages/nosotros.html">Nosotros</a></li>
     <li><a href="pages/carta.html">Carta</a></li>
     <li><a href="pages/reservas.html">Reservas</a></li>
@@ -67,38 +68,8 @@
   </div>
 </section>
 
-<!-- ── INFO STRIP ── -->
-<div class="info-strip">
-  <div class="info-item">
-    <div class="info-ico">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    </div>
-    <div>
-      <div class="info-label">Horario</div>
-      <div class="info-val">Abierto todos los días</div>
-    </div>
-  </div>
-  <div class="info-item">
-    <div class="info-ico">
-      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-    </div>
-    <div>
-      <div class="info-label">Dirección</div>
-      <div class="info-val">C/ Rio Mundo, Local 2 — Motril</div>
-    </div>
-  </div>
-  <div class="info-item">
-    <div class="info-ico">
-      <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.42 2 2 0 0 1 3.06 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
-    </div>
-    <div>
-      <div class="info-label">Reservas y consultas</div>
-      <div class="info-val">958 87 24 24</div>
-    </div>
-  </div>
-</div>
 
-<!-- ── ACCESOS (4 cards hacia las landings) ── -->
+<!-- ── ACCESOS ── -->
 <section class="home-accesos">
   <div class="eyebrow reveal"><div class="eyebrow-bar"></div>Explora el mesón</div>
 
@@ -149,33 +120,51 @@
 
 <!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-grid">
-    <div>
-      <div class="footer-brand">Mesón <span>de Eiffel</span></div>
-      <p class="footer-about">Cocina andaluza de siempre en el corazón de Motril. Desayunos, brasas y buena compañía. Abiertos todos los días.</p>
+  <div class="footer-top-bar"></div>
+  <div class="footer-inner">
+    <div class="footer-grid">
+
+      <!-- MARCA -->
+      <div>
+        <div class="footer-brand">Mesón <span>de Eiffel</span></div>
+        <p class="footer-about">Cocina andaluza de siempre en el corazón de Motril. Desayunos, brasas y buena compañía. Abiertos todos los días.</p>
+        <a class="footer-ig" href="https://www.instagram.com/meson_cafeteria_de_eiffel" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          @meson_cafeteria_de_eiffel
+        </a>
+      </div>
+
+      <!-- CONTACTO -->
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <ul class="footer-contact-list">
+          <li>
+            <svg class="fc-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <a href="https://maps.google.com/?q=C/+Rio+Mundo+Local+2,+Motril,+Granada" target="_blank" rel="noopener">
+              C/ Rio Mundo, Local 2<br>Motril, Granada
+            </a>
+          </li>
+          <li>
+            <svg class="fc-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.72a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.72 16.92z"/></svg>
+            <a href="tel:+34958872424">958 87 24 24</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- RESERVAS -->
+      <div class="footer-col">
+        <h4>Reservas</h4>
+        <p class="footer-reservas-txt">Llámanos o reserva directamente desde nuestro formulario online. Para grupos grandes, contacta por teléfono.</p>
+        <a href="pages/reservas.html" class="btn btn-solid footer-btn-reserva">
+          Reservar mesa
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
     </div>
-    <div class="footer-col">
-      <h4>Contacto</h4>
-      <ul>
-        <li>C/ Rio Mundo, Local 2<br>Motril, Granada</li>
-        <li><a href="tel:+34958872424">958 87 24 24</a></li>
-        <li><a href="https://www.instagram.com/meson_cafeteria_de_eiffel" target="_blank">@meson_cafeteria_de_eiffel</a></li>
-      </ul>
+    <div class="footer-bottom">
+      <span>© 2025 Mesón Cafetería de Eiffel · Motril, Granada</span>
     </div>
-    <div class="footer-col">
-      <h4>Reservas</h4>
-      <ul>
-        <li>Por teléfono o mediante el <a href="pages/reservas.html">formulario online</a></li>
-        <li>Grupos grandes: contactar directamente</li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2025 Mesón Cafetería de Eiffel · Motril, Granada</span>
-    <a class="footer-ig" href="https://www.instagram.com/meson_cafeteria_de_eiffel" target="_blank">
-      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-      Instagram
-    </a>
   </div>
 </footer>
 
