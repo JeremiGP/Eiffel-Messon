@@ -280,18 +280,30 @@
   .nos-equipo { padding: 5rem 1.5rem; }
   .equipo-grid { grid-template-columns: 1fr; max-width: 400px; }
   .nos-galeria { padding: 5rem 1.5rem; }
-  .galeria-grid-top { grid-template-columns: 1fr; height: auto; }
-  .galeria-grande { height: 260px; }
-  .galeria-col-der { flex-direction: row; }
-  .galeria-col-der .galeria-item { height: 180px; }
-  .galeria-grid-bottom { grid-template-columns: 1fr; height: auto; }
-  .galeria-grid-bottom .galeria-item { height: 200px; }
+  /* Galería bento responsive */
+  .galeria-bento {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 200px;
+  }
+  .gi-sala    { grid-column: 1 / 3; grid-row: 1 / 2; }
+  .gi-platos  { grid-column: 1 / 2; grid-row: 2 / 3; }
+  .gi-detalle { grid-column: 2 / 3; grid-row: 2 / 3; }
+  .gi-brasas  { grid-column: 1 / 2; grid-row: 3 / 4; }
+  .gi-equipo  { grid-column: 2 / 3; grid-row: 3 / 4; }
+  .gi-ambiente { grid-column: 1 / 3; grid-row: 4 / 5; }
   .nos-cita { padding: 5rem 1.5rem; }
   .cita-deco { font-size: 6rem; }
   .nos-cta { padding: 5rem 1.5rem; }
 }
 @media (max-width: 600px) {
   .equipo-grid { max-width: 100%; }
-  .galeria-col-der { flex-direction: column; }
-  .galeria-col-der .galeria-item { height: 200px; }
+  .galeria-bento {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 220px;
+  }
+  .gi-sala, .gi-platos, .gi-detalle,
+  .gi-brasas, .gi-equipo, .gi-ambiente {
+    grid-column: 1 / 2;
+    grid-row: auto;
+  }
 }
