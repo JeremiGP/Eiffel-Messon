@@ -26,11 +26,11 @@
 
       <form id="loginForm" autocomplete="off">
         <div class="field">
-          <label for="login-usuario">Usuario</label>
+          <label for="login-usuario">Usuario / Email</label>
           <input
             id="login-usuario"
             type="text"
-            placeholder="ADMIN"
+            placeholder="admin@tudominio.com"
             required
             autocomplete="username"
             spellcheck="false"
@@ -280,6 +280,10 @@
        TOAST DE NOTIFICACIONES
   ═══════════════════════════════════════════════════════════ -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Cliente de Supabase + configuración (claves reales en config.js, no versionado) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../assets/js/config.js"></script>
 
   <!-- Lógica del panel -->
   <script src="../assets/js/admin.js"></script>

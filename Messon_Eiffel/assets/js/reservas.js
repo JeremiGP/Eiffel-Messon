@@ -4,6 +4,17 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // ── Cliente de Supabase ───────────────────────────────────
+  // Si assets/js/config.js tiene claves reales, se usa Supabase
+  // de verdad. Si no existe o sigue con los valores de ejemplo,
+  // la reserva se simula igual que antes — el sitio nunca se
+  // rompe por no tener Supabase configurado todavía.
+  const supabaseClient = (
+    typeof SUPABASE_URL !== 'undefined' &&
+    SUPABASE_URL && !SUPABASE_URL.includes('TU-PROYECTO') &&
+    window.supabase
+  ) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
   // ── Referencias ──────────────────────────────────────────
   let currentStep = 1;
 
@@ -241,7 +252,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ── Submit ────────────────────────────────────────────────
-  const form = document.getElementById('reservaForm');
+  const form      = document.getElementById('reservaForm');
+  const formError = document.getElementById('formError');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -249,25 +261,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnSubmit = form.querySelector('.btn-submit');
     btnSubmit.textContent = 'Enviando…';
     btnSubmit.disabled    = true;
+    if (formError) formError.style.display = 'none';
 
-    // TODO (Fase 3): Conectar con Supabase
-    // const datos = {
-    //   nombre:    form.querySelector('[name="nombre"]').value,
-    //   apellidos: form.querySelector('[name="apellidos"]').value,
-    //   telefono:  form.querySelector('[name="telefono"]').value,
-    //   email:     form.querySelector('[name="email"]').value,
-    //   fecha:     form.querySelector('[name="fecha"]').value,
-    //   hora:      form.querySelector('[name="hora"]').value,
-    //   personas:  form.querySelector('[name="personas"]').value,
-    //   notas:     form.querySelector('[name="notas"]').value,
-    // };
-    // const { error } = await supabase.from('reservas').insert([datos]);
+    const datos = {
+      nombre:   `${document.getElementById('nombre').value.trim()} ${document.getElementById('apellidos').value.trim()}`.trim(),
+      telefono: document.getElementById('telefono').value.trim(),
+      email:    document.getElementById('email').value.trim() || null,
+      fecha:    document.getElementById('fecha').value,
+      hora:     document.getElementById('hora').value,
+      personas: document.getElementById('personas').value,
+      notas:    document.getElementById('notas').value.trim() || null,
+    };
 
-    setTimeout(() => {
-      form.style.display = 'none';
-      document.querySelector('.steps-track').style.display = 'none';
-      document.getElementById('confirmado').classList.add('active');
-    }, 900);
+    if (supabaseClient) {
+      // ── Modo real: guarda la reserva en Supabase ──────────
+      const { error } = await supabaseClient.from('reservas').insert([datos]);
+      if (error) {
+        console.error('Error al guardar la reserva:', error);
+        btnSubmit.textContent = 'Solicitar reserva';
+        btnSubmit.disabled    = false;
+        if (formError) {
+          formError.textContent = 'No se pudo enviar la reserva. Inténtalo de nuevo o llámanos al 958 87 24 24.';
+          formError.style.display = 'block';
+        }
+        return;
+      }
+    } else {
+      // ── Modo demo: sin Supabase configurado, se simula el envío ──
+      await new Promise(resolve => setTimeout(resolve, 900));
+    }
+
+    form.style.display = 'none';
+    document.querySelector('.steps-track').style.display = 'none';
+    document.getElementById('confirmado').classList.add('active');
   });
 
 });

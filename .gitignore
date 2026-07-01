@@ -12,3 +12,4 @@ Thumbs.db
 
 # Dependencias (por si se añade tooling en el futuro)
 node_modules/
+supabase.exe

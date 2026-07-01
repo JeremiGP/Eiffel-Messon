@@ -1,6 +1,11 @@
 -- ============================================================
 -- Mesón Cafetería de Eiffel — Esquema de base de datos
 -- Plataforma: Supabase (PostgreSQL 14+)
+--
+-- NOTA: este archivo se conserva como referencia legible.
+-- El origen de verdad que se despliega automáticamente es
+-- supabase/migrations/20260701000000_init_reservas.sql
+-- (mismo contenido, formato de migración de la CLI de Supabase).
 -- ============================================================
 
 -- Habilitar extensión pgcrypto (gen_random_uuid() nativo en PG 13+;

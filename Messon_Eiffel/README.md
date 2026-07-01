@@ -11,8 +11,8 @@ Página web profesional del **Mesón Cafetería de Eiffel** (Motril, Granada), c
 | 1. Planificación | ✅ Completo | Estructura, tecnologías y diseño definidos |
 | 2. Frontend | ✅ Completo | 5 páginas (Home, Nosotros, Carta, Reservas, Contacto) + panel admin |
 | 3. Auditoría de calidad | ✅ Completo | Accesibilidad, SEO, performance y limpieza de código (ver `docs/AUDITORIA.md`) |
-| 4. Base de datos | ⏳ Pendiente | Conexión con Supabase (esquema ya preparado en `supabase/schema.sql`) |
-| 5. Panel admin con datos reales | ⏳ Pendiente | Hoy usa `localStorage` de demo — pendiente de sustituir por Supabase |
+| 4. Base de datos | ⚙️ Estructura lista | CLI de Supabase inicializada, migración creada (`supabase/migrations/`) e integración con GitHub conectada. Falta rellenar `assets/js/config.js` con las claves reales |
+| 5. Panel admin con datos reales | ⚙️ Código listo | `admin.js`/`reservas.js` ya usan Supabase automáticamente en cuanto haya claves reales en `config.js`; sin ellas, siguen funcionando en modo demo (`localStorage`) |
 | 6. Publicación | ⏳ Pendiente | Deploy en Netlify/Vercel + dominio |
 
 ---
@@ -41,12 +41,17 @@ Messon_Eiffel/
 │   ├── js/
 │   │   ├── nav.js               ← Nav + scroll reveal (todas las páginas)
 │   │   ├── carta.js             ← Pestañas de la carta (con soporte de teclado/ARIA)
-│   │   ├── reservas.js          ← Wizard de reservas (validación de pasos)
-│   │   └── admin.js             ← Lógica del panel (demo con localStorage)
+│   │   ├── reservas.js          ← Wizard de reservas (usa Supabase si está configurado, si no simula el envío)
+│   │   ├── admin.js             ← Lógica del panel (usa Supabase Auth + CRUD si está configurado, si no localStorage de demo)
+│   │   ├── config.example.js    ← Plantilla de claves de Supabase (sí se versiona)
+│   │   └── config.js            ← Tus claves reales (NO se versiona, créalo copiando config.example.js)
 │   └── img/
 │
 ├── supabase/
-│   ├── schema.sql                ← Esquema + políticas RLS, listo para ejecutar
+│   ├── config.toml               ← Configuración de la CLI de Supabase (generado con `supabase init`)
+│   ├── migrations/
+│   │   └── 20260701000000_init_reservas.sql  ← Migración con la tabla `reservas` + políticas RLS
+│   ├── schema.sql                ← Mismo esquema en un único archivo, como referencia legible
 │   └── queries_test.sql
 │
 ├── robots.txt
@@ -107,13 +112,13 @@ tabla `reservas` real. Ver pasos detallados en `supabase/schema.sql`.
 
 ## Próximos pasos
 
-### Conectar Supabase
-1. Crear cuenta en [supabase.com](https://supabase.com)
-2. Crear nuevo proyecto
-3. Ejecutar `supabase/schema.sql` en el editor SQL de Supabase
-4. Añadir las claves en `assets/js/config.js` (no subir a Git — añadir a `.gitignore`)
-5. Conectar el formulario de `pages/reservas.html` con la tabla `reservas`
-6. Sustituir el login y el `localStorage` de `admin/index.html` por Supabase Auth + consultas reales
+### Conectar Supabase (lo único que falta — todo lo demás ya está hecho)
+1. Crear cuenta y proyecto en [supabase.com](https://supabase.com) (si aún no existe).
+2. La integración con GitHub ya está configurada apuntando al directorio `Messon_Eiffel`; al hacer push a `main` con `Deploy to production` activado, se aplica automáticamente la migración de `supabase/migrations/`.
+3. Ir a Project Settings → API y copiar el `Project URL` y la `anon public key`.
+4. Copiar `assets/js/config.example.js` como `assets/js/config.js` y pegar ahí esas dos claves (este archivo no se sube a Git).
+5. Crear el usuario admin en Authentication → Users → Add user (con email + contraseña reales).
+6. Recargar `reservas.html` y `admin/index.html`: en cuanto `config.js` tenga las claves reales, ambos pasan automáticamente de "modo demo" a usar Supabase de verdad — no hace falta tocar más código.
 
 ### Publicar en Netlify/Vercel
 1. Conectar el repositorio de GitHub

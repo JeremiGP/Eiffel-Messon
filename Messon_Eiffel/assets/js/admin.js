@@ -3,30 +3,38 @@
 
    ⚠️  AVISO DE SEGURIDAD — LEER ANTES DE PUBLICAR ESTE SITIO ⚠️
    ------------------------------------------------------------
-   Este panel usa credenciales de DEMO embebidas en el JavaScript
-   del cliente y guarda las reservas en localStorage (solo en
-   este navegador). Cualquiera que abra el código fuente puede
-   ver el usuario y la contraseña, y los datos no se sincronizan
-   entre dispositivos ni persisten de verdad.
+   Mientras assets/js/config.js no tenga las claves reales de
+   Supabase, este panel funciona en "modo demo": credenciales
+   ADMIN/123456789 embebidas en este archivo y reservas guardadas
+   en localStorage (solo en este navegador, no persisten de verdad
+   ni se sincronizan entre dispositivos). Cualquiera que abra el
+   código fuente puede ver esas credenciales de demo.
 
-   NO USAR EN PRODUCCIÓN TAL CUAL. Antes de publicar:
-     1. Sustituir CREDENCIALES + login manual por Supabase Auth
-        (o el proveedor de auth que se use).
-     2. Sustituir cargarReservas()/guardarReservas() (localStorage)
-        por llamadas reales a supabase.from('reservas')...
-     3. Conectar también el formulario público (reservas.js) a la
-        misma tabla — hoy solo simula el envío.
-   Ver supabase/schema.sql para el esquema y las políticas RLS
-   ya preparadas para este flujo.
+   En cuanto config.js tenga SUPABASE_URL/SUPABASE_ANON_KEY reales,
+   este mismo archivo cambia automáticamente a modo real:
+   autenticación con Supabase Auth y CRUD contra la tabla
+   `reservas` (ver supabase/migrations/20260701000000_init_reservas.sql).
+
+   Para pasar a modo real hace falta además:
+     1. Crear el usuario admin en el dashboard de Supabase:
+        Authentication → Users → Add user (con email + contraseña).
+     2. Iniciar sesión en el panel con ese email y esa contraseña.
    ============================================================ */
 
 'use strict';
 
 // ── CONFIGURACIÓN ─────────────────────────────────────────────
-// TODO: credenciales de DEMO — sustituir por autenticación real (ver aviso arriba)
+// Credenciales de DEMO — solo se usan si no hay Supabase configurado
 const CREDENCIALES = { usuario: 'ADMIN', password: '123456789' };
 const STORAGE_KEY  = 'meson_reservas';
 const AUTH_KEY     = 'meson_admin_auth';
+
+// ── CLIENTE DE SUPABASE (si config.js tiene claves reales) ────
+const supabaseClient = (
+  typeof SUPABASE_URL !== 'undefined' &&
+  SUPABASE_URL && !SUPABASE_URL.includes('TU-PROYECTO') &&
+  window.supabase
+) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 // ── ESTADO ────────────────────────────────────────────────────
 let reservas        = [];
@@ -64,8 +72,22 @@ const ESTADO_CFG = {
   cancelada:  { label: 'Cancelada',  css: 'badge--cancelada' },
 };
 
-// ── STORAGE ───────────────────────────────────────────────────
-function cargarReservas() {
+// ── CARGA / GUARDADO ───────────────────────────────────────────
+async function cargarReservas() {
+  if (supabaseClient) {
+    const { data, error } = await supabaseClient
+      .from('reservas')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) {
+      console.error('Error al cargar reservas de Supabase:', error);
+      reservas = [];
+      return;
+    }
+    reservas = data || [];
+    return;
+  }
+  // Modo demo
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     reservas = raw ? JSON.parse(raw) : [];
@@ -75,15 +97,30 @@ function cargarReservas() {
 }
 
 function guardarReservas() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(reservas));
+  // Solo aplica en modo demo. En modo real cada función ya escribe
+  // directamente en Supabase (ver agregarReserva/actualizarReserva/eliminarReserva).
+  if (!supabaseClient) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(reservas));
+  }
 }
 
 // ── AUTENTICACIÓN ─────────────────────────────────────────────
-function estaLogueado() {
+async function estaLogueado() {
+  if (supabaseClient) {
+    const { data } = await supabaseClient.auth.getSession();
+    return !!data.session;
+  }
   return sessionStorage.getItem(AUTH_KEY) === '1';
 }
 
-function login(usuario, password) {
+async function login(usuario, password) {
+  if (supabaseClient) {
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email: usuario,
+      password,
+    });
+    return !error;
+  }
   if (usuario === CREDENCIALES.usuario && password === CREDENCIALES.password) {
     sessionStorage.setItem(AUTH_KEY, '1');
     return true;
@@ -91,31 +128,62 @@ function login(usuario, password) {
   return false;
 }
 
-function logout() {
-  sessionStorage.removeItem(AUTH_KEY);
+async function logout() {
+  if (supabaseClient) {
+    await supabaseClient.auth.signOut();
+  } else {
+    sessionStorage.removeItem(AUTH_KEY);
+  }
   mostrarLogin();
 }
 
 // ── CRUD DE RESERVAS ──────────────────────────────────────────
-function agregarReserva(data) {
-  const nueva = {
-    id:         generarId(),
-    nombre:     data.nombre,
-    telefono:   data.telefono,
-    email:      data.email || '',
-    fecha:      data.fecha,
-    hora:       data.hora,
-    personas:   data.personas,
-    notas:      data.notas || '',
-    estado:     data.estado || 'pendiente',
-    created_at: new Date().toISOString(),
+async function agregarReserva(data) {
+  const payload = {
+    nombre:   data.nombre,
+    telefono: data.telefono,
+    email:    data.email || null,
+    fecha:    data.fecha,
+    hora:     data.hora,
+    personas: data.personas,
+    notas:    data.notas || null,
+    estado:   data.estado || 'pendiente',
   };
+
+  if (supabaseClient) {
+    const { data: inserted, error } = await supabaseClient
+      .from('reservas')
+      .insert([payload])
+      .select()
+      .single();
+    if (error) {
+      console.error('Error al añadir reserva:', error);
+      mostrarToast('No se pudo guardar la reserva.', 'error');
+      return null;
+    }
+    reservas.unshift(inserted);
+    return inserted;
+  }
+
+  const nueva = { id: generarId(), ...payload, created_at: new Date().toISOString() };
   reservas.unshift(nueva);
   guardarReservas();
   return nueva;
 }
 
-function actualizarReserva(id, data) {
+async function actualizarReserva(id, data) {
+  if (supabaseClient) {
+    const { error } = await supabaseClient.from('reservas').update(data).eq('id', id);
+    if (error) {
+      console.error('Error al actualizar reserva:', error);
+      mostrarToast('No se pudo actualizar la reserva.', 'error');
+      return false;
+    }
+    const idx = reservas.findIndex(r => r.id === id);
+    if (idx !== -1) reservas[idx] = { ...reservas[idx], ...data };
+    return true;
+  }
+
   const idx = reservas.findIndex(r => r.id === id);
   if (idx === -1) return false;
   reservas[idx] = { ...reservas[idx], ...data };
@@ -123,7 +191,19 @@ function actualizarReserva(id, data) {
   return true;
 }
 
-function eliminarReserva(id) {
+async function eliminarReserva(id) {
+  if (supabaseClient) {
+    const { error } = await supabaseClient.from('reservas').delete().eq('id', id);
+    if (error) {
+      console.error('Error al eliminar reserva:', error);
+      mostrarToast('No se pudo eliminar la reserva.', 'error');
+      return false;
+    }
+    const idx = reservas.findIndex(r => r.id === id);
+    if (idx !== -1) reservas.splice(idx, 1);
+    return true;
+  }
+
   const idx = reservas.findIndex(r => r.id === id);
   if (idx === -1) return false;
   reservas.splice(idx, 1);
@@ -131,7 +211,7 @@ function eliminarReserva(id) {
   return true;
 }
 
-function cambiarEstado(id, nuevoEstado) {
+async function cambiarEstado(id, nuevoEstado) {
   return actualizarReserva(id, { estado: nuevoEstado });
 }
 
@@ -154,10 +234,10 @@ function mostrarLogin() {
   document.getElementById('dashboardSection').classList.add('hidden');
 }
 
-function mostrarDashboard() {
+async function mostrarDashboard() {
   document.getElementById('loginSection').classList.add('hidden');
   document.getElementById('dashboardSection').classList.remove('hidden');
-  cargarReservas();
+  await cargarReservas();
   render();
 }
 
@@ -276,8 +356,8 @@ function cerrarModal() {
 }
 
 // ── CAMBIO RÁPIDO DE ESTADO ───────────────────────────────────
-function cambioRapidoEstado(id, nuevoEstado) {
-  if (cambiarEstado(id, nuevoEstado)) {
+async function cambioRapidoEstado(id, nuevoEstado) {
+  if (await cambiarEstado(id, nuevoEstado)) {
     render();
     mostrarToast(`Reserva marcada como ${ESTADO_CFG[nuevoEstado].label.toLowerCase()}.`);
   }
@@ -300,8 +380,8 @@ function cerrarConfirmModal() {
   setTimeout(() => { confirmModal.classList.add('hidden'); pendingDeleteId = null; }, 300);
 }
 
-function ejecutarEliminacion() {
-  if (pendingDeleteId && eliminarReserva(pendingDeleteId)) {
+async function ejecutarEliminacion() {
+  if (pendingDeleteId && await eliminarReserva(pendingDeleteId)) {
     render();
     mostrarToast('Reserva eliminada.');
   }
@@ -319,18 +399,23 @@ function mostrarToast(msg, tipo = 'success') {
 }
 
 // ── INICIALIZACIÓN ────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   // ── LOGIN ──
-  document.getElementById('loginForm').addEventListener('submit', e => {
+  document.getElementById('loginForm').addEventListener('submit', async e => {
     e.preventDefault();
     const usuario  = document.getElementById('login-usuario').value.trim();
     const password = document.getElementById('login-password').value;
     const errEl    = document.getElementById('login-error');
+    const btn      = document.querySelector('.login-btn');
 
-    if (login(usuario, password)) {
+    btn.disabled = true;
+    const ok = await login(usuario, password);
+    btn.disabled = false;
+
+    if (ok) {
       errEl.classList.add('hidden');
-      mostrarDashboard();
+      await mostrarDashboard();
     } else {
       errEl.textContent = 'Usuario o contraseña incorrectos.';
       errEl.classList.remove('hidden');
@@ -340,8 +425,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ── LOGOUT ──
-  document.getElementById('btn-logout').addEventListener('click', () => {
-    if (confirm('¿Cerrar sesión?')) logout();
+  document.getElementById('btn-logout').addEventListener('click', async () => {
+    if (confirm('¿Cerrar sesión?')) await logout();
   });
 
   // ── FILTROS ──
@@ -369,7 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-nueva').addEventListener('click', () => abrirModal());
 
   // ── FORMULARIO SUBMIT ──
-  document.getElementById('reserva-form').addEventListener('submit', e => {
+  document.getElementById('reserva-form').addEventListener('submit', async e => {
     e.preventDefault();
     const form = e.target;
     const data = {
@@ -383,14 +468,20 @@ document.addEventListener('DOMContentLoaded', () => {
       estado:   form.estado.value,
     };
 
+    const btnGuardar = form.querySelector('.btn-guardar');
+    btnGuardar.disabled = true;
+
     if (editingId) {
-      actualizarReserva(editingId, data);
-      mostrarToast('Reserva actualizada correctamente.');
+      if (await actualizarReserva(editingId, data)) {
+        mostrarToast('Reserva actualizada correctamente.');
+      }
     } else {
-      agregarReserva(data);
-      mostrarToast('Reserva añadida correctamente.');
+      if (await agregarReserva(data)) {
+        mostrarToast('Reserva añadida correctamente.');
+      }
     }
 
+    btnGuardar.disabled = false;
     cerrarModal();
     render();
   });
@@ -409,8 +500,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ── ARRANQUE ──
-  if (estaLogueado()) {
-    mostrarDashboard();
+  if (await estaLogueado()) {
+    await mostrarDashboard();
   } else {
     mostrarLogin();
   }
