@@ -288,9 +288,9 @@ body {
 .table-wrap {
   background: var(--blanco);
   border: 1px solid var(--hueso);
-  overflow-x: auto;
   border-radius: 10px;
-  overflow: hidden;
+  overflow-x: auto;   /* scroll horizontal en pantallas medianas */
+  overflow-y: hidden; /* recorta las esquinas redondeadas sin bloquear el scroll-x */
 }
 .reservas-table {
   width: 100%;

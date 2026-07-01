@@ -9,47 +9,58 @@ Página web profesional del **Mesón Cafetería de Eiffel** (Motril, Granada), c
 | Fase | Estado | Descripción |
 |------|--------|-------------|
 | 1. Planificación | ✅ Completo | Estructura, tecnologías y diseño definidos |
-| 2. Frontend | ✅ Completo | HTML, CSS, JS — carta completa con alérgenos |
-| 3. Base de datos | ⏳ Pendiente | Conexión con Supabase |
-| 4. Panel admin | ⏳ Pendiente | Gestión de reservas |
-| 5. Publicación | ⏳ Pendiente | Deploy en Netlify + dominio |
+| 2. Frontend | ✅ Completo | 5 páginas (Home, Nosotros, Carta, Reservas, Contacto) + panel admin |
+| 3. Auditoría de calidad | ✅ Completo | Accesibilidad, SEO, performance y limpieza de código (ver `docs/AUDITORIA.md`) |
+| 4. Base de datos | ⏳ Pendiente | Conexión con Supabase (esquema ya preparado en `supabase/schema.sql`) |
+| 5. Panel admin con datos reales | ⏳ Pendiente | Hoy usa `localStorage` de demo — pendiente de sustituir por Supabase |
+| 6. Publicación | ⏳ Pendiente | Deploy en Netlify/Vercel + dominio |
 
 ---
 
 ## Estructura del proyecto
 
 ```
-meson-eiffel/
-├── index.html                  ← Página principal
+Messon_Eiffel/
+├── index.html                   ← Home
 ├── README.md
-├── .gitignore
+│
+├── pages/
+│   ├── nosotros.html
+│   ├── carta.html
+│   ├── reservas.html
+│   └── contacto.html
+│
+├── admin/
+│   └── index.html               ← Panel de administración (demo, ver aviso de seguridad)
 │
 ├── assets/
 │   ├── css/
-│   │   └── styles.css          ← Todos los estilos
+│   │   ├── base.css             ← Variables, nav, footer, botones (compartido)
+│   │   ├── home.css / nosotros.css / carta.css / reservas.css / contacto.css
+│   │   └── admin.css            ← Estilos propios del panel admin
 │   ├── js/
-│   │   └── main.js             ← JavaScript (tabs, formulario, animaciones)
+│   │   ├── nav.js               ← Nav + scroll reveal (todas las páginas)
+│   │   ├── carta.js             ← Pestañas de la carta (con soporte de teclado/ARIA)
+│   │   ├── reservas.js          ← Wizard de reservas (validación de pasos)
+│   │   └── admin.js             ← Lógica del panel (demo con localStorage)
 │   └── img/
-│       └── README.md           ← Instrucciones para añadir fotos
-│
-├── admin/
-│   └── index.html              ← Panel de administración (en desarrollo)
 │
 ├── supabase/
-│   └── schema.sql              ← Esquema de la base de datos
+│   ├── schema.sql                ← Esquema + políticas RLS, listo para ejecutar
+│   └── queries_test.sql
 │
-└── docs/
-    └── CONTEXTO_PROYECTO.md    ← Contexto completo del proyecto
+├── robots.txt
+└── sitemap.xml
 ```
 
 ---
 
 ## Tecnologías
 
-- **Frontend:** HTML5 / CSS3 / JavaScript (vanilla, sin frameworks)
+- **Frontend:** HTML5 / CSS3 / JavaScript (vanilla, sin frameworks ni build step)
 - **Tipografías:** Cormorant Garamond + Inter (Google Fonts)
 - **Iconos:** SVG inline
-- **Base de datos:** Supabase (PostgreSQL) — _pendiente de conectar_
+- **Base de datos:** Supabase (PostgreSQL) — esquema listo, conexión _pendiente_
 - **Hosting:** Netlify o Vercel — _pendiente de configurar_
 - **Dominio:** mesoncafeteriadeeiffel.es
 
@@ -58,12 +69,29 @@ meson-eiffel/
 ## Características
 
 - Diseño cálido y rústico (tonos tierra, dorado, crema)
-- Carta completa dividida en **Desayunos** y **Comidas**
-- Iconos de **alérgenos** por plato (Gluten, Lácteos, Huevos, Pescado, Crustáceos, Moluscos, Frutos secos)
-- Animaciones: zoom de entrada en hero, scroll reveal escalonado, hover con línea dorada
-- Formulario de reservas online
+- Carta completa dividida en **Desayunos** y **Comidas**, con navegación por pestañas accesible (teclado + ARIA)
+- Iconos de **alérgenos** por plato según el Reglamento UE 1169/2011
+- Wizard de reservas en 3 pasos con validación y confirmación
+- Panel de administración con listado, filtros, alta/edición/baja de reservas (datos de demo en `localStorage`)
 - Diseño **responsive** (móvil, tablet, escritorio)
-- Sin dependencias externas (solo Google Fonts)
+- SEO on-page: metadatos Open Graph, datos estructurados (Schema.org Restaurant), `robots.txt` y `sitemap.xml`
+
+---
+
+## ⚠️ Aviso importante de seguridad (panel admin)
+
+El panel `/admin` usa **credenciales de demostración embebidas en el JavaScript del cliente**
+(`assets/js/admin.js`) y guarda las reservas en `localStorage` del navegador. Esto es
+**solo para pruebas/demo** y **no debe usarse en producción**:
+
+- Cualquiera puede ver el usuario/contraseña abriendo el código fuente.
+- Los datos no se sincronizan entre dispositivos ni persisten de verdad.
+- El formulario público de reservas (`reservas.js`) todavía **no está conectado** a ningún
+  almacenamiento real — hoy solo simula el envío.
+
+**Antes de publicar el sitio:** conectar Supabase (esquema ya preparado), sustituir el login
+por Supabase Auth, y mover el formulario público y el panel admin a leer/escribir en la
+tabla `reservas` real. Ver pasos detallados en `supabase/schema.sql`.
 
 ---
 
@@ -73,9 +101,7 @@ meson-eiffel/
    ```bash
    git clone https://github.com/TU_USUARIO/meson-eiffel.git
    ```
-2. Abre `index.html` directamente en el navegador
-
-No necesita servidor local para funcionar (hasta que se conecte Supabase).
+2. Abre `index.html` directamente en el navegador (no necesita servidor local).
 
 ---
 
@@ -85,13 +111,15 @@ No necesita servidor local para funcionar (hasta que se conecte Supabase).
 1. Crear cuenta en [supabase.com](https://supabase.com)
 2. Crear nuevo proyecto
 3. Ejecutar `supabase/schema.sql` en el editor SQL de Supabase
-4. Añadir las claves en `assets/js/config.js` (no subir a GitHub)
-5. Conectar el formulario de `index.html` con la tabla `reservas`
+4. Añadir las claves en `assets/js/config.js` (no subir a Git — añadir a `.gitignore`)
+5. Conectar el formulario de `pages/reservas.html` con la tabla `reservas`
+6. Sustituir el login y el `localStorage` de `admin/index.html` por Supabase Auth + consultas reales
 
-### Publicar en Netlify
-1. Conectar el repositorio de GitHub con Netlify
+### Publicar en Netlify/Vercel
+1. Conectar el repositorio de GitHub
 2. Deploy automático en cada push
 3. Configurar el dominio `mesoncafeteriadeeiffel.es`
+4. Actualizar las URLs de `robots.txt`, `sitemap.xml` y las etiquetas `og:url`/`canonical` si el dominio final cambia
 
 ---
 
@@ -106,4 +134,4 @@ No necesita servidor local para funcionar (hasta que se conecte Supabase).
 
 ---
 
-*Desarrollado con ayuda de Claude (Anthropic) · 2025*
+*Desarrollado con ayuda de Claude (Anthropic) · 2025–2026*

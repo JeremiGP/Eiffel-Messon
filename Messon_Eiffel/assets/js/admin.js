@@ -1,10 +1,29 @@
 /* ============================================================
    Mesón Cafetería de Eiffel — Panel de Administración · Lógica
+
+   ⚠️  AVISO DE SEGURIDAD — LEER ANTES DE PUBLICAR ESTE SITIO ⚠️
+   ------------------------------------------------------------
+   Este panel usa credenciales de DEMO embebidas en el JavaScript
+   del cliente y guarda las reservas en localStorage (solo en
+   este navegador). Cualquiera que abra el código fuente puede
+   ver el usuario y la contraseña, y los datos no se sincronizan
+   entre dispositivos ni persisten de verdad.
+
+   NO USAR EN PRODUCCIÓN TAL CUAL. Antes de publicar:
+     1. Sustituir CREDENCIALES + login manual por Supabase Auth
+        (o el proveedor de auth que se use).
+     2. Sustituir cargarReservas()/guardarReservas() (localStorage)
+        por llamadas reales a supabase.from('reservas')...
+     3. Conectar también el formulario público (reservas.js) a la
+        misma tabla — hoy solo simula el envío.
+   Ver supabase/schema.sql para el esquema y las políticas RLS
+   ya preparadas para este flujo.
    ============================================================ */
 
 'use strict';
 
 // ── CONFIGURACIÓN ─────────────────────────────────────────────
+// TODO: credenciales de DEMO — sustituir por autenticación real (ver aviso arriba)
 const CREDENCIALES = { usuario: 'ADMIN', password: '123456789' };
 const STORAGE_KEY  = 'meson_reservas';
 const AUTH_KEY     = 'meson_admin_auth';

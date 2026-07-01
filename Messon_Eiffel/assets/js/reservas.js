@@ -95,48 +95,114 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Validaciones por paso ─────────────────────────────────
   function validarPaso1() {
+    limpiarError('fecha');
+    limpiarError('hora');
+    limpiarErrorGrupo('personasSelector');
+
+    let ok = true;
     if (!fechaInput.value) {
-      resaltarError('fecha'); return false;
+      mostrarError('fecha', 'Elige una fecha para tu reserva.');
+      ok = false;
     }
     if (!horaSelect.value) {
-      resaltarError('hora'); return false;
+      mostrarError('hora', 'Elige una hora disponible.');
+      ok = false;
     }
     if (!document.getElementById('personas').value) {
-      const sel = document.getElementById('personasSelector');
-      sel.style.outline = '2px solid rgba(184,80,50,0.55)';
-      sel.style.borderRadius = '8px';
-      setTimeout(() => { sel.style.outline = ''; sel.style.borderRadius = ''; }, 2000);
-      return false;
+      mostrarErrorGrupo('personasSelector', 'Selecciona cuántas personas venís.');
+      ok = false;
     }
-    return true;
+    return ok;
   }
 
   function validarPaso2() {
+    limpiarError('nombre');
+    limpiarError('apellidos');
+    limpiarError('telefono');
+    limpiarError('email');
+
     const nombre    = document.getElementById('nombre').value.trim();
     const apellidos = document.getElementById('apellidos').value.trim();
     const telefono  = telInput.value.trim();
     const email     = document.getElementById('email').value.trim();
+    let ok = true;
 
-    if (!nombre)             { resaltarError('nombre');    return false; }
-    if (!apellidos)          { resaltarError('apellidos'); return false; }
-    if (!telefono)           { resaltarError('telefono');  return false; }
-    if (telefono.length < 9) { resaltarError('telefono');  return false; }
+    if (!nombre)    { mostrarError('nombre', 'Escribe tu nombre.'); ok = false; }
+    if (!apellidos) { mostrarError('apellidos', 'Escribe tus apellidos.'); ok = false; }
+
+    if (!telefono) {
+      mostrarError('telefono', 'Escribe un teléfono de contacto.'); ok = false;
+    } else if (telefono.length < 9) {
+      mostrarError('telefono', 'El teléfono debe tener 9 dígitos.'); ok = false;
+    }
 
     // Email: si se escribe algo, debe tener formato válido (algo@dominio.ext)
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-      resaltarError('email'); return false;
+      mostrarError('email', 'Revisa el formato del email (algo@dominio.com).');
+      ok = false;
     }
 
-    return true;
+    return ok;
   }
 
-  function resaltarError(id) {
+  // ── Errores accesibles: texto visible + aria-invalid/aria-describedby ──
+  function mostrarError(id, mensaje) {
     const el = document.getElementById(id);
     if (!el) return;
+
+    el.setAttribute('aria-invalid', 'true');
     el.style.borderColor = 'rgba(184,80,50,0.7)';
     el.style.boxShadow   = '0 0 0 3px rgba(184,80,50,0.1)';
+
+    let errorEl = document.getElementById(id + '-error');
+    if (!errorEl) {
+      errorEl = document.createElement('p');
+      errorEl.id = id + '-error';
+      errorEl.className = 'field-error';
+      errorEl.setAttribute('role', 'alert');
+      el.insertAdjacentElement('afterend', errorEl);
+    }
+    errorEl.textContent = mensaje;
+    el.setAttribute('aria-describedby', errorEl.id);
     el.focus();
-    setTimeout(() => { el.style.borderColor = ''; el.style.boxShadow = ''; }, 2000);
+  }
+
+  function limpiarError(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.removeAttribute('aria-invalid');
+    el.removeAttribute('aria-describedby');
+    el.style.borderColor = '';
+    el.style.boxShadow   = '';
+    const errorEl = document.getElementById(id + '-error');
+    if (errorEl) errorEl.remove();
+  }
+
+  // ── Igual que arriba, pero para el grupo de botones "personas" ──────
+  function mostrarErrorGrupo(groupId, mensaje) {
+    const grupo = document.getElementById(groupId);
+    if (!grupo) return;
+    grupo.style.outline = '2px solid rgba(184,80,50,0.55)';
+    grupo.style.borderRadius = '8px';
+
+    let errorEl = document.getElementById(groupId + '-error');
+    if (!errorEl) {
+      errorEl = document.createElement('p');
+      errorEl.id = groupId + '-error';
+      errorEl.className = 'field-error';
+      errorEl.setAttribute('role', 'alert');
+      grupo.insertAdjacentElement('afterend', errorEl);
+    }
+    errorEl.textContent = mensaje;
+  }
+
+  function limpiarErrorGrupo(groupId) {
+    const grupo = document.getElementById(groupId);
+    if (!grupo) return;
+    grupo.style.outline = '';
+    grupo.style.borderRadius = '';
+    const errorEl = document.getElementById(groupId + '-error');
+    if (errorEl) errorEl.remove();
   }
 
   // ── Botones siguiente / volver ────────────────────────────
@@ -162,7 +228,16 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.classList.add('active');
       btn.setAttribute('aria-pressed', 'true');
       personasInput.value = btn.dataset.n;
+      limpiarErrorGrupo('personasSelector');
     });
+  });
+
+  // ── Limpiar error en cuanto el usuario corrige el campo ───
+  ['fecha', 'hora', 'nombre', 'apellidos', 'telefono', 'email'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', () => limpiarError(id));
+    el.addEventListener('change', () => limpiarError(id));
   });
 
   // ── Submit ────────────────────────────────────────────────

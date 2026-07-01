@@ -17,6 +17,11 @@
   --dorado-cl: #D4A55A;
   --crema:     #FEFAF5;
   --blanco:    #FFFFFF;
+
+  /* Variantes puntuales usadas en páginas concretas (antes hardcodeadas) */
+  --arena-alt:     #FAF4E8; /* fondo de reservas.html / contacto.html */
+  --dorado-hover:  #C9913F; /* estado hover de botones dorados */
+  --carbon-cl:     #2A1A0E; /* hover oscuro sobre botones "siguiente" */
 }
 
 html { scroll-behavior: smooth; }
@@ -81,7 +86,7 @@ nav.scrolled {
 .nav-links a {
   color: rgba(255,255,255,0.7); text-decoration: none;
   font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
-  transition: color 0.3s; position: relative;
+  transition: color 0.3s, background-position 0.9s ease; position: relative;
 }
 .nav-links a::after {
   content: ''; position: absolute;
@@ -94,38 +99,42 @@ nav.scrolled {
 .nav-links a:hover::after,
 .nav-links a.active::after { right: 0; }
 
+/* ── EFECTO DE LUZ (shine) EN LOS ENLACES ─────────────────── */
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .nav-links a {
+    background-image: linear-gradient(
+      100deg,
+      rgba(255,255,255,0.7) 0%,
+      rgba(255,255,255,0.7) 42%,
+      #fff 46%,
+      var(--dorado-cl) 50%,
+      #fff 54%,
+      #fff 58%,
+      #fff 100%
+    );
+    background-size: 250% 100%;
+    background-position: 0% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .nav-links a:hover,
+  .nav-links a.active {
+    background-position: 100% 0;
+    color: transparent;
+  }
+}
+
 .nav-toggle {
   display: none; background: none; border: none; cursor: pointer;
-  gap: 5px; padding: 4px; flex-direction: column;
+  gap: 5px; flex-direction: column;
+  align-items: center; justify-content: center;
+  min-width: 44px; min-height: 44px; /* área táctil mínima (WCAG 2.5.8) */
 }
 .nav-toggle span {
   display: block; width: 22px; height: 1.5px;
   background: #fff; transition: all 0.3s;
 }
-
-/* ── NAV HOME BUTTON ───────────────────────────────────── */
-.nav-link-home {
-  font-family: 'Cormorant Garamond', serif !important;
-  font-size: 0.98rem !important;
-  font-weight: 300 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-  color: rgba(255,255,255,0.9) !important;
-  border: 1px solid rgba(184,131,58,0.45);
-  padding: 0.28rem 0.9rem !important;
-  border-radius: 4px;
-  transition: all 0.3s !important;
-}
-.nav-link-home:hover {
-  border-color: var(--dorado-cl) !important;
-  color: var(--dorado-cl) !important;
-  background: rgba(184,131,58,0.08);
-}
-.nav-link-home em {
-  font-style: italic;
-  color: var(--dorado-cl);
-}
-.nav-link-home::after { display: none !important; }
 
 /* ── BOTONES ─────────────────────────────────────────────── */
 .btn {
@@ -196,7 +205,7 @@ footer { background: var(--carbon); padding: 0; }
 
 .footer-about {
   font-size: 0.85rem;
-  color: rgba(255,255,255,0.38);
+  color: rgba(255,255,255,0.62); /* contraste AA sobre --carbon */
   line-height: 1.75; max-width: 280px;
   margin-bottom: 1.6rem;
 }
@@ -222,7 +231,7 @@ footer { background: var(--carbon); padding: 0; }
 
 /* Reservas col */
 .footer-reservas-txt {
-  font-size: 0.82rem; color: rgba(255,255,255,0.38);
+  font-size: 0.82rem; color: rgba(255,255,255,0.62); /* contraste AA sobre --carbon */
   line-height: 1.8; margin-bottom: 1.6rem;
 }
 .footer-reservas-txt a { color: var(--dorado-cl); text-decoration: none; }
@@ -236,7 +245,7 @@ footer { background: var(--carbon); padding: 0; }
 /* Instagram in brand col */
 .footer-ig {
   display: inline-flex; align-items: center; gap: 0.5rem;
-  color: rgba(255,255,255,0.3); text-decoration: none;
+  color: rgba(255,255,255,0.58); text-decoration: none; /* contraste AA sobre --carbon */
   font-size: 0.72rem; transition: color 0.25s;
 }
 .footer-ig:hover { color: var(--dorado-cl); }
@@ -247,7 +256,7 @@ footer { background: var(--carbon); padding: 0; }
 
 .footer-bottom {
   display: flex; justify-content: center; align-items: center;
-  font-size: 0.72rem; color: rgba(255,255,255,0.2);
+  font-size: 0.72rem; color: rgba(255,255,255,0.55); /* contraste AA sobre --carbon */
 }
 
 /* ── SCROLL REVEAL ───────────────────────────────────────── */

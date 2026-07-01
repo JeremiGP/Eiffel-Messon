@@ -6,6 +6,25 @@
   <meta name="description" content="Carta completa del Mesón Cafetería de Eiffel — Desayunos, platos para compartir, brasas y dulces en Motril, Granada.">
   <title>Carta — Mesón Cafetería de Eiffel</title>
 
+  <link rel="canonical" href="https://mesoncafeteriadeeiffel.es/pages/carta.html">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Mesón Cafetería de Eiffel">
+  <meta property="og:title" content="Carta — Mesón Cafetería de Eiffel">
+  <meta property="og:description" content="Carta completa del Mesón Cafetería de Eiffel — Desayunos, platos para compartir, brasas y dulces en Motril, Granada.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mesoncafeteriadeeiffel.es/pages/carta.html">
+  <meta property="og:image" content="https://mesoncafeteriadeeiffel.es/assets/img/nos-plato.jpg">
+  <meta property="og:locale" content="es_ES">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Carta — Mesón Cafetería de Eiffel">
+  <meta name="twitter:description" content="Carta completa del Mesón Cafetería de Eiffel — Desayunos, platos para compartir, brasas y dulces en Motril, Granada.">
+  <meta name="twitter:image" content="https://mesoncafeteriadeeiffel.es/assets/img/nos-plato.jpg">
+
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -19,13 +38,12 @@
 <nav id="nav">
   <a href="../index.html" class="nav-logo">Mesón <span>de Eiffel</span></a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="../index.html" class="nav-link-home">Mesón <em>de Eiffel</em></a></li>
     <li><a href="nosotros.html">Nosotros</a></li>
     <li><a href="carta.html" class="active">Carta</a></li>
     <li><a href="reservas.html">Reservas</a></li>
     <li><a href="contacto.html">Contacto</a></li>
   </ul>
-  <button class="nav-toggle" id="navToggle" aria-label="Menú">
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -48,42 +66,42 @@
       <div class="sidebar-title">Mesón&nbsp;<em>de Eiffel</em></div>
     </div>
 
-    <div class="sidebar-nav" aria-label="Categorías de la carta">
+    <div class="sidebar-nav" role="tablist" aria-orientation="vertical" aria-label="Categorías de la carta">
 
       <!-- DESAYUNOS -->
       <div class="sidebar-group">
         <div class="sidebar-group-label">
           Desayunos <span></span>
         </div>
-        <button class="sidebar-btn active" data-panel="tostadas">
+        <button class="sidebar-btn active" data-panel="tostadas" id="tab-tostadas" role="tab" aria-controls="panel-tostadas" aria-selected="true" tabindex="0">
           <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="8" rx="2"/><path d="M3 11V9a2 2 0 012-2h14a2 2 0 012 2v2"/><line x1="12" y1="7" x2="12" y2="3"/></svg>
           Tostadas &amp; Molletes
         </button>
-        <button class="sidebar-btn" data-panel="croissants">
+        <button class="sidebar-btn" data-panel="croissants" id="tab-croissants" role="tab" aria-controls="panel-croissants" aria-selected="false" tabindex="-1">
           <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M3 17c0-4 4-8 9-8s9 4 9 8"/><path d="M7 17c0-2 2-4 5-4s5 2 5 4"/></svg>
           Croissants
         </button>
-        <button class="sidebar-btn" data-panel="suizos">
+        <button class="sidebar-btn" data-panel="suizos" id="tab-suizos" role="tab" aria-controls="panel-suizos" aria-selected="false" tabindex="-1">
           <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M4 20h16M4 20V12a8 8 0 0 1 16 0v8"/></svg>
           Suizos
         </button>
-        <button class="sidebar-btn" data-panel="sandwiches">
+        <button class="sidebar-btn" data-panel="sandwiches" id="tab-sandwiches" role="tab" aria-controls="panel-sandwiches" aria-selected="false" tabindex="-1">
           <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="4" rx="1"/><rect x="2" y="14" width="20" height="4" rx="1"/><line x1="6" y1="10" x2="18" y2="10"/><line x1="6" y1="14" x2="18" y2="14"/></svg>
           Sándwiches
         </button>
-        <button class="sidebar-btn" data-panel="crepes">
+        <button class="sidebar-btn" data-panel="crepes" id="tab-crepes" role="tab" aria-controls="panel-crepes" aria-selected="false" tabindex="-1">
           <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>
           Crepes, Gofres &amp; Tortitas
         </button>
-        <button class="sidebar-btn" data-panel="cafes">
+        <button class="sidebar-btn" data-panel="cafes" id="tab-cafes" role="tab" aria-controls="panel-cafes" aria-selected="false" tabindex="-1">
           <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
           Cafés &amp; Bebidas
         </button>
-        <button class="sidebar-btn" data-panel="chocolates">
+        <button class="sidebar-btn" data-panel="chocolates" id="tab-chocolates" role="tab" aria-controls="panel-chocolates" aria-selected="false" tabindex="-1">
           <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 8l1 12h14l1-12"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
           Chocolates especiales
         </button>
-        <button class="sidebar-btn" data-panel="tes">
+        <button class="sidebar-btn" data-panel="tes" id="tab-tes" role="tab" aria-controls="panel-tes" aria-selected="false" tabindex="-1">
           <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M17 8h2a2 2 0 0 1 0 4h-2"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
           Tés &amp; Infusiones
         </button>
@@ -94,19 +112,19 @@
         <div class="sidebar-group-label">
           Comidas <span></span>
         </div>
-        <button class="sidebar-btn" data-panel="compartimos">
+        <button class="sidebar-btn" data-panel="compartimos" id="tab-compartimos" role="tab" aria-controls="panel-compartimos" aria-selected="false" tabindex="-1">
           <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
           Para compartir
         </button>
-        <button class="sidebar-btn" data-panel="huevos">
+        <button class="sidebar-btn" data-panel="huevos" id="tab-huevos" role="tab" aria-controls="panel-huevos" aria-selected="false" tabindex="-1">
           <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M12 22C6.5 22 4 17.5 4 13C4 7.5 7.5 2 12 2s8 5.5 8 11c0 4.5-2.5 9-8 9z"/></svg>
           Con dos huevos
         </button>
-        <button class="sidebar-btn" data-panel="brasas">
+        <button class="sidebar-btn" data-panel="brasas" id="tab-brasas" role="tab" aria-controls="panel-brasas" aria-selected="false" tabindex="-1">
           <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M12 2c0 0-6 6-6 11a6 6 0 0 0 12 0c0-5-6-11-6-11z"/><path d="M9 13c0 0 1.5-2 3-2s3 2 3 2"/></svg>
           Nuestras brasas
         </button>
-        <button class="sidebar-btn" data-panel="dulces">
+        <button class="sidebar-btn" data-panel="dulces" id="tab-dulces" role="tab" aria-controls="panel-dulces" aria-selected="false" tabindex="-1">
           <svg class="sidebar-btn-ico" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5c0 4-5 10-5 10S7 11 7 7a5 5 0 0 1 5-5z"/><path d="M4 20h16"/></svg>
           Dulces
         </button>
@@ -119,7 +137,7 @@
   <main class="carta-content">
 
     <!-- ════ TOSTADAS & MOLLETES ════ -->
-    <section class="carta-panel active" id="panel-tostadas">
+    <section class="carta-panel active" id="panel-tostadas" role="tabpanel" aria-labelledby="tab-tostadas" tabindex="0">
       <div class="panel-header">
         <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
         <h2 class="panel-title">Tostadas &amp; <em>Molletes</em></h2>
@@ -296,7 +314,7 @@
     </section>
 
     <!-- ════ CROISSANTS ════ -->
-    <section class="carta-panel" id="panel-croissants">
+    <section class="carta-panel" id="panel-croissants" role="tabpanel" aria-labelledby="tab-croissants" tabindex="0">
       <div class="panel-header">
         <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
         <h2 class="panel-title"><em>Croissants</em></h2>
@@ -345,7 +363,7 @@
     </section>
 
     <!-- ════ SUIZOS ════ -->
-    <section class="carta-panel" id="panel-suizos">
+    <section class="carta-panel" id="panel-suizos" role="tabpanel" aria-labelledby="tab-suizos" tabindex="0">
       <div class="panel-header">
         <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
         <h2 class="panel-title"><em>Suizos</em></h2>
@@ -383,7 +401,7 @@
     </section>
 
     <!-- ════ SÁNDWICHES ════ -->
-    <section class="carta-panel" id="panel-sandwiches">
+    <section class="carta-panel" id="panel-sandwiches" role="tabpanel" aria-labelledby="tab-sandwiches" tabindex="0">
       <div class="panel-header">
         <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
         <h2 class="panel-title"><em>Sándwiches</em></h2>
@@ -410,7 +428,7 @@
     </section>
 
     <!-- ════ CREPES, GOFRES & TORTITAS ════ -->
-    <section class="carta-panel" id="panel-crepes">
+    <section class="carta-panel" id="panel-crepes" role="tabpanel" aria-labelledby="tab-crepes" tabindex="0">
       <div class="panel-header">
         <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
         <h2 class="panel-title">Crepes, Gofres <em>&amp; Tortitas</em></h2>
@@ -475,7 +493,7 @@
     </section>
 
     <!-- ════ CAFÉS & BEBIDAS ════ -->
-    <section class="carta-panel" id="panel-cafes">
+    <section class="carta-panel" id="panel-cafes" role="tabpanel" aria-labelledby="tab-cafes" tabindex="0">
       <div class="panel-header">
         <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
         <h2 class="panel-title">Cafés <em>&amp; Bebidas</em></h2>
@@ -509,7 +527,7 @@
     </section>
 
     <!-- ════ CHOCOLATES ESPECIALES ════ -->
-    <section class="carta-panel" id="panel-chocolates">
+    <section class="carta-panel" id="panel-chocolates" role="tabpanel" aria-labelledby="tab-chocolates" tabindex="0">
       <div class="panel-header">
         <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
         <h2 class="panel-title">Chocolates <em>especiales</em></h2>
@@ -528,7 +546,7 @@
     </section>
 
     <!-- ════ TÉS & INFUSIONES ════ -->
-    <section class="carta-panel" id="panel-tes">
+    <section class="carta-panel" id="panel-tes" role="tabpanel" aria-labelledby="tab-tes" tabindex="0">
       <div class="panel-header">
         <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Desayunos</div>
         <h2 class="panel-title">Tés <em>&amp; Infusiones</em></h2>
@@ -543,7 +561,7 @@
     </section>
 
     <!-- ════ PARA COMPARTIR ════ -->
-    <section class="carta-panel" id="panel-compartimos">
+    <section class="carta-panel" id="panel-compartimos" role="tabpanel" aria-labelledby="tab-compartimos" tabindex="0">
       <div class="panel-header">
         <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Comidas</div>
         <h2 class="panel-title">Para <em>compartir</em></h2>
@@ -697,7 +715,7 @@
     </section>
 
     <!-- ════ CON DOS HUEVOS ════ -->
-    <section class="carta-panel" id="panel-huevos">
+    <section class="carta-panel" id="panel-huevos" role="tabpanel" aria-labelledby="tab-huevos" tabindex="0">
       <div class="panel-header">
         <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Comidas</div>
         <h2 class="panel-title">Con <em>dos huevos</em></h2>
@@ -736,7 +754,7 @@
     </section>
 
     <!-- ════ NUESTRAS BRASAS ════ -->
-    <section class="carta-panel" id="panel-brasas">
+    <section class="carta-panel" id="panel-brasas" role="tabpanel" aria-labelledby="tab-brasas" tabindex="0">
       <div class="panel-header">
         <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Comidas</div>
         <h2 class="panel-title">Nuestras <em>brasas</em></h2>
@@ -769,7 +787,7 @@
     </section>
 
     <!-- ════ DULCES ════ -->
-    <section class="carta-panel" id="panel-dulces">
+    <section class="carta-panel" id="panel-dulces" role="tabpanel" aria-labelledby="tab-dulces" tabindex="0">
       <div class="panel-header">
         <div class="panel-eyebrow"><div class="panel-eyebrow-bar"></div>Comidas</div>
         <h2 class="panel-title"><em>Dulces</em></h2>
@@ -917,30 +935,6 @@
 </footer>
 
 <script src="../assets/js/nav.js"></script>
-<script>
-  // ── Sidebar navigation ─────────────────────────────────────
-  const sidebarBtns = document.querySelectorAll('.sidebar-btn');
-  const cartaPanels = document.querySelectorAll('.carta-panel');
-
-  sidebarBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.dataset.panel;
-
-      // Update buttons
-      sidebarBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      // Update panels
-      cartaPanels.forEach(p => p.classList.remove('active'));
-      const activePanel = document.getElementById('panel-' + target);
-      if (activePanel) activePanel.classList.add('active');
-
-      // On mobile: scroll content into view
-      if (window.innerWidth <= 900) {
-        document.querySelector('.carta-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-</script>
+<script src="../assets/js/carta.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
    Depende de: base.css
    ============================================================ */
 
-body { background: #FAF4E8; }
+body { background: var(--arena-alt); }
 
 /* ── ANIMACIONES DE ENTRADA ──────────────────────────────── */
 @keyframes fadeInUp {
@@ -23,7 +23,7 @@ body { background: #FAF4E8; }
 
 /* ── SECCIÓN ─────────────────────────────────────────────── */
 .contacto-section {
-  background: #FAF4E8;
+  background: var(--arena-alt);
   padding: 3.5rem 1.5rem 5rem;
 }
 
@@ -31,8 +31,8 @@ body { background: #FAF4E8; }
 .bento-wrapper {
   max-width: 1060px;
   margin: 0 auto;
-  background: #F5EDE0;
-  border: 1px solid #E8D9C4;
+  background: var(--arena);
+  border: 1px solid var(--hueso);
   border-radius: 16px;
   padding: 12px;
   display: flex;
@@ -55,8 +55,8 @@ body { background: #FAF4E8; }
 
 /* ── CELDA BASE ──────────────────────────────────────────── */
 .bento-cell {
-  background: #fff;
-  border: 1px solid #E8D9C4;
+  background: var(--blanco);
+  border: 1px solid var(--hueso);
   border-radius: 10px;
   padding: 1.3rem 1.4rem;
   box-sizing: border-box;
@@ -64,10 +64,10 @@ body { background: #FAF4E8; }
 
 /* ── LABEL ───────────────────────────────────────────────── */
 .bento-label {
-  font-size: 8px;
+  font-size: 10px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #B8833A;
+  color: var(--dorado);
   font-family: 'Inter', sans-serif;
   margin-bottom: 0.75rem;
   display: flex;
@@ -77,7 +77,7 @@ body { background: #FAF4E8; }
 .bento-label svg {
   width: 13px;
   height: 13px;
-  stroke: #B8833A;
+  stroke: var(--dorado);
   fill: none;
   stroke-width: 2;
   stroke-linecap: round;
@@ -103,13 +103,13 @@ body { background: #FAF4E8; }
   bottom: 10px;
   right: 10px;
   background: rgba(255, 255, 255, 0.92);
-  color: #1A110A;
-  font-size: 9px;
+  color: var(--carbon);
+  font-size: 11px;
   font-family: 'Inter', sans-serif;
   padding: 5px 12px;
   border-radius: 20px;
   text-decoration: none;
-  border: 1px solid #E8D9C4;
+  border: 1px solid var(--hueso);
   box-shadow: 0 1px 6px rgba(26, 17, 10, 0.12);
   display: flex;
   align-items: center;
@@ -121,7 +121,7 @@ body { background: #FAF4E8; }
 .maps-ext-btn svg {
   width: 11px;
   height: 11px;
-  stroke: #B8833A;
+  stroke: var(--dorado);
   fill: none;
   stroke-width: 2;
   stroke-linecap: round;
@@ -139,7 +139,7 @@ body { background: #FAF4E8; }
   font-family: 'Cormorant Garamond', serif;
   font-size: 2.1rem;
   font-weight: 300;
-  color: #1A110A;
+  color: var(--carbon);
   line-height: 1.1;
   flex: 1;
   display: flex;
@@ -147,7 +147,7 @@ body { background: #FAF4E8; }
   justify-content: center;
 }
 .tel-num em {
-  color: #B8833A;
+  color: var(--dorado);
   font-style: italic;
 }
 .tel-btns {
@@ -157,11 +157,11 @@ body { background: #FAF4E8; }
 }
 .btn-llamar {
   background: transparent;
-  color: #6B5C4E;
-  border: 1.5px solid #E8D9C4;
+  color: var(--gris);
+  border: 1.5px solid var(--hueso);
   border-radius: 6px;
   padding: 10px;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   font-family: 'Inter', sans-serif;
@@ -170,15 +170,15 @@ body { background: #FAF4E8; }
   transition: border-color 0.2s, color 0.2s;
   display: block;
 }
-.btn-llamar:hover { border-color: #B8833A; color: #B8833A; }
+.btn-llamar:hover { border-color: var(--dorado); color: var(--dorado); }
 
 .btn-reservar {
-  background: #B8833A;
-  color: #fff;
+  background: var(--dorado);
+  color: var(--blanco);
   border: none;
   border-radius: 6px;
   padding: 10px;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   font-family: 'Inter', sans-serif;
@@ -190,7 +190,7 @@ body { background: #FAF4E8; }
   cursor: pointer;
 }
 .btn-reservar:hover {
-  background: #C9913F;
+  background: var(--dorado-hover);
   transform: translateY(-1px);
 }
 
@@ -199,11 +199,11 @@ body { background: #FAF4E8; }
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.1rem;
   font-weight: 300;
-  color: #1A110A;
+  color: var(--carbon);
   line-height: 1.55;
 }
 .bento-val span {
-  color: #6B5C4E;
+  color: var(--gris);
   font-size: 0.96rem;
 }
 
@@ -219,15 +219,15 @@ body { background: #FAF4E8; }
   align-items: baseline;
   font-size: 12px;
   font-family: 'Inter', sans-serif;
-  color: #6B5C4E;
+  color: var(--gris);
   line-height: 1.9;
 }
 .horario-row strong {
-  color: #1A110A;
+  color: var(--carbon);
   font-weight: 500;
 }
 .horario-row.horario-cena strong {
-  color: #B8833A;
+  color: var(--dorado);
 }
 
 /* ── CELDA INSTAGRAM ─────────────────────────────────────── */
@@ -237,14 +237,14 @@ body { background: #FAF4E8; }
 }
 .ig-tagline {
   font-size: 12px;
-  color: #6B5C4E;
+  color: var(--gris);
   font-family: 'Inter', sans-serif;
   line-height: 1.65;
   margin: 0 0 auto;
   padding-bottom: 1rem;
 }
 .ig-link {
-  color: #B8833A;
+  color: var(--dorado);
   font-size: 12px;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
@@ -258,7 +258,7 @@ body { background: #FAF4E8; }
 .ig-link svg {
   width: 14px;
   height: 14px;
-  stroke: #B8833A;
+  stroke: var(--dorado);
   fill: none;
   stroke-width: 2;
   stroke-linecap: round;

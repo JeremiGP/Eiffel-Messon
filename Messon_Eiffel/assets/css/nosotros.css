@@ -75,7 +75,7 @@
 }
 .pilar-desc {
   font-size: 0.86rem;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.6);
   line-height: 1.75;
 }
 
@@ -111,7 +111,7 @@
 .cita-autor {
   font-size: 0.72rem; letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.6);
   font-style: normal; position: relative;
 }
 
@@ -136,7 +136,7 @@
 .nos-stat-label {
   font-size: 0.72rem; letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.6);
   display: block; line-height: 1.5;
 }
 
@@ -261,7 +261,7 @@
 .nos-cta .section-h { color: #fff; margin-bottom: 0; }
 .nos-cta p {
   font-size: 0.95rem;
-  color: rgba(255,255,255,0.45); line-height: 1.75;
+  color: rgba(255,255,255,0.6); line-height: 1.75;
 }
 
 /* ── RESPONSIVE ──────────────────────────────────────────── */

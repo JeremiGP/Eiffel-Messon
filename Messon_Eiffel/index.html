@@ -6,20 +6,74 @@
   <meta name="description" content="Mesón Cafetería de Eiffel — Cocina andaluza, desayunos y brasas en Motril, Granada. Reserva tu mesa online.">
   <meta name="keywords" content="meson, cafeteria, eiffel, motril, granada, desayunos, brasas, reservas">
   <meta name="author" content="Mesón Cafetería de Eiffel">
+  <link rel="canonical" href="https://mesoncafeteriadeeiffel.es/">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Mesón Cafetería de Eiffel">
-  <meta property="og:description" content="Cocina andaluza de siempre en Motril. Desayunos, tapas y brasas.">
+  <meta property="og:site_name" content="Mesón Cafetería de Eiffel">
+  <meta property="og:title" content="Mesón Cafetería de Eiffel — Motril, Granada">
+  <meta property="og:description" content="Cocina andaluza de siempre en Motril. Desayunos, tapas y brasas. Reserva tu mesa online.">
   <meta property="og:type" content="restaurant">
+  <meta property="og:url" content="https://mesoncafeteriadeeiffel.es/">
+  <meta property="og:image" content="https://mesoncafeteriadeeiffel.es/assets/img/hero.jpg">
+  <meta property="og:image:width" content="1920">
+  <meta property="og:image:height" content="1080">
+  <meta property="og:locale" content="es_ES">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Mesón Cafetería de Eiffel — Motril, Granada">
+  <meta name="twitter:description" content="Cocina andaluza de siempre en Motril. Desayunos, tapas y brasas.">
+  <meta name="twitter:image" content="https://mesoncafeteriadeeiffel.es/assets/img/hero.jpg">
 
   <title>Mesón Cafetería de Eiffel – Motril, Granada</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- La imagen del overlay de intro es lo primero visible (LCP) -->
+  <link rel="preload" as="image" href="assets/img/intro.jpg">
 
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/home.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "Mesón Cafetería de Eiffel",
+    "image": "https://mesoncafeteriadeeiffel.es/assets/img/hero.jpg",
+    "url": "https://mesoncafeteriadeeiffel.es/",
+    "telephone": "+34958872424",
+    "servesCuisine": "Andaluza",
+    "priceRange": "€€",
+    "menu": "https://mesoncafeteriadeeiffel.es/pages/carta.html",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "C/ Rio Mundo, Local 2",
+      "addressLocality": "Motril",
+      "addressRegion": "Granada",
+      "postalCode": "18600",
+      "addressCountry": "ES"
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "08:00",
+        "closes": "16:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "20:00",
+        "closes": "00:00"
+      }
+    ],
+    "sameAs": ["https://www.instagram.com/meson_cafeteria_de_eiffel"]
+  }
+  </script>
 </head>
 <body>
 
@@ -38,13 +92,12 @@
 <nav id="nav">
   <a href="index.html" class="nav-logo">Mesón <span>de Eiffel</span></a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="index.html" class="nav-link-home">Mesón <em>de Eiffel</em></a></li>
     <li><a href="pages/nosotros.html">Nosotros</a></li>
     <li><a href="pages/carta.html">Carta</a></li>
     <li><a href="pages/reservas.html">Reservas</a></li>
     <li><a href="pages/contacto.html">Contacto</a></li>
   </ul>
-  <button class="nav-toggle" id="navToggle" aria-label="Menú">
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -68,55 +121,6 @@
   </div>
 </section>
 
-
-<!-- ── ACCESOS ── -->
-<section class="home-accesos">
-  <div class="eyebrow reveal"><div class="eyebrow-bar"></div>Explora el mesón</div>
-
-  <div class="accesos-grid">
-
-    <a href="pages/nosotros.html" class="acceso-card reveal">
-      <div class="acceso-ico">
-        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      </div>
-      <div class="acceso-tag">Quiénes somos</div>
-      <div class="acceso-title display">Nosotros</div>
-      <div class="acceso-desc">Un rincón de Motril con alma andaluza y producto de temporada.</div>
-      <span class="acceso-link">Conocernos →</span>
-    </a>
-
-    <a href="pages/carta.html" class="acceso-card reveal">
-      <div class="acceso-ico">
-        <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-      </div>
-      <div class="acceso-tag">Lo que cocinamos</div>
-      <div class="acceso-title display">Carta</div>
-      <div class="acceso-desc">Desayunos, tostadas, brasas, dulces y la carta completa.</div>
-      <span class="acceso-link">Ver carta →</span>
-    </a>
-
-    <a href="pages/reservas.html" class="acceso-card reveal">
-      <div class="acceso-ico">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      </div>
-      <div class="acceso-tag">Tu mesa te espera</div>
-      <div class="acceso-title display">Reservas</div>
-      <div class="acceso-desc">Elige día, hora y cuántos venís. Confirmamos en menos de una hora.</div>
-      <span class="acceso-link">Reservar →</span>
-    </a>
-
-    <a href="pages/contacto.html" class="acceso-card reveal">
-      <div class="acceso-ico">
-        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      </div>
-      <div class="acceso-tag">Dónde estamos</div>
-      <div class="acceso-title display">Contacto</div>
-      <div class="acceso-desc">Dirección, teléfono, horarios e Instagram.</div>
-      <span class="acceso-link">Cómo llegar →</span>
-    </a>
-
-  </div>
-</section>
 
 <!-- ── FOOTER ── -->
 <footer>

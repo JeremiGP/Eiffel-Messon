@@ -3,7 +3,7 @@
    Depende de: base.css
    ============================================================ */
 
-body { background: #FAF4E8; }
+body { background: var(--arena-alt); }
 
 /* ── ANIMACIONES DE ENTRADA ──────────────────────────────── */
 @keyframes fadeInUp {
@@ -22,14 +22,14 @@ body { background: #FAF4E8; }
 
 /* ── SECCIÓN ─────────────────────────────────────────────── */
 .reservas-section {
-  background: #FAF4E8;
+  background: var(--arena-alt);
   padding: 3.5rem 1.5rem 5rem;
 }
 
 /* ── CARD CONTENEDORA ────────────────────────────────────── */
 .reserva-card {
-  background: #fff;
-  border: 1.5px solid #E8D9C4;
+  background: var(--blanco);
+  border: 1.5px solid var(--hueso);
   border-radius: 16px;
   padding: 2.5rem 2.8rem;
   max-width: 560px;
@@ -58,15 +58,15 @@ body { background: #FAF4E8; }
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: #fff;
-  border: 1.5px solid #E8D9C4;
+  background: var(--blanco);
+  border: 1.5px solid var(--hueso);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Inter', sans-serif;
   font-size: 13px;
   font-weight: 500;
-  color: #C8B490;
+  color: var(--gris);
   transition: background 0.3s, border-color 0.3s, color 0.3s;
 }
 
@@ -74,7 +74,7 @@ body { background: #FAF4E8; }
   display: none;
   width: 16px;
   height: 16px;
-  stroke: #B8833A;
+  stroke: var(--dorado);
   fill: none;
   stroke-width: 2.5;
   stroke-linecap: round;
@@ -83,33 +83,33 @@ body { background: #FAF4E8; }
 
 /* Estados */
 .step-item.active .step-circle {
-  background: #B8833A;
-  border-color: #B8833A;
-  color: #fff;
+  background: var(--dorado);
+  border-color: var(--dorado);
+  color: var(--blanco);
 }
 .step-item.done .step-circle {
   background: rgba(184,131,58,0.1);
-  border-color: #B8833A;
+  border-color: var(--dorado);
 }
 .step-item.done .step-num  { display: none; }
 .step-item.done .step-ico  { display: block; }
 
 .step-label {
-  font-size: 8px;
+  font-size: 10px;
   letter-spacing: 0.11em;
   text-transform: uppercase;
-  color: #C8B490;
+  color: var(--gris);
   font-family: 'Inter', sans-serif;
   text-align: center;
   transition: color 0.3s;
 }
-.step-item.active .step-label { color: #B8833A; font-weight: 500; }
+.step-item.active .step-label { color: var(--dorado); font-weight: 500; }
 .step-item.done  .step-label  { color: rgba(184,131,58,0.65); }
 
 .step-line {
   flex: 1;
   height: 1px;
-  background: #E8D9C4;
+  background: var(--hueso);
   margin-top: 21px;
   transition: background 0.4s;
 }
@@ -139,32 +139,32 @@ body { background: #FAF4E8; }
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(1.5rem, 3vw, 1.85rem);
   font-weight: 300;
-  color: #1A110A;
+  color: var(--carbon);
   margin: 0 0 1.4rem;
   line-height: 1.15;
 }
-.step-title em { color: #B8833A; font-style: italic; }
+.step-title em { color: var(--dorado); font-style: italic; }
 
 /* ── CAMPOS ──────────────────────────────────────────────── */
 .ff { display: flex; flex-direction: column; gap: 6px; }
 .ff label {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #6B5C4E;
+  color: var(--gris);
   font-family: 'Inter', sans-serif;
 }
 .ff input,
 .ff select,
 .ff textarea {
-  background: #fff;
-  border: 1.5px solid #E8D9C4;
+  background: var(--blanco);
+  border: 1.5px solid var(--hueso);
   border-radius: 8px;
   padding: 13px 15px;
   font-family: 'Inter', sans-serif;
   font-size: 0.88rem;
   font-weight: 300;
-  color: #1A110A;
+  color: var(--carbon);
   outline: none;
   width: 100%;
   box-sizing: border-box;
@@ -175,11 +175,20 @@ body { background: #FAF4E8; }
 .ff input:focus,
 .ff select:focus,
 .ff textarea:focus {
-  border-color: #B8833A;
+  border-color: var(--dorado);
   box-shadow: 0 0 0 3px rgba(184,131,58,0.1);
 }
-.ff select option { background: #fff; color: #1A110A; }
+.ff select option { background: var(--blanco); color: var(--carbon); }
 .ff textarea { resize: vertical; min-height: 120px; }
+
+/* ── MENSAJES DE ERROR DE VALIDACIÓN ─────────────────────── */
+.field-error {
+  font-size: 12px;
+  color: rgb(184,80,50); /* mismo tono que el borde de error ya usado en el wizard */
+  margin-top: 2px;
+  line-height: 1.4;
+}
+#personasSelector-error { margin-top: 8px; }
 
 .ff-grid {
   display: grid;
@@ -200,30 +209,30 @@ body { background: #FAF4E8; }
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: #fff;
-  border: 1.5px solid #E8D9C4;
+  background: var(--blanco);
+  border: 1.5px solid var(--hueso);
   font-family: 'Inter', sans-serif;
   font-size: 13px;
   font-weight: 400;
-  color: #1A110A;
+  color: var(--carbon);
   cursor: pointer;
   transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.persona-btn:hover { border-color: #B8833A; color: #B8833A; }
+.persona-btn:hover { border-color: var(--dorado); color: var(--dorado); }
 .persona-btn.active {
-  background: #B8833A;
-  border-color: #B8833A;
-  color: #fff;
+  background: var(--dorado);
+  border-color: var(--dorado);
+  color: var(--blanco);
   transform: scale(1.1);
 }
 .persona-btn.wide {
   width: auto;
   border-radius: 22px;
   padding: 0 13px;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.04em;
 }
 
@@ -239,33 +248,33 @@ body { background: #FAF4E8; }
 
 .btn-prev {
   background: transparent;
-  border: 1.5px solid #E8D9C4;
+  border: 1.5px solid var(--hueso);
   border-radius: 6px;
   padding: 11px 20px;
   font-family: 'Inter', sans-serif;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #6B5C4E;
+  color: var(--gris);
   cursor: pointer;
   transition: border-color 0.2s, color 0.2s;
   display: flex;
   align-items: center;
   gap: 6px;
 }
-.btn-prev:hover { border-color: #B8833A; color: #B8833A; }
+.btn-prev:hover { border-color: var(--dorado); color: var(--dorado); }
 
 .btn-next {
-  background: #1A110A;
+  background: var(--carbon);
   border: none;
   border-radius: 6px;
   padding: 13px 30px;
   font-family: 'Inter', sans-serif;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.17em;
   text-transform: uppercase;
   font-weight: 500;
-  color: #D4A55A;
+  color: var(--dorado-cl);
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
   display: flex;
@@ -273,26 +282,26 @@ body { background: #FAF4E8; }
   gap: 8px;
 }
 .btn-next:hover {
-  background: #2A1A0E;
+  background: var(--carbon-cl);
   transform: translateY(-1px);
 }
 
 .btn-submit {
-  background: #B8833A;
+  background: var(--dorado);
   border: none;
   border-radius: 6px;
   padding: 13px 30px;
   font-family: 'Inter', sans-serif;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   font-weight: 500;
-  color: #fff;
+  color: var(--blanco);
   cursor: pointer;
   transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 .btn-submit:hover {
-  background: #C9913F;
+  background: var(--dorado-hover);
   transform: translateY(-1px);
   box-shadow: 0 8px 24px rgba(184,131,58,0.35);
 }
@@ -300,14 +309,14 @@ body { background: #FAF4E8; }
 
 /* ── AVISO ───────────────────────────────────────────────── */
 .form-aviso {
-  font-size: 11px;
-  color: #6B5C4E;
+  font-size: 12px;
+  color: var(--gris);
   text-align: center;
   margin: 1.2rem 0 0;
   line-height: 1.65;
 }
 .form-aviso a {
-  color: #B8833A;
+  color: var(--dorado);
   text-decoration: none;
   font-weight: 500;
 }
@@ -328,7 +337,7 @@ body { background: #FAF4E8; }
   height: 70px;
   border-radius: 50%;
   background: rgba(184,131,58,0.1);
-  border: 2px solid #B8833A;
+  border: 2px solid var(--dorado);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -337,17 +346,17 @@ body { background: #FAF4E8; }
 .confirmado-ico svg {
   width: 30px;
   height: 30px;
-  stroke: #B8833A;
+  stroke: var(--dorado);
   fill: none;
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 .confirmado-eyebrow {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #B8833A;
+  color: var(--dorado);
   margin: 0 0 0.5rem;
   font-family: 'Inter', sans-serif;
 }
@@ -355,19 +364,19 @@ body { background: #FAF4E8; }
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.9rem;
   font-weight: 300;
-  color: #1A110A;
+  color: var(--carbon);
   margin: 0 0 0.7rem;
   line-height: 1.2;
 }
 .confirmado-sub {
   font-size: 0.84rem;
-  color: #6B5C4E;
+  color: var(--gris);
   line-height: 1.75;
   margin: 0 0 1.5rem;
 }
 .confirmado-tel {
   font-size: 1.1rem;
-  color: #B8833A;
+  color: var(--dorado);
   font-weight: 500;
   letter-spacing: 0.04em;
 }

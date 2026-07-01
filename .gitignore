@@ -1,0 +1,14 @@
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Configuración con claves privadas (Supabase, etc.)
+**/assets/js/config.js
+.env
+.env.*
+
+# Editores
+.idea/
+
+# Dependencias (por si se añade tooling en el futuro)
+node_modules/
