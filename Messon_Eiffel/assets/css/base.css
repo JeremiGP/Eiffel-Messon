@@ -26,13 +26,29 @@
 
 html { scroll-behavior: smooth; }
 
+/* Blindaje anti-desbordamiento horizontal en TODO el sitio */
+html, body { max-width: 100%; overflow-x: hidden; }
+
 body {
   font-family: 'Inter', sans-serif;
   font-weight: 300;
   background: var(--crema);
   color: var(--carbon);
-  overflow-x: hidden;
-  line-height: 1;
+  /* 1.5 en lugar de 1: los textos ya no se pegan ni se cortan */
+  line-height: 1.5;
+}
+
+/* Los medios nunca deben ser más anchos que su contenedor */
+img, svg, video, iframe { max-width: 100%; }
+
+/* Los textos largos (emails, URLs) parten en vez de desbordar */
+p, li, td, a { overflow-wrap: break-word; }
+
+/* Pista visual de foco para navegación con teclado */
+a:focus-visible, button:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--dorado-cl);
+  outline-offset: 3px;
 }
 
 /* ── TIPOGRAFÍA BASE ──────────────────────────────────────── */
@@ -138,7 +154,8 @@ nav.scrolled {
 
 /* ── BOTONES ─────────────────────────────────────────────── */
 .btn {
-  display: inline-flex; align-items: center; gap: 0.6rem;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+  text-align: center;
   text-decoration: none; font-size: 0.72rem; letter-spacing: 0.16em;
   text-transform: uppercase; cursor: pointer; border: none;
   font-family: 'Inter', sans-serif; font-weight: 400;
@@ -274,10 +291,20 @@ footer { background: var(--carbon); padding: 0; }
     display: none; flex-direction: column;
     position: absolute; top: 100%; left: 0; right: 0;
     background: rgba(26,17,10,0.97);
-    padding: 2rem 1.5rem; gap: 1.5rem;
+    padding: 1rem 1.5rem 1.5rem; gap: 0;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+    border-top: 1px solid rgba(184,131,58,0.25);
   }
-  .nav-links.open { display: flex; }
+  .nav-links.open { display: flex; animation: menuIn 0.25s ease; }
+  /* Enlaces con más área táctil y separadores sutiles como guía */
+  .nav-links li { border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .nav-links li:last-child { border-bottom: none; }
+  .nav-links a { display: block; padding: 1rem 0.25rem; font-size: 0.78rem; }
   .nav-toggle { display: flex; }
+  @keyframes menuIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
   .page-hero { padding: 6rem 1.5rem 3rem; min-height: 220px; }
   footer { padding: 0; }
   .footer-inner { padding: 4rem 1.5rem 2rem; }

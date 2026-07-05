@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <!-- La imagen del overlay de intro es lo primero visible (LCP) -->
-  <link rel="preload" as="image" href="assets/img/intro.jpg">
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1709548145082-04d0cde481d4?auto=format&fit=crop&w=1920&h=1080&q=80">
 
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/home.css">
@@ -185,8 +185,15 @@
       return;
     }
 
+    // Mientras la intro está visible, la página de detrás NO debe
+    // poder deslizarse (evita entrar "desubicado" a mitad de página)
+    document.body.classList.add('intro-bloqueada');
+
     btn.addEventListener('click', function () {
       sessionStorage.setItem('intro_visto', '1');
+
+      // Reset de posición: al entrar, la página empieza arriba del todo
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
       // Fase 1: contenido se desvanece (0 → 0.38s)
       // Fase 2: cortina sube (0.2s → 1.1s)
@@ -195,6 +202,8 @@
       // Tras completarse la animación de la cortina → retirar del DOM
       setTimeout(function () {
         overlay.classList.add('oculto');
+        document.body.classList.remove('intro-bloqueada');
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       }, 1150);
     });
   })();

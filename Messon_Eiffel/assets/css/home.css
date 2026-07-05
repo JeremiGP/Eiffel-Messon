@@ -7,13 +7,17 @@
 .hero {
   position: relative;
   height: 100vh; min-height: 680px;
+  /* svh = altura real visible en móvil (evita saltos por la barra
+     de URL y que el contenido quede cortado bajo el borde) */
+  height: 100svh;
   display: flex; align-items: flex-end;
   padding-bottom: 8vh;
   overflow: hidden;
 }
 .hero-bg {
   position: absolute; inset: 0;
-  background-image: url('../img/hero.jpg');
+  /* Foto: brasas y carne a la parrilla — Unsplash (licencia libre) */
+  background-image: url('https://images.unsplash.com/photo-1508615263227-c5d58c1e5821?auto=format&fit=crop&w=1920&h=1080&q=80');
   background-size: cover; background-position: center 40%;
   animation: hero-in 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -46,12 +50,16 @@
   text-transform: uppercase; color: rgba(255,255,255,0.6);
 }
 h1.hero-title {
-  font-size: clamp(3.5rem, 8vw, 7rem); color: #fff;
+  /* mínimo 2.5rem: en pantallas de 320–400px el anterior (3.5rem)
+     rompía la línea y rozaba el borde */
+  font-size: clamp(2.5rem, 8vw, 7rem); color: #fff;
   margin-bottom: 2.5rem; opacity: 0;
   animation: rise 1s 0.85s cubic-bezier(0.16,1,0.3,1) forwards;
 }
 .hero-actions {
-  display: flex; gap: 1.5rem; align-items: center; opacity: 0;
+  display: flex; gap: 1rem 1.5rem; align-items: center;
+  flex-wrap: wrap; /* los botones bajan de línea en vez de desbordar */
+  opacity: 0;
   animation: rise 1s 1.05s cubic-bezier(0.16,1,0.3,1) forwards;
 }
 @keyframes rise {
@@ -92,7 +100,8 @@ h1.hero-title {
 .intro-overlay {
   position: fixed; inset: 0; z-index: 9999;
   background-color: var(--carbon);
-  background-image: url('../img/intro.jpg');
+  /* Foto: sala de restaurante con luz tenue — Unsplash (licencia libre) */
+  background-image: url('https://images.unsplash.com/photo-1709548145082-04d0cde481d4?auto=format&fit=crop&w=1920&h=1080&q=80');
   background-size: cover;
   background-position: center;
   display: flex; align-items: center; justify-content: center;
@@ -107,6 +116,9 @@ h1.hero-title {
 .intro-inner { position: relative; z-index: 1; }
 /* Estado final: invisible y fuera del DOM de eventos */
 .intro-overlay.oculto { display: none; }
+
+/* Mientras la intro está visible, la página de detrás no se desliza */
+body.intro-bloqueada { overflow: hidden; height: 100vh; }
 
 /* ── Salida: 2 fases ────────────────────────────────────── */
 /* Fase 1 (0 → 0.35s): el contenido se desvanece hacia arriba  */
@@ -156,7 +168,7 @@ h1.hero-title {
 }
 .intro-nombre {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(3.5rem, 10vw, 6.5rem);
+  font-size: clamp(2.6rem, 10vw, 6.5rem); /* no desborda en 320px */
   font-weight: 300; color: var(--crema);
   line-height: 1; margin: 0.5rem 0;
 }
@@ -184,12 +196,20 @@ h1.hero-title {
 
 /* ── RESPONSIVE ──────────────────────────────────────────── */
 @media (max-width: 900px) {
+  .hero { min-height: 560px; padding-bottom: 12vh; }
   .hero-content { padding: 0 1.5rem; }
   .info-strip   { grid-template-columns: 1fr; }
   .info-item {
     border-right: none;
     border-bottom: 1px solid rgba(255,255,255,0.06);
   }
+}
+
+@media (max-width: 480px) {
+  /* Botones del hero a ancho completo: más fáciles de pulsar */
+  .hero-actions { width: 100%; }
+  .hero-actions .btn { flex: 1 1 100%; justify-content: center; text-align: center; }
+  .intro-btn { padding: 1rem 2rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

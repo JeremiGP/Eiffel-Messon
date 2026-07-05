@@ -3,6 +3,21 @@
    Incluir en TODAS las páginas
    ============================================================ */
 
+// ── RESET DE SCROLL ───────────────────────────────────────────
+// El navegador restaura la posición de scroll anterior al navegar
+// o volver atrás → el usuario "aparece" abajo. Lo desactivamos y
+// forzamos que cada vista empiece SIEMPRE arriba del todo.
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+// behavior:'instant' evita que scroll-behavior:smooth anime el reset
+window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
+// También al restaurar desde la caché de atrás/adelante (bfcache)
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+});
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // ── NAV SCROLL ──────────────────────────────────────────────

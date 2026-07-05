@@ -100,8 +100,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     currentStep = n;
-    document.querySelector('.reserva-card')
-      .scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Reset de posición al cambiar de paso, dejando hueco para el
+    // nav fijo (scrollIntoView metía la card debajo del menú)
+    const card = document.querySelector('.reserva-card');
+    if (card) {
+      const navH = document.getElementById('nav')?.offsetHeight || 70;
+      const top  = card.getBoundingClientRect().top + window.scrollY - navH - 12;
+      window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+    }
   }
 
   // ── Validaciones por paso ─────────────────────────────────

@@ -11,6 +11,81 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!sidebarBtns.length) return;
 
+  // ── DRAWER DE CATEGORÍAS (solo <900px) ─────────────────────
+  const drawerToggle = document.getElementById('drawerToggle');
+  const sidebar      = document.getElementById('cartaSidebar');
+  const backdrop     = document.getElementById('cartaBackdrop');
+
+  function setDrawer(open) {
+    if (!drawerToggle || !sidebar || !backdrop) return;
+    sidebar.classList.toggle('open', open);
+    drawerToggle.classList.toggle('open', open);
+    backdrop.classList.toggle('visible', open);
+    document.body.classList.toggle('drawer-abierto', open);
+    drawerToggle.setAttribute('aria-expanded', String(open));
+    drawerToggle.setAttribute('aria-label', open ? 'Cerrar categorías' : 'Abrir categorías');
+  }
+
+  if (drawerToggle && sidebar && backdrop) {
+    // Flechita: abre / minimiza
+    drawerToggle.addEventListener('click', () => {
+      setDrawer(!sidebar.classList.contains('open'));
+    });
+    // Tocar fuera: cierra
+    backdrop.addEventListener('click', () => setDrawer(false));
+    // Escape: cierra
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+        setDrawer(false);
+        drawerToggle.focus();
+      }
+    });
+    // Si se pasa a escritorio con el drawer abierto, limpiar estado
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) setDrawer(false);
+    });
+  }
+
+  // ── SELECTOR INICIAL DE APARTADOS (solo <900px) ─────────────
+  // Cada visita a la carta empieza con la pantalla de tarjetas.
+  // La flechita del drawer no aparece hasta elegir un apartado.
+  const selector = document.getElementById('cartaSelector');
+
+  function cerrarSelector() {
+    if (!selector) return;
+    selector.classList.add('oculto');
+    document.body.classList.remove('selector-abierto');
+    document.body.classList.add('carta-iniciada'); // ← habilita la flechita
+  }
+
+  if (selector) {
+    if (window.innerWidth <= 900) {
+      // Bloquear el scroll de fondo mientras se elige
+      document.body.classList.add('selector-abierto');
+    } else {
+      // Escritorio: el selector no participa
+      selector.classList.add('oculto');
+      document.body.classList.add('carta-iniciada');
+    }
+
+    selector.querySelectorAll('.selector-card').forEach(card => {
+      card.addEventListener('click', () => {
+        cerrarSelector();
+        const btn = sidebarBtns.find(b => b.dataset.panel === card.dataset.panel);
+        if (btn) activar(btn);
+        // Entrar directamente arriba del contenido, sin animación
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      });
+    });
+
+    // Si la ventana pasa a escritorio, retirar el selector
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900 && !selector.classList.contains('oculto')) {
+        cerrarSelector();
+      }
+    });
+  }
+
   function activar(btn, { moverFoco = false } = {}) {
     const target = btn.dataset.panel;
 
@@ -28,9 +103,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const activePanel = document.getElementById('panel-' + target);
     if (activePanel) activePanel.classList.add('active');
 
-    // En móvil: llevar el contenido a la vista
-    if (window.innerWidth <= 900) {
-      document.querySelector('.carta-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Al elegir categoría en móvil: minimizar el drawer
+    if (window.innerWidth <= 900) setDrawer(false);
+
+    // Reset de posición: al cambiar de sección, subir al inicio del
+    // contenido (en TODAS las resoluciones — antes solo en móvil, y en
+    // escritorio el usuario quedaba "perdido" a mitad de la lista).
+    const layout = document.querySelector('.carta-layout');
+    if (layout) {
+      const navH = document.getElementById('nav')?.offsetHeight || 70;
+      const top  = layout.getBoundingClientRect().top + window.scrollY - navH;
+      window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
     }
   }
 

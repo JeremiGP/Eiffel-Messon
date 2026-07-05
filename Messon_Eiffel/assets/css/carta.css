@@ -472,67 +472,219 @@ body { background: var(--carta-content-bg); }
 }
 .leyenda-aviso strong { color: var(--dorado-cl); }
 
+/* ── FLECHITA, BACKDROP Y SELECTOR (ocultos en escritorio) ───── */
+.drawer-toggle  { display: none; }
+.carta-backdrop { display: none; }
+.carta-selector { display: none; }
+
 /* ── RESPONSIVE (< 900px) ────────────────────────────────────── */
 @media (max-width: 900px) {
-  /* En móvil: layout vertical (columna única) */
+  /* En móvil: columna única; el sidebar pasa a drawer lateral */
   .carta-layout {
     flex-direction: column;
   }
 
+  /* ── DRAWER: mismo aspecto vertical que en escritorio, pero
+     desplegable desde el borde izquierdo ── */
   .carta-sidebar {
-    width: 100%;
-    position: relative;
-    top: 0;
-    height: auto;
-    overflow-x: auto;
-    overflow-y: visible;
-    border-right: none;
-    border-bottom: 1px solid var(--carta-sidebar-bd);
+    position: fixed;
+    /* Anclado arriba Y abajo: la altura la dan los anclajes, así el
+       color llega SIEMPRE hasta el fondo de la pantalla */
+    top: 0; left: 0; bottom: 0;
+    height: auto;                       /* anula el calc() de escritorio */
+    min-height: 100%;
+    width: min(300px, 84vw);
+    z-index: 300;                       /* por encima del nav (200) */
+    transform: translateX(-100%);       /* oculto fuera de pantalla */
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+    border-right: 1px solid var(--carta-sidebar-bd);
+  }
+  .carta-sidebar.open {
+    transform: translateX(0);
+    box-shadow: 12px 0 44px rgba(0,0,0,0.45);
   }
 
-  .sidebar-head { padding: 1.4rem 1.2rem 1rem; }
-  .sidebar-title { font-size: 1.05rem; }
+  .sidebar-head { padding: 1.6rem 1.5rem 1.2rem; }
+  .sidebar-title { font-size: 1.15rem; }
 
-  /* Nav horizontal con scroll */
-  .sidebar-nav {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 0;
-    scrollbar-width: none;
+  /* ── FONDO OSCURECIDO ── */
+  .carta-backdrop {
+    display: block;
+    position: fixed; inset: 0;
+    z-index: 290;
+    background: rgba(26,17,10,0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
   }
-  .sidebar-nav::-webkit-scrollbar { display: none; }
+  .carta-backdrop.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
 
-  /* Los grupos quedan aplanados (sus hijos van directo al flex row) */
-  .sidebar-group { display: contents; }
-  .sidebar-group-label { display: none; }
+  /* ── SELECTOR INICIAL DE APARTADOS ─────────────────────────
+     Pantalla completa al entrar en la carta. Debajo del nav
+     (z-index 150 < 200) para poder salir de la página. ── */
+  .carta-selector {
+    display: block;
+    position: fixed; inset: 0;
+    z-index: 150;
+    background:
+      linear-gradient(160deg, rgba(92,51,23,0.25) 0%, transparent 55%),
+      var(--carta-sidebar-bg);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  .carta-selector.oculto {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .selector-inner {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 6.5rem 1.5rem 3rem;   /* deja hueco al nav fijo */
+  }
+  .selector-eyebrow {
+    display: flex; align-items: center; gap: 0.8rem;
+    font-size: 0.62rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--dorado);
+    margin-bottom: 0.8rem;
+    animation: selIn 0.6s 0.1s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .selector-eyebrow span { width: 28px; height: 1px; background: var(--dorado); flex-shrink: 0; }
+  .selector-title {
+    font-size: clamp(2.4rem, 9vw, 3.4rem);
+    color: #fff;
+    margin-bottom: 0.4rem;
+    animation: selIn 0.6s 0.2s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .selector-sub {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 2rem;
+    animation: selIn 0.6s 0.3s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .selector-label {
+    display: flex; align-items: center; gap: 0.7rem;
+    font-size: 0.58rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--dorado);
+    margin: 1.6rem 0 0.8rem;
+    animation: selIn 0.6s 0.35s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .selector-label span { flex: 1; height: 1px; background: var(--carta-sidebar-bd); }
+  .selector-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  /* Tarjeta de apartado: entra con animación escalonada (--i) */
+  .selector-card {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 0.55rem;
+    min-height: 86px;
+    padding: 1rem 0.6rem 0.9rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(184,131,58,0.22);
+    border-radius: 10px;
+    color: rgba(255,255,255,0.85);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem; font-weight: 300;
+    letter-spacing: 0.05em;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0;
+    animation: cardIn 0.55s cubic-bezier(0.16,1,0.3,1) forwards;
+    animation-delay: calc(var(--i) * 55ms + 0.4s);
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  }
+  .selector-card:hover,
+  .selector-card:focus-visible {
+    border-color: var(--dorado);
+    background: rgba(184,131,58,0.12);
+  }
+  .selector-card:active { transform: scale(0.97); }
+  .selector-card svg {
+    width: 22px; height: 22px;
+    stroke: var(--dorado-cl); fill: none;
+    stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+  }
+  @keyframes selIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(14px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
 
-  .sidebar-btn {
-    flex-shrink: 0;
-    white-space: nowrap;
-    padding: 0.85rem 1rem;
-    font-size: 0.72rem;
+  /* Mientras el selector está en pantalla, la página no se desliza */
+  body.selector-abierto { overflow: hidden; }
+
+  /* ── FLECHITA: fija en el borde izquierdo, a media altura.
+     Oculta hasta que el usuario elige su primer apartado ── */
+  .drawer-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 310;                       /* por encima del drawer */
+    width: 34px; height: 68px;
+    background: var(--carta-sidebar-bg);
+    color: var(--dorado-cl);
+    border: 1px solid var(--carta-sidebar-bd);
     border-left: none;
-    border-bottom: 2px solid transparent;
-    border-top: none;
-    border-right: none;
+    border-radius: 0 10px 10px 0;
+    cursor: pointer;
+    box-shadow: 4px 0 16px rgba(0,0,0,0.28);
+    transition: left 0.35s cubic-bezier(0.16,1,0.3,1), background 0.2s;
+    /* pulso sutil para que se note que es interactiva */
+    animation: togglePulse 2.4s ease-in-out 3;
   }
-  .sidebar-btn.active {
-    border-left: none;
-    border-bottom-color: var(--dorado);
-    background: rgba(184,131,58,0.08);
+  .drawer-toggle svg {
+    width: 18px; height: 18px;
+    transition: transform 0.35s ease;
   }
-  .sidebar-btn-ico { display: none; }
+  /* La flechita solo existe una vez elegido el primer apartado */
+  body.carta-iniciada .drawer-toggle { display: flex; }
+
+  /* Abierto: la flechita viaja pegada al borde del panel y gira */
+  .drawer-toggle.open { left: min(300px, 84vw); animation: none; }
+  .drawer-toggle.open svg { transform: rotate(180deg); }
+
+  @keyframes togglePulse {
+    0%, 100% { box-shadow: 4px 0 16px rgba(0,0,0,0.28); }
+    50%      { box-shadow: 4px 0 22px rgba(212,165,90,0.55); }
+  }
+
+  /* Con el drawer abierto, la página de detrás no se desliza */
+  body.drawer-abierto { overflow: hidden; }
 
   .carta-content { padding: 2rem 1.2rem 2.5rem; }
   .carta-bridge  { padding: 2rem 1.2rem 2.5rem; }
   .panel-title { font-size: 1.7rem; }
   .platos-grid { grid-template-columns: 1fr; }
   .cafe-grid   { grid-template-columns: 1fr; }
-  .leyenda-tabla { border-spacing: 0.3rem; }
-  .leyenda-tabla td { min-width: 60px; padding: 0.55rem 0.4rem; }
+
+  /* La tabla de alérgenos (7 columnas) desbordaba en móvil:
+     se convierte en rejilla fluida que envuelve sin scroll lateral */
+  .leyenda-tabla,
+  .leyenda-tabla tbody { display: block; width: 100%; }
+  .leyenda-tabla tr {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 0.35rem; margin-bottom: 0.35rem;
+  }
+  .leyenda-tabla td {
+    flex: 1 1 calc(25% - 0.35rem);
+    min-width: 74px; max-width: 110px;
+    padding: 0.55rem 0.3rem;
+  }
   .leyenda-tabla td img { width: 24px; height: 24px; }
   .leyenda-tabla td span { font-size: 0.6rem; }
+
   .tostadas-table td { font-size: 0.78rem; padding: 0.6rem 0.7rem; }
 }

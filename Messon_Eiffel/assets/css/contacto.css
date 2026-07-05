@@ -60,6 +60,11 @@ body { background: var(--arena-alt); }
   border-radius: 10px;
   padding: 1.3rem 1.4rem;
   box-sizing: border-box;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.bento-cell:hover {
+  border-color: rgba(184,131,58,0.4);
+  box-shadow: 0 6px 20px rgba(92,51,23,0.08);
 }
 
 /* ── LABEL ───────────────────────────────────────────────── */
@@ -129,12 +134,17 @@ body { background: var(--arena-alt); }
 }
 
 /* ── CELDA TELÉFONO ──────────────────────────────────────── */
+/* Todo el bloque centrado: label, número y botones quedan
+   balanceados tanto en escritorio como en móvil */
 .bento-telefono {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: space-between;
   min-height: 300px;
+  text-align: center;
 }
+.bento-telefono .bento-label { justify-content: center; }
 .tel-num {
   font-family: 'Cormorant Garamond', serif;
   font-size: 2.1rem;
@@ -144,8 +154,11 @@ body { background: var(--arena-alt); }
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+  text-align: center;
 }
+.tel-btns { width: 100%; }
 .tel-num em {
   color: var(--dorado);
   font-style: italic;
@@ -269,14 +282,17 @@ body { background: var(--arena-alt); }
 @media (max-width: 900px) {
   .bento-top { grid-template-columns: 1fr; }
   .bento-map { height: 260px; }
+  /* El teléfono se mantiene en columna y centrado (antes pasaba a
+     fila y el número quedaba descolgado a la izquierda) */
   .bento-telefono {
     min-height: auto;
-    flex-direction: row;
-    align-items: center;
-    gap: 1.5rem;
+    gap: 1.2rem;
+    padding: 1.6rem 1.4rem;
   }
-  .tel-num { flex: none; font-size: 1.8rem; }
-  .tel-btns { flex-direction: row; flex: 1; }
+  .tel-num { flex: none; font-size: 1.9rem; }
+  .tel-num br { display: none; }      /* número en una sola línea */
+  .tel-num em { display: inline; }
+  .tel-btns { flex-direction: row; }
   .btn-llamar, .btn-reservar { flex: 1; }
   .bento-bottom { grid-template-columns: 1fr 1fr; }
 }
@@ -286,7 +302,6 @@ body { background: var(--arena-alt); }
   .bento-wrapper { padding: 8px; gap: 8px; border-radius: 12px; }
   .bento-bottom { grid-template-columns: 1fr; }
   .bento-map { height: 220px; }
-  .bento-telefono { flex-direction: column; }
   .tel-btns { flex-direction: column; }
-  .tel-num { font-size: 1.65rem; }
+  .tel-num { font-size: 1.75rem; }
 }

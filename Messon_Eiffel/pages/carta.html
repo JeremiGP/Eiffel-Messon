@@ -56,11 +56,86 @@
   </div>
 </div>
 
+<!-- ── SELECTOR INICIAL DE APARTADOS (solo <900px) ──
+     Pantalla de bienvenida a la carta: se elige un apartado
+     y a partir de ahí aparece la flechita lateral -->
+<div class="carta-selector" id="cartaSelector" role="dialog" aria-label="Elige un apartado de la carta">
+  <div class="selector-inner">
+    <div class="selector-eyebrow"><span></span>Lo que cocinamos</div>
+    <h2 class="selector-title display">Nuestra <em>carta</em></h2>
+    <p class="selector-sub">Elige un apartado para empezar</p>
+
+    <div class="selector-label">Desayunos <span></span></div>
+    <div class="selector-grid">
+      <button class="selector-card" data-panel="tostadas" style="--i:0">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="8" rx="2"/><path d="M3 11V9a2 2 0 012-2h14a2 2 0 012 2v2"/><line x1="12" y1="7" x2="12" y2="3"/></svg>
+        Tostadas &amp; Molletes
+      </button>
+      <button class="selector-card" data-panel="croissants" style="--i:1">
+        <svg viewBox="0 0 24 24"><path d="M3 17c0-4 4-8 9-8s9 4 9 8"/><path d="M7 17c0-2 2-4 5-4s5 2 5 4"/></svg>
+        Croissants
+      </button>
+      <button class="selector-card" data-panel="suizos" style="--i:2">
+        <svg viewBox="0 0 24 24"><path d="M4 20h16M4 20V12a8 8 0 0 1 16 0v8"/></svg>
+        Suizos
+      </button>
+      <button class="selector-card" data-panel="sandwiches" style="--i:3">
+        <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="4" rx="1"/><rect x="2" y="14" width="20" height="4" rx="1"/><line x1="6" y1="10" x2="18" y2="10"/><line x1="6" y1="14" x2="18" y2="14"/></svg>
+        Sándwiches
+      </button>
+      <button class="selector-card" data-panel="crepes" style="--i:4">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>
+        Crepes, Gofres &amp; Tortitas
+      </button>
+      <button class="selector-card" data-panel="cafes" style="--i:5">
+        <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        Cafés &amp; Bebidas
+      </button>
+      <button class="selector-card" data-panel="chocolates" style="--i:6">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 8l1 12h14l1-12"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Chocolates especiales
+      </button>
+      <button class="selector-card" data-panel="tes" style="--i:7">
+        <svg viewBox="0 0 24 24"><path d="M17 8h2a2 2 0 0 1 0 4h-2"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+        Tés &amp; Infusiones
+      </button>
+    </div>
+
+    <div class="selector-label">Comidas <span></span></div>
+    <div class="selector-grid">
+      <button class="selector-card" data-panel="compartimos" style="--i:8">
+        <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Para compartir
+      </button>
+      <button class="selector-card" data-panel="huevos" style="--i:9">
+        <svg viewBox="0 0 24 24"><path d="M12 22C6.5 22 4 17.5 4 13C4 7.5 7.5 2 12 2s8 5.5 8 11c0 4.5-2.5 9-8 9z"/></svg>
+        Con dos huevos
+      </button>
+      <button class="selector-card" data-panel="brasas" style="--i:10">
+        <svg viewBox="0 0 24 24"><path d="M12 2c0 0-6 6-6 11a6 6 0 0 0 12 0c0-5-6-11-6-11z"/><path d="M9 13c0 0 1.5-2 3-2s3 2 3 2"/></svg>
+        Nuestras brasas
+      </button>
+      <button class="selector-card" data-panel="dulces" style="--i:11">
+        <svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5c0 4-5 10-5 10S7 11 7 7a5 5 0 0 1 5-5z"/><path d="M4 20h16"/></svg>
+        Dulces
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ── CARTA LAYOUT ── -->
 <div class="carta-layout">
 
+  <!-- Flechita fija a media altura (solo <900px): abre/cierra el panel -->
+  <button class="drawer-toggle" id="drawerToggle" aria-label="Abrir categorías" aria-expanded="false" aria-controls="cartaSidebar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+  </button>
+
+  <!-- Fondo oscurecido tras el panel (solo <900px) -->
+  <div class="carta-backdrop" id="cartaBackdrop"></div>
+
   <!-- ── SIDEBAR ── -->
-  <aside class="carta-sidebar">
+  <aside class="carta-sidebar" id="cartaSidebar">
     <div class="sidebar-head">
       <div class="sidebar-pretitle">Menú</div>
       <div class="sidebar-title">Mesón&nbsp;<em>de Eiffel</em></div>
