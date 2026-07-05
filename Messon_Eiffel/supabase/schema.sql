@@ -70,6 +70,19 @@ CREATE POLICY "admin_delete_reservas"
   USING (auth.uid() IS NOT NULL);
 
 
+-- ── DISPONIBILIDAD POR FRANJA HORARIA ──────────────────────────
+-- Ver supabase/migrations/20260706000000_capacidad_disponibilidad.sql
+-- para el contenido completo (tabla capacidad_horarios + funciones
+-- disponibilidad_dia / disponibilidad_mes + trigger anti doble-reserva).
+-- Se resume aquí solo para que este archivo siga siendo legible
+-- como referencia completa del esquema:
+--   · capacidad_horarios(hora, capacidad_mesas) — aforo por franja
+--   · disponibilidad_dia(fecha)   → nivel de ocupación por hora
+--   · disponibilidad_mes(anio,mes)→ nivel de ocupación por día (calendario)
+--   · trigger trg_validar_capacidad — revalida cupo en el servidor
+--     antes de cada INSERT (con advisory lock para evitar carreras)
+
+
 -- ── PASOS PARA LA CONEXIÓN (Fase 3 — pendiente) ───────────────
 --
 --  1. Crear proyecto en https://supabase.com

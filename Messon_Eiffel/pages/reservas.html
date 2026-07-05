@@ -101,42 +101,41 @@
 
       <h2 class="step-title">¿Cuándo quieres <em>venir?</em></h2>
 
-      <div class="ff-grid">
-        <div class="ff">
-          <label for="fecha">Fecha *</label>
-          <input type="date" id="fecha" name="fecha" required>
+      <!-- Fecha y hora reales las eligen en el calendario/pills de abajo;
+           estos inputs ocultos son los que valida y envía el formulario. -->
+      <input type="hidden" id="fecha" name="fecha" required>
+      <input type="hidden" id="hora" name="hora" required>
+
+      <div class="ff" style="margin-bottom: 1.4rem;">
+        <label>Fecha *</label>
+        <div class="calendario-wrap" id="calendarioWrap">
+          <div class="calendario-header">
+            <button type="button" class="cal-nav" id="calPrev" aria-label="Mes anterior">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <span class="calendario-mes" id="calMesLabel">—</span>
+            <button type="button" class="cal-nav" id="calNext" aria-label="Mes siguiente">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+          <div class="calendario-dow">
+            <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+          </div>
+          <div class="calendario-grid" id="calGrid" aria-live="polite"></div>
+          <div class="calendario-leyenda">
+            <span><i class="cal-dot nivel-alta"></i>Buena disp.</span>
+            <span><i class="cal-dot nivel-media"></i>Media</span>
+            <span><i class="cal-dot nivel-baja"></i>Poca</span>
+            <span><i class="cal-dot nivel-completo"></i>Completo</span>
+          </div>
         </div>
-        <div class="ff">
-          <label for="hora">Hora *</label>
-          <select id="hora" name="hora" required>
-            <option value="" disabled selected>Selecciona una hora</option>
-            <optgroup label="Desayuno">
-              <option value="08:30">08:30</option>
-              <option value="09:00">09:00</option>
-              <option value="09:30">09:30</option>
-              <option value="10:00">10:00</option>
-              <option value="10:30">10:30</option>
-              <option value="11:00">11:00</option>
-              <option value="11:30">11:30</option>
-              <option value="12:00">12:00</option>
-            </optgroup>
-            <optgroup label="Comida">
-              <option value="13:00">13:00</option>
-              <option value="13:30">13:30</option>
-              <option value="14:00">14:00</option>
-              <option value="14:30">14:30</option>
-              <option value="15:00">15:00</option>
-              <option value="15:30">15:30</option>
-            </optgroup>
-            <optgroup label="Cena">
-              <option value="20:00">20:00</option>
-              <option value="20:30">20:30</option>
-              <option value="21:00">21:00</option>
-              <option value="21:30">21:30</option>
-              <option value="22:00">22:00</option>
-              <option value="22:30">22:30</option>
-            </optgroup>
-          </select>
+      </div>
+
+      <div class="ff" style="margin-bottom: 1.4rem;">
+        <label>Hora *</label>
+        <div id="horasWrap">
+          <p class="horas-vacio" id="horasVacio">Elegí primero una fecha para ver las horas disponibles.</p>
+          <div class="horas-pills" id="horasPills"></div>
         </div>
       </div>
 
@@ -151,8 +150,10 @@
           <button type="button" class="persona-btn" data-n="6" aria-pressed="false">6</button>
           <button type="button" class="persona-btn" data-n="7" aria-pressed="false">7</button>
           <button type="button" class="persona-btn" data-n="8" aria-pressed="false">8</button>
-          <button type="button" class="persona-btn wide" data-n="9+" aria-pressed="false">+8</button>
+          <button type="button" class="persona-btn wide" id="personaMasBtn" data-n="mas" aria-pressed="false">Más de 8</button>
         </div>
+        <input type="number" id="personasCustom" class="personas-custom-input" min="9" max="80"
+               placeholder="¿Cuántos sois?" style="display:none;" inputmode="numeric">
         <input type="hidden" id="personas" name="personas">
       </div>
 
@@ -181,8 +182,13 @@
         </div>
         <div class="ff">
           <label for="telefono">Teléfono *</label>
-          <input type="tel" id="telefono" name="telefono" placeholder="600000000"
-                 maxlength="9" inputmode="numeric" autocomplete="tel" required>
+          <div class="tel-group">
+            <select id="prefijo" name="prefijo" class="tel-prefijo" aria-label="Prefijo de país">
+              <!-- Se rellena por JS desde el catálogo PREFIJOS_PAIS en reservas.js -->
+            </select>
+            <input type="tel" id="telefono" name="telefono" placeholder="600000000"
+                   maxlength="9" inputmode="numeric" autocomplete="tel-national" required>
+          </div>
         </div>
         <div class="ff">
           <label for="email">Email (opcional)</label>

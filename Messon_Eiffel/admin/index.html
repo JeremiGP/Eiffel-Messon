@@ -47,7 +47,9 @@
           >
         </div>
         <p id="login-error" class="login-error hidden" role="alert"></p>
-        <button type="submit" class="login-btn">Acceder</button>
+        <button type="submit" class="login-btn">
+          <span class="btn-text">Acceder</span>
+        </button>
       </form>
     </div>
   </div>
@@ -63,14 +65,25 @@
         <span class="admin-logo-text">Mesón <em>de Eiffel</em></span>
         <span class="admin-logo-tag">Panel de administración</span>
       </div>
-      <button id="btn-logout" class="btn-logout" type="button">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-          <polyline points="16 17 21 12 16 7"/>
-          <line x1="21" y1="12" x2="9" y2="12"/>
-        </svg>
-        Cerrar sesión
-      </button>
+      <div class="header-actions">
+        <span id="realtimeDot" class="realtime-dot" title="Actualización en vivo desconectada" hidden></span>
+        <button id="btn-refrescar" class="btn-icon-txt" type="button" title="Actualizar reservas">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <polyline points="23 4 23 10 17 10"/>
+            <polyline points="1 20 1 14 7 14"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+          <span class="btn-label">Actualizar</span>
+        </button>
+        <button id="btn-logout" class="btn-logout" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          Cerrar sesión
+        </button>
+      </div>
     </header>
 
     <!-- Contenido principal -->
@@ -94,59 +107,126 @@
           <div class="stat-val" id="stat-canceladas">0</div>
           <div class="stat-lbl">Canceladas</div>
         </div>
-      </div>
-
-      <!-- Controles -->
-      <div class="controls-bar">
-        <div class="controls-filters">
-          <select id="filtro-estado" class="ctrl-select" aria-label="Filtrar por estado">
-            <option value="">Todos los estados</option>
-            <option value="pendiente">Pendientes</option>
-            <option value="confirmada">Confirmadas</option>
-            <option value="cancelada">Canceladas</option>
-          </select>
-          <input
-            id="filtro-fecha"
-            type="date"
-            class="ctrl-input"
-            aria-label="Filtrar por fecha"
-          >
-          <input
-            id="filtro-texto"
-            type="text"
-            class="ctrl-input"
-            placeholder="Buscar nombre o teléfono…"
-            aria-label="Buscar reservas"
-          >
-          <button id="btn-limpiar" class="btn-clear" type="button">Limpiar</button>
+        <div class="stat-card stat-card--ocupacion">
+          <div class="stat-val" id="stat-ocupacion">—</div>
+          <div class="stat-lbl">Ocupación hoy</div>
         </div>
-        <button id="btn-nueva" class="btn-nueva" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <line x1="12" y1="5" x2="12" y2="19"/>
-            <line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
-          Nueva reserva
-        </button>
       </div>
 
-      <!-- Tabla de reservas -->
-      <div class="table-wrap" role="region" aria-label="Tabla de reservas">
-        <table class="reservas-table">
-          <thead>
-            <tr>
-              <th scope="col">Nombre</th>
-              <th scope="col">Teléfono</th>
-              <th scope="col">Email</th>
-              <th scope="col">Fecha</th>
-              <th scope="col">Hora</th>
-              <th scope="col">Personas</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="reservas-tbody"></tbody>
-        </table>
+      <!-- Pestañas de vista -->
+      <div class="view-tabs" role="tablist" aria-label="Vista de reservas">
+        <button class="view-tab active" id="tab-hoy" role="tab" aria-selected="true" type="button">Hoy</button>
+        <button class="view-tab" id="tab-todas" role="tab" aria-selected="false" type="button">Todas las reservas</button>
       </div>
+
+      <!-- ── VISTA HOY (AGENDA) ──────────────────────────────── -->
+      <section id="vista-hoy" class="vista-panel">
+        <div class="agenda-toolbar">
+          <p class="agenda-fecha" id="agendaFechaHoy">—</p>
+          <button id="btn-imprimir" class="btn-clear" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Imprimir
+          </button>
+        </div>
+        <div id="agendaContenido"></div>
+      </section>
+
+      <!-- ── VISTA TODAS (TABLA) ─────────────────────────────── -->
+      <section id="vista-todas" class="vista-panel hidden">
+
+        <!-- Controles -->
+        <div class="controls-bar">
+          <div class="controls-filters">
+            <select id="filtro-estado" class="ctrl-select" aria-label="Filtrar por estado">
+              <option value="">Todos los estados</option>
+              <option value="pendiente">Pendientes</option>
+              <option value="confirmada">Confirmadas</option>
+              <option value="cancelada">Canceladas</option>
+            </select>
+            <div class="rango-fechas">
+              <input id="filtro-fecha-desde" type="date" class="ctrl-input ctrl-input--fecha" aria-label="Desde">
+              <span class="rango-sep">→</span>
+              <input id="filtro-fecha-hasta" type="date" class="ctrl-input ctrl-input--fecha" aria-label="Hasta">
+            </div>
+            <input
+              id="filtro-texto"
+              type="text"
+              class="ctrl-input"
+              placeholder="Buscar nombre, teléfono o email…"
+              aria-label="Buscar reservas"
+            >
+            <button id="btn-limpiar" class="btn-clear" type="button">Limpiar</button>
+          </div>
+
+          <!-- Atajos de rango: tocan Desde/Hasta de golpe, útil para exportar por periodos -->
+          <div class="rango-presets" role="group" aria-label="Rango rápido">
+            <button type="button" class="preset-btn" data-preset="hoy">Hoy</button>
+            <button type="button" class="preset-btn" data-preset="semana">Esta semana</button>
+            <button type="button" class="preset-btn" data-preset="mes">Este mes</button>
+            <button type="button" class="preset-btn" data-preset="mesPasado">Mes pasado</button>
+            <button type="button" class="preset-btn active" data-preset="todo">Todo</button>
+          </div>
+
+          <div class="controls-actions">
+            <button id="btn-exportar" class="btn-clear" type="button" title="Exporta lo que ves ahora mismo (con los filtros aplicados)">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Exportar vista
+            </button>
+            <button id="btn-exportar-todo" class="btn-clear" type="button" title="Exporta el histórico completo, ignorando los filtros">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3"/><rect x="2" y="8" width="20" height="4" rx="1"/><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><line x1="10" y1="16" x2="14" y2="16"/></svg>
+              Exportar todo
+            </button>
+            <button id="btn-nueva" class="btn-nueva" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Nueva reserva
+            </button>
+          </div>
+        </div>
+
+        <!-- Barra de acciones en lote -->
+        <div id="bulkBar" class="bulk-bar hidden">
+          <span id="bulkCount">0 seleccionadas</span>
+          <div class="bulk-actions">
+            <button id="bulk-confirmar" type="button" class="bulk-btn bulk-btn--confirm">Confirmar</button>
+            <button id="bulk-cancelar" type="button" class="bulk-btn bulk-btn--cancel">Cancelar</button>
+            <button id="bulk-eliminar" type="button" class="bulk-btn bulk-btn--delete">Eliminar</button>
+            <button id="bulk-limpiar" type="button" class="bulk-btn bulk-btn--clear">Deseleccionar</button>
+          </div>
+        </div>
+
+        <!-- Tabla de reservas -->
+        <div class="table-wrap" role="region" aria-label="Tabla de reservas">
+          <table class="reservas-table">
+            <thead>
+              <tr>
+                <th scope="col" class="th-check">
+                  <input type="checkbox" id="check-all" aria-label="Seleccionar todas">
+                </th>
+                <th scope="col" data-sort="nombre" class="th-sort" tabindex="0" role="button">Nombre <span class="sort-ico"></span></th>
+                <th scope="col">Teléfono</th>
+                <th scope="col" class="col-email">Email</th>
+                <th scope="col" data-sort="fecha" class="th-sort" tabindex="0" role="button">Fecha <span class="sort-ico"></span></th>
+                <th scope="col" data-sort="hora" class="th-sort" tabindex="0" role="button">Hora <span class="sort-ico"></span></th>
+                <th scope="col" class="col-personas">Personas</th>
+                <th scope="col" data-sort="estado" class="th-sort" tabindex="0" role="button">Estado <span class="sort-ico"></span></th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="reservas-tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- Paginación -->
+        <div class="pagination-bar" id="paginationBar">
+          <button id="pag-prev" class="pag-btn" type="button">‹ Anterior</button>
+          <span id="pag-info" class="pag-info">Página 1 de 1</span>
+          <button id="pag-next" class="pag-btn" type="button">Siguiente ›</button>
+        </div>
+
+      </section>
 
     </main>
   </div>
@@ -176,7 +256,7 @@
           </div>
           <div class="ff">
             <label for="f-telefono">Teléfono *</label>
-            <input id="f-telefono" name="telefono" type="tel" placeholder="600 000 000" required>
+            <input id="f-telefono" name="telefono" type="tel" placeholder="+34 600 000 000" required>
           </div>
         </div>
 
@@ -206,37 +286,27 @@
             <label for="f-hora">Hora *</label>
             <select id="f-hora" name="hora" required>
               <option value="">Elige hora</option>
-              <option>9:00</option>
-              <option>9:30</option>
-              <option>10:00</option>
-              <option>13:00</option>
-              <option>13:30</option>
-              <option>14:00</option>
-              <option>14:30</option>
-              <option>15:00</option>
-              <option>20:00</option>
-              <option>20:30</option>
-              <option>21:00</option>
-              <option>21:30</option>
-              <option>22:00</option>
+              <optgroup label="Desayuno">
+                <option>08:30</option><option>09:00</option><option>09:30</option>
+                <option>10:00</option><option>10:30</option><option>11:00</option>
+                <option>11:30</option><option>12:00</option>
+              </optgroup>
+              <optgroup label="Comida">
+                <option>13:00</option><option>13:30</option><option>14:00</option>
+                <option>14:30</option><option>15:00</option><option>15:30</option>
+              </optgroup>
+              <optgroup label="Cena">
+                <option>20:00</option><option>20:30</option><option>21:00</option>
+                <option>21:30</option><option>22:00</option><option>22:30</option>
+              </optgroup>
             </select>
           </div>
           <div class="ff">
             <label for="f-personas">Personas *</label>
-            <select id="f-personas" name="personas" required>
-              <option value="">Cuántos</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-              <option>6</option>
-              <option>7</option>
-              <option>8</option>
-              <option value="9+">Más de 8</option>
-            </select>
+            <input id="f-personas" name="personas" type="text" inputmode="numeric" placeholder="Nº de comensales" required>
           </div>
         </div>
+        <p class="disponibilidad-hint" id="disponibilidadHint"></p>
 
         <!-- Fila 4: Notas (ancho completo) -->
         <div class="form-row form-row--full">
@@ -257,14 +327,14 @@
   </div>
 
   <!-- ══════════════════════════════════════════════════════════
-       MODAL — CONFIRMAR ELIMINACIÓN
+       MODAL — CONFIRMAR ELIMINACIÓN / ACCIÓN EN LOTE
   ═══════════════════════════════════════════════════════════ -->
   <div id="confirmModal" class="modal-overlay hidden" role="alertdialog" aria-modal="true">
     <div class="modal-box modal-box--sm">
       <div class="modal-header">
-        <h2 class="modal-title">Eliminar reserva</h2>
+        <h2 class="modal-title" id="confirm-title">Eliminar reserva</h2>
       </div>
-      <p class="confirm-text">
+      <p class="confirm-text" id="confirm-text">
         ¿Seguro que quieres eliminar la reserva de
         <strong id="confirm-nombre"></strong>?
         Esta acción no se puede deshacer.
