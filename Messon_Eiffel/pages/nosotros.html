@@ -14,31 +14,34 @@
   <meta property="og:description" content="Conoce la historia del Mesón Cafetería de Eiffel, un rincón de Motril con cocina andaluza de siempre.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mesoncafeteriadeeiffel.es/pages/nosotros.html">
-  <meta property="og:image" content="https://mesoncafeteriadeeiffel.es/assets/img/nos-sala.jpg">
+  <!-- La foto real de la cabecera de esta página (los .jpg locales
+       son placeholders difusos) -->
+  <meta property="og:image" content="https://images.unsplash.com/photo-1670819917685-f1040e76b9b7?auto=format&fit=crop&w=1200&h=630&q=80">
   <meta property="og:locale" content="es_ES">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Nosotros — Mesón Cafetería de Eiffel">
   <meta name="twitter:description" content="Conoce la historia del Mesón Cafetería de Eiffel, un rincón de Motril con cocina andaluza de siempre.">
-  <meta name="twitter:image" content="https://mesoncafeteriadeeiffel.es/assets/img/nos-sala.jpg">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1670819917685-f1040e76b9b7?auto=format&fit=crop&w=1200&h=630&q=80">
 
   <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
+  <!-- Fuentes autoalojadas (antes Google Fonts) -->
+  <link rel="stylesheet" href="../assets/css/fonts.css">
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/nosotros.css">
 </head>
 <body>
 
+<!-- Enlace de salto para teclado / lectores de pantalla (WCAG 2.4.1) -->
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
 <!-- ── NAV ── -->
 <nav id="nav">
   <a href="../index.html" class="nav-logo">Mesón <span>de Eiffel</span></a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="nosotros.html" class="active" aria-current="page">Nosotros</a></li>
     <li><a href="carta.html">Carta</a></li>
     <li><a href="reservas.html">Reservas</a></li>
     <li><a href="contacto.html">Contacto</a></li>
@@ -49,6 +52,7 @@
 </nav>
 
 <!-- ── CABECERA ── -->
+<main id="contenido">
 <div class="page-hero nos-page-hero">
   <div class="page-hero-content">
     <div class="eyebrow"><div class="eyebrow-bar"></div>Quiénes somos</div>
@@ -65,7 +69,13 @@
     <p class="nos-p reveal">Desde los croissants dorados de la mañana hasta el chuletón que chisporrotea en las ascuas de la noche, cada plato lleva el mismo cuidado. Aquí no hay fórmulas, hay personas.</p>
   </div>
   <div class="nos-historia-imagen reveal">
-    <img src="https://images.unsplash.com/photo-1771554753130-9e63a3f63e4d?auto=format&fit=crop&w=1200&h=900&q=80" alt="Interior del Mesón de Eiffel" loading="lazy" decoding="async" width="1200" height="900">
+    <!-- srcset: el navegador descarga solo el tamaño que necesita -->
+    <img src="https://images.unsplash.com/photo-1771554753130-9e63a3f63e4d?auto=format&fit=crop&w=1200&h=900&q=80"
+         srcset="https://images.unsplash.com/photo-1771554753130-9e63a3f63e4d?auto=format&fit=crop&w=600&h=450&q=75 600w,
+                 https://images.unsplash.com/photo-1771554753130-9e63a3f63e4d?auto=format&fit=crop&w=900&h=675&q=75 900w,
+                 https://images.unsplash.com/photo-1771554753130-9e63a3f63e4d?auto=format&fit=crop&w=1200&h=900&q=80 1200w"
+         sizes="(max-width: 900px) 100vw, 50vw"
+         alt="Interior del Mesón de Eiffel" loading="lazy" decoding="async" width="1200" height="900">
   </div>
 </section>
 
@@ -181,6 +191,7 @@
     <a href="reservas.html" class="btn btn-solid">Reservar mesa</a>
   </div>
 </section>
+</main>
 
 <!-- ── FOOTER ── -->
 <footer>

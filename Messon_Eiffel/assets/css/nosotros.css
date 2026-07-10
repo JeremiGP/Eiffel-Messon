@@ -11,6 +11,12 @@
   background-position: center 40%;
   min-height: 360px;
 }
+/* Versión ligera para móvil (~65% menos de descarga) */
+@media (max-width: 900px) {
+  .nos-page-hero {
+    background-image: url('https://images.unsplash.com/photo-1670819917685-f1040e76b9b7?auto=format&fit=crop&w=900&h=600&q=75');
+  }
+}
 .nos-page-hero::before {
   content: '';
   position: absolute; inset: 0;

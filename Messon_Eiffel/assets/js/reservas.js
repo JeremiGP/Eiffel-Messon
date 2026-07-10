@@ -1,5 +1,5 @@
 /* ============================================================
-   Mesón de Eiffel — Reservas · Wizard "Pasos Dorados"
+   Mesón de Eiffel — Reservas · Wizard "Pasos Dorados".
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -95,9 +95,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const horaInput  = document.getElementById('hora');  // hidden, lo rellena el selector de pills
   const telInput   = document.getElementById('telefono');
 
+  // Formatea una fecha local a YYYY-MM-DD sin desfases de zona horaria
+  // (toISOString convierte a UTC: entre las 00:00 y la 01:00/02:00 hora
+  // española devolvería el día ANTERIOR — mismo helper que usa admin.js)
+  function fechaLocalISO(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const dia = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${dia}`;
+  }
+
   const hoyDate = new Date();
   hoyDate.setHours(0, 0, 0, 0);
-  const hoyStr = new Date().toISOString().split('T')[0];
+  const hoyStr = fechaLocalISO(hoyDate);
 
   // ════════════════════════════════════════════════════════
   // CALENDARIO — pinta disponibilidad por día (color = nivel)
@@ -137,7 +147,13 @@ document.addEventListener('DOMContentLoaded', () => {
     return mapa;
   }
 
+  // Token anti-carrera: si el usuario navega rápido entre meses, solo la
+  // última petición pendiente puede pintar el grid (las respuestas lentas
+  // de meses anteriores se descartan en vez de sobrescribir la vista).
+  let calRenderToken = 0;
+
   async function renderCalendario() {
+    const token = ++calRenderToken;
     calMesLabel.textContent = `${MES_NOMBRES[calMes - 1]} ${calAnio}`;
     calGrid.innerHTML = '<p class="cal-cargando">Cargando disponibilidad…</p>';
 
@@ -146,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     calPrevBtn.disabled = esMesActual;
 
     const nivelPorDia = await fetchDisponibilidadMes(calAnio, calMes);
+    if (token !== calRenderToken) return; // llegó tarde: hay un render más nuevo
 
     const primerDiaSemana = (new Date(calAnio, calMes - 1, 1).getDay() + 6) % 7; // 0=Lunes
     const totalDias       = new Date(calAnio, calMes, 0).getDate();
@@ -161,9 +178,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const completo = nivel === 'completo';
       const deshabilitado = esPasado || completo;
 
+      // aria-label completa (día + mes + año + estado) para lectores de pantalla
+      const etiqueta = `${d} de ${MES_NOMBRES[calMes - 1]} de ${calAnio}${completo ? ', completo' : ''}`;
+
       html += `
         <button type="button" class="cal-day ${deshabilitado ? 'cal-day--disabled' : ''} ${key === fechaSeleccionada ? 'cal-day--sel' : ''}"
-                data-fecha="${key}" ${deshabilitado ? 'disabled' : ''} aria-label="${d} de ${MES_NOMBRES[calMes - 1]}">
+                data-fecha="${key}" ${deshabilitado ? 'disabled' : ''}
+                aria-label="${etiqueta}" aria-pressed="${key === fechaSeleccionada}">
           ${d}
           ${!esPasado ? `<span class="cal-dot nivel-${nivel}"></span>` : ''}
         </button>`;
@@ -182,7 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
     limpiarError('fecha');
 
     calGrid.querySelectorAll('.cal-day').forEach(btn => {
-      btn.classList.toggle('cal-day--sel', btn.dataset.fecha === fecha);
+      const sel = btn.dataset.fecha === fecha;
+      btn.classList.toggle('cal-day--sel', sel);
+      btn.setAttribute('aria-pressed', String(sel));
     });
 
     // Cambiar de día invalida la hora que tuviera elegida antes
@@ -246,11 +269,17 @@ document.addEventListener('DOMContentLoaded', () => {
     return mapa;
   }
 
+  // Mismo patrón anti-carrera que el calendario, para clicks rápidos
+  // entre días distintos.
+  let horasRenderToken = 0;
+
   async function renderHoras(fecha) {
+    const token = ++horasRenderToken;
     horasVacioEl.style.display = 'none';
     horasPillsEl.innerHTML = '<p class="cal-cargando">Cargando horas…</p>';
 
     const disponibilidad = await fetchDisponibilidadDia(fecha);
+    if (token !== horasRenderToken) return; // respuesta obsoleta
 
     let html = '';
     HORAS_CATALOGO.forEach(grupo => {
@@ -260,7 +289,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const sinCupo = info.disponibles <= 0;
         html += `
           <button type="button" class="hora-pill nivel-${info.nivel} ${sinCupo ? 'hora-pill--disabled' : ''}"
-                  data-hora="${hora}" ${sinCupo ? 'disabled' : ''}
+                  data-hora="${hora}" ${sinCupo ? 'disabled' : ''} aria-pressed="false"
+                  aria-label="${hora}${sinCupo ? ', sin mesas disponibles' : `, ${info.disponibles} mesas libres`}"
                   title="${sinCupo ? 'Sin mesas disponibles' : `${info.disponibles} mesas libres`}">
             ${hora}
           </button>`;
@@ -272,8 +302,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     horasPillsEl.querySelectorAll('.hora-pill:not(.hora-pill--disabled)').forEach(btn => {
       btn.addEventListener('click', () => {
-        horasPillsEl.querySelectorAll('.hora-pill').forEach(b => b.classList.remove('hora-pill--sel'));
+        horasPillsEl.querySelectorAll('.hora-pill').forEach(b => {
+          b.classList.remove('hora-pill--sel');
+          b.setAttribute('aria-pressed', 'false');
+        });
         btn.classList.add('hora-pill--sel');
+        btn.setAttribute('aria-pressed', 'true');
         horaInput.value = btn.dataset.hora;
         limpiarError('hora');
       });
@@ -569,7 +603,8 @@ document.addEventListener('DOMContentLoaded', () => {
       email:    document.getElementById('email').value.trim() || null,
       fecha:    fechaInput.value,
       hora:     horaInput.value,
-      personas: document.getElementById('personas').value,
+      // La columna `personas` es INT en la base (migración 20260710120000)
+      personas: parseInt(document.getElementById('personas').value, 10),
       notas:    document.getElementById('notas').value.trim() || null,
     };
 
@@ -599,14 +634,19 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSubmit.textContent = 'Solicitar reserva';
         btnSubmit.disabled    = false;
 
-        // El trigger de la base de datos manda este código cuando,
-        // pese a la revalidación de arriba, alguien se adelantó
-        // (dos reservas casi simultáneas para la última mesa).
-        const sinCupo = error.message && error.message.includes('SIN_DISPONIBILIDAD');
+        // Códigos que manda la base de datos:
+        // - SIN_DISPONIBILIDAD: alguien se adelantó con la última mesa
+        //   (dos reservas casi simultáneas para la misma franja).
+        // - DEMASIADAS_SOLICITUDES: rate limiting anti-spam del trigger
+        //   trg_limitar_reservas (demasiadas reservas desde la misma IP).
+        const sinCupo     = error.message && error.message.includes('SIN_DISPONIBILIDAD');
+        const rateLimited = error.message && error.message.includes('DEMASIADAS_SOLICITUDES');
         if (formError) {
           formError.textContent = sinCupo
             ? 'Uy, esa hora se acaba de completar. Elegí otra franja disponible.'
-            : 'No se pudo enviar la reserva. Inténtalo de nuevo o llámanos al 958 87 24 24.';
+            : rateLimited
+              ? 'Hemos recibido varias solicitudes desde tu conexión. Llámanos al 958 87 24 24 y te atendemos al momento.'
+              : 'No se pudo enviar la reserva. Inténtalo de nuevo o llámanos al 958 87 24 24.';
           formError.style.display = 'block';
         }
         if (sinCupo) {

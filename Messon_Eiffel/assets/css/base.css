@@ -44,6 +44,21 @@ img, svg, video, iframe { max-width: 100%; }
 /* Los textos largos (emails, URLs) parten en vez de desbordar */
 p, li, td, a { overflow-wrap: break-word; }
 
+/* ── SKIP LINK (WCAG 2.4.1) ──────────────────────────────── */
+/* Invisible hasta recibir foco con Tab: primer elemento de la página,
+   permite saltar la navegación e ir directo al contenido */
+.skip-link {
+  position: fixed;
+  top: -100%; left: 1rem;
+  z-index: 1000;
+  background: var(--carbon); color: #fff;
+  padding: 0.8rem 1.4rem; border-radius: 0 0 8px 8px;
+  font-size: 0.8rem; letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus-visible { top: 0; }
+
 /* Pista visual de foco para navegación con teclado */
 a:focus-visible, button:focus-visible,
 input:focus-visible, select:focus-visible, textarea:focus-visible {
@@ -167,6 +182,8 @@ nav.scrolled {
   transform: translateY(-2px);
   box-shadow: 0 12px 32px rgba(184,131,58,0.35);
 }
+/* Microinteracción: feedback táctil al pulsar cualquier botón */
+.btn:active { transform: translateY(0) scale(0.98); transition-duration: 0.1s; }
 .btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.4); }
 .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
 .btn-tierra { background: var(--tierra); color: #fff; }
@@ -311,6 +328,17 @@ footer { background: var(--carbon); padding: 0; }
   .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
 }
 
+/* Respeto GLOBAL a la preferencia de movimiento reducido (WCAG 2.3.3):
+   antes solo cubría .reveal — ahora desactiva smooth-scroll y reduce
+   todas las animaciones/transiciones del sitio a duración ~0 */
 @media (prefers-reduced-motion: reduce) {
-  .reveal { animation: none; transition: none; }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* El contenido "reveal" se muestra directamente, sin desplazamiento */
+  .reveal { opacity: 1; transform: none; }
 }

@@ -19,7 +19,7 @@
 
 'use strict';
 
-// ── CONFIGURACIÓN ─────────────────────────────────────────────
+// ── CONFIGURACIÓN ────────────────────────────────────────────
 // Credenciales de DEMO — solo se usan si no hay Supabase configurado
 const CREDENCIALES = { usuario: 'ADMIN', password: '123456789' };
 const STORAGE_KEY  = 'meson_reservas';
@@ -654,6 +654,10 @@ function actualizarIndicadoresOrden() {
     th.classList.remove('sort-asc', 'sort-desc');
     if (th.dataset.sort === orden.campo) {
       th.classList.add(orden.direccion === 'asc' ? 'sort-asc' : 'sort-desc');
+      // aria-sort: anuncia la columna y dirección de orden activas
+      th.setAttribute('aria-sort', orden.direccion === 'asc' ? 'ascending' : 'descending');
+    } else {
+      th.removeAttribute('aria-sort');
     }
   });
 }
@@ -786,10 +790,14 @@ function validarFormularioModal() {
   }
 
   const personas = form.personas.value.trim();
+  const nPersonas = parseInt(personas, 10);
   if (!personas) {
     marcarErrorModal('f-personas', 'Indica el número de personas.'); ok = false;
-  } else if (!/^\d+$/.test(personas) && personas !== '9+') {
+  } else if (!/^\d+$/.test(personas)) {
     marcarErrorModal('f-personas', 'Escribe solo el número de personas.'); ok = false;
+  } else if (nPersonas < 1 || nPersonas > 80) {
+    // Mismo rango que el CHECK reservas_personas_rango de la base
+    marcarErrorModal('f-personas', 'El número debe estar entre 1 y 80.'); ok = false;
   }
 
   return ok;
@@ -1130,7 +1138,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       email:    form.email.value.trim(),
       fecha:    form.fecha.value,
       hora:     form.hora.value,
-      personas: form.personas.value.trim(),
+      // La columna `personas` es INT en la base (migración 20260710120000)
+      personas: parseInt(form.personas.value.trim(), 10),
       notas:    form.notas.value.trim(),
       estado:   form.estado.value,
     };

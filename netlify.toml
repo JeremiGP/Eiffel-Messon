@@ -1,10 +1,54 @@
+# ============================================================
+# Netlify — build + headers de seguridad y caché
+# ============================================================
+
 [build]
   publish = "Messon_Eiffel"
   command = "mkdir -p Messon_Eiffel/assets/js && printf 'const SUPABASE_URL = \"%s\";\nconst SUPABASE_ANON_KEY = \"%s\";\n' \"$SUPABASE_URL\" \"$SUPABASE_ANON_KEY\" > Messon_Eiffel/assets/js/config.js"
 
+# ── Seguridad (todas las rutas) ──────────────────────────────
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+    # CSP estricta: sin 'unsafe-inline' en scripts (el JS inline de la
+    # intro se extrajo a assets/js/intro.js precisamente para esto).
+    # Fuentes y supabase-js autoalojados → sin Google Fonts ni jsdelivr.
+    # 'unsafe-inline' en style-src es necesario por los atributos
+    # style="" puntuales del HTML (variables --i de la carta, etc.).
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://images.unsplash.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src https://maps.google.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+
+# ── Caché ────────────────────────────────────────────────────
+# Los assets no llevan hash en el nombre → caché moderada con
+# revalidación en segundo plano, no "immutable" (evita servir CSS/JS
+# viejos a visitantes recurrentes tras un deploy).
+[[headers]]
+  for = "/assets/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, stale-while-revalidate=86400"
+
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, stale-while-revalidate=86400"
+
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000, stale-while-revalidate=86400"
+
+# Fuentes y librerías vendor: llevan versión implícita en el nombre o no
+# cambian nunca → caché larga inmutable
+[[headers]]
+  for = "/assets/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/js/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

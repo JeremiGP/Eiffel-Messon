@@ -203,6 +203,14 @@ body.intro-bloqueada { overflow: hidden; height: 100vh; }
     border-right: none;
     border-bottom: 1px solid rgba(255,255,255,0.06);
   }
+  /* Imágenes adaptadas al móvil: crop vertical y menor peso
+     (~70% menos de descarga que el 1920×1080 de escritorio) */
+  .hero-bg {
+    background-image: url('https://images.unsplash.com/photo-1508615263227-c5d58c1e5821?auto=format&fit=crop&w=900&h=1400&q=75');
+  }
+  .intro-overlay {
+    background-image: url('https://images.unsplash.com/photo-1709548145082-04d0cde481d4?auto=format&fit=crop&w=900&h=1400&q=75');
+  }
 }
 
 @media (max-width: 480px) {

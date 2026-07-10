@@ -1,0 +1,15 @@
+{
+  "name": "meson-eiffel-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Web del Mesón Cafetería de Eiffel — tests E2E del wizard de reservas",
+  "scripts": {
+    "serve": "http-server Messon_Eiffel -p 5173 --silent",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "http-server": "^14.1.1"
+  }
+}

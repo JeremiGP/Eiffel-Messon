@@ -14,25 +14,27 @@
   <meta property="og:description" content="Reserva tu mesa en el Mesón Cafetería de Eiffel, Motril. Formulario online rápido y sencillo.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mesoncafeteriadeeiffel.es/pages/reservas.html">
-  <meta property="og:image" content="https://mesoncafeteriadeeiffel.es/assets/img/hero.jpg">
+  <!-- Foto real (los .jpg locales son placeholders difusos) -->
+  <meta property="og:image" content="https://images.unsplash.com/photo-1508615263227-c5d58c1e5821?auto=format&fit=crop&w=1200&h=630&q=80">
   <meta property="og:locale" content="es_ES">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Reservas — Mesón Cafetería de Eiffel">
   <meta name="twitter:description" content="Reserva tu mesa en el Mesón Cafetería de Eiffel, Motril. Formulario online rápido y sencillo.">
-  <meta name="twitter:image" content="https://mesoncafeteriadeeiffel.es/assets/img/hero.jpg">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1508615263227-c5d58c1e5821?auto=format&fit=crop&w=1200&h=630&q=80">
 
   <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
+  <!-- Fuentes autoalojadas (antes Google Fonts) -->
+  <link rel="stylesheet" href="../assets/css/fonts.css">
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/reservas.css">
 </head>
 <body>
+
+<!-- Enlace de salto para teclado / lectores de pantalla (WCAG 2.4.1) -->
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
 
 <!-- ── NAV ── -->
 <nav id="nav">
@@ -40,7 +42,7 @@
   <ul class="nav-links" id="navLinks">
     <li><a href="nosotros.html">Nosotros</a></li>
     <li><a href="carta.html">Carta</a></li>
-    <li><a href="reservas.html" class="active">Reservas</a></li>
+    <li><a href="reservas.html" class="active" aria-current="page">Reservas</a></li>
     <li><a href="contacto.html">Contacto</a></li>
   </ul>
   <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
@@ -49,6 +51,7 @@
 </nav>
 
 <!-- ── CABECERA ── -->
+<main id="contenido">
 <div class="page-hero">
   <div class="page-hero-content">
     <div class="eyebrow"><div class="eyebrow-bar"></div>Tu mesa te espera</div>
@@ -153,7 +156,8 @@
           <button type="button" class="persona-btn wide" id="personaMasBtn" data-n="mas" aria-pressed="false">Más de 8</button>
         </div>
         <input type="number" id="personasCustom" class="personas-custom-input" min="9" max="80"
-               placeholder="¿Cuántos sois?" style="display:none;" inputmode="numeric">
+               placeholder="¿Cuántos sois?" style="display:none;" inputmode="numeric"
+               aria-label="Número exacto de personas (más de 8)">
         <input type="hidden" id="personas" name="personas">
       </div>
 
@@ -174,11 +178,11 @@
       <div class="ff-grid">
         <div class="ff">
           <label for="nombre">Nombre *</label>
-          <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" autocomplete="given-name" required>
+          <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" autocomplete="given-name" maxlength="60" required>
         </div>
         <div class="ff">
           <label for="apellidos">Apellidos *</label>
-          <input type="text" id="apellidos" name="apellidos" placeholder="Tus apellidos" autocomplete="family-name" required>
+          <input type="text" id="apellidos" name="apellidos" placeholder="Tus apellidos" autocomplete="family-name" maxlength="90" required>
         </div>
         <div class="ff">
           <label for="telefono">Teléfono *</label>
@@ -192,7 +196,7 @@
         </div>
         <div class="ff">
           <label for="email">Email (opcional)</label>
-          <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" autocomplete="email">
+          <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" autocomplete="email" maxlength="254">
         </div>
       </div>
 
@@ -216,7 +220,7 @@
 
       <div class="ff" style="margin-bottom: 1.6rem;">
         <label for="notas">Notas o peticiones especiales</label>
-        <textarea id="notas" name="notas" rows="5" placeholder="Alergias, celebración especial, zona preferida…"></textarea>
+        <textarea id="notas" name="notas" rows="5" maxlength="500" placeholder="Alergias, celebración especial, zona preferida…"></textarea>
       </div>
 
       <div class="step-nav between">
@@ -254,6 +258,7 @@
 
   </div><!-- /reserva-card -->
 </section>
+</main>
 
 <!-- ── FOOTER ── -->
 <footer>
@@ -305,7 +310,9 @@
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- supabase-js autoalojado y pinneado (antes CDN con versión flotante @2):
+     misma origin → sin dependencia de jsdelivr ni riesgo de supply-chain -->
+<script src="../assets/js/vendor/supabase-2.106.2.min.js"></script>
 <script src="../assets/js/config.js"></script>
 <script src="../assets/js/nav.js"></script>
 <script src="../assets/js/reservas.js"></script>

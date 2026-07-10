@@ -6,10 +6,8 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Panel Admin — Mesón de Eiffel</title>
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- Fuentes autoalojadas (antes Google Fonts) -->
+  <link rel="stylesheet" href="../assets/css/fonts.css">
 
   <!-- Estilos del panel -->
   <link rel="stylesheet" href="../assets/css/admin.css">
@@ -252,11 +250,11 @@
         <div class="form-row">
           <div class="ff">
             <label for="f-nombre">Nombre completo *</label>
-            <input id="f-nombre" name="nombre" type="text" placeholder="Nombre del cliente" required>
+            <input id="f-nombre" name="nombre" type="text" placeholder="Nombre del cliente" maxlength="150" required>
           </div>
           <div class="ff">
             <label for="f-telefono">Teléfono *</label>
-            <input id="f-telefono" name="telefono" type="tel" placeholder="+34 600 000 000" required>
+            <input id="f-telefono" name="telefono" type="tel" placeholder="+34 600 000 000" maxlength="20" required>
           </div>
         </div>
 
@@ -264,7 +262,7 @@
         <div class="form-row">
           <div class="ff">
             <label for="f-email">Email</label>
-            <input id="f-email" name="email" type="email" placeholder="cliente@email.com">
+            <input id="f-email" name="email" type="email" placeholder="cliente@email.com" maxlength="254">
           </div>
           <div class="ff">
             <label for="f-estado">Estado</label>
@@ -303,7 +301,7 @@
           </div>
           <div class="ff">
             <label for="f-personas">Personas *</label>
-            <input id="f-personas" name="personas" type="text" inputmode="numeric" placeholder="Nº de comensales" required>
+            <input id="f-personas" name="personas" type="text" inputmode="numeric" maxlength="2" placeholder="Nº de comensales" required>
           </div>
         </div>
         <p class="disponibilidad-hint" id="disponibilidadHint"></p>
@@ -312,7 +310,7 @@
         <div class="form-row form-row--full">
           <div class="ff">
             <label for="f-notas">Notas / Comentarios</label>
-            <textarea id="f-notas" name="notas" placeholder="Alergias, ocasión especial, necesidades concretas…"></textarea>
+            <textarea id="f-notas" name="notas" maxlength="1000" placeholder="Alergias, ocasión especial, necesidades concretas…"></textarea>
           </div>
         </div>
 
@@ -351,8 +349,9 @@
   ═══════════════════════════════════════════════════════════ -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <!-- Cliente de Supabase + configuración (claves reales en config.js, no versionado) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <!-- Cliente de Supabase autoalojado y pinneado + configuración
+       (claves reales en config.js, no versionado) -->
+  <script src="../assets/js/vendor/supabase-2.106.2.min.js"></script>
   <script src="../assets/js/config.js"></script>
 
   <!-- Lógica del panel -->

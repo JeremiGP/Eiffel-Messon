@@ -14,32 +14,34 @@
   <meta property="og:description" content="Carta completa del Mesón Cafetería de Eiffel — Desayunos, platos para compartir, brasas y dulces en Motril, Granada.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mesoncafeteriadeeiffel.es/pages/carta.html">
-  <meta property="og:image" content="https://mesoncafeteriadeeiffel.es/assets/img/nos-plato.jpg">
+  <!-- Foto real (los .jpg locales son placeholders difusos) -->
+  <meta property="og:image" content="https://images.unsplash.com/photo-1508615263227-c5d58c1e5821?auto=format&fit=crop&w=1200&h=630&q=80">
   <meta property="og:locale" content="es_ES">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Carta — Mesón Cafetería de Eiffel">
   <meta name="twitter:description" content="Carta completa del Mesón Cafetería de Eiffel — Desayunos, platos para compartir, brasas y dulces en Motril, Granada.">
-  <meta name="twitter:image" content="https://mesoncafeteriadeeiffel.es/assets/img/nos-plato.jpg">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1508615263227-c5d58c1e5821?auto=format&fit=crop&w=1200&h=630&q=80">
 
   <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
+  <!-- Fuentes autoalojadas (antes Google Fonts) -->
+  <link rel="stylesheet" href="../assets/css/fonts.css">
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/carta.css">
 </head>
 <body>
+
+<!-- Enlace de salto para teclado / lectores de pantalla (WCAG 2.4.1) -->
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
 
 <!-- ── NAV ── -->
 <nav id="nav">
   <a href="../index.html" class="nav-logo">Mesón <span>de Eiffel</span></a>
   <ul class="nav-links" id="navLinks">
     <li><a href="nosotros.html">Nosotros</a></li>
-    <li><a href="carta.html" class="active">Carta</a></li>
+    <li><a href="carta.html" class="active" aria-current="page">Carta</a></li>
     <li><a href="reservas.html">Reservas</a></li>
     <li><a href="contacto.html">Contacto</a></li>
   </ul>
@@ -209,7 +211,7 @@
   </aside>
 
   <!-- ── CONTENT ── -->
-  <main class="carta-content">
+  <main class="carta-content" id="contenido">
 
     <!-- ════ TOSTADAS & MOLLETES ════ -->
     <section class="carta-panel active" id="panel-tostadas" role="tabpanel" aria-labelledby="tab-tostadas" tabindex="0">

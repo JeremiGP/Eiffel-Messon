@@ -13,6 +13,12 @@ Thumbs.db
 # Dependencias (por si se añade tooling en el futuro)
 node_modules/
 
+# Artefactos de Playwright (tests E2E)
+test-results/
+playwright-report/
+blob-report/
+.playwright/
+
 # Binarios de CLIs (no deben versionarse)
 *.exe
 *.tar.gz

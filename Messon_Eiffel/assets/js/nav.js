@@ -1,6 +1,6 @@
 /* ============================================================
    Mesón Cafetería de Eiffel — Nav + Scroll Reveal
-   Incluir en TODAS las páginas
+   Incluir en TODAS las páginas.
    ============================================================ */
 
 // ── RESET DE SCROLL ───────────────────────────────────────────
@@ -23,9 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── NAV SCROLL ──────────────────────────────────────────────
   const nav = document.getElementById('nav');
   if (nav) {
+    // passive: el listener nunca hace preventDefault → el navegador puede
+    // hacer scroll sin esperar al JS (mejor rendimiento de scroll)
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 80);
-    });
+    }, { passive: true });
   }
 
   // ── MENÚ MÓVIL ──────────────────────────────────────────────
@@ -57,6 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.nav-links a').forEach(a => {
     if (a.getAttribute('href') === currentFile) {
       a.classList.add('active');
+      // aria-current: los lectores de pantalla anuncian "página actual"
+      a.setAttribute('aria-current', 'page');
     }
   });
 
