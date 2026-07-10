@@ -4,7 +4,11 @@
 
 [build]
   publish = "Messon_Eiffel"
-  command = "mkdir -p Messon_Eiffel/assets/js && printf 'const SUPABASE_URL = \"%s\";\nconst SUPABASE_ANON_KEY = \"%s\";\n' \"$SUPABASE_URL\" \"$SUPABASE_ANON_KEY\" > Messon_Eiffel/assets/js/config.js"
+  # 1) config.js solo se regenera si las env vars están definidas (evita
+  #    machacar un config.js válido con valores vacíos en deploys manuales).
+  # 2) docs/ y supabase/ son material interno: se retiran de la copia que
+  #    se publica (no afecta al repositorio).
+  command = "if [ -n \"$SUPABASE_URL\" ]; then mkdir -p Messon_Eiffel/assets/js && printf 'const SUPABASE_URL = \"%s\";\nconst SUPABASE_ANON_KEY = \"%s\";\n' \"$SUPABASE_URL\" \"$SUPABASE_ANON_KEY\" > Messon_Eiffel/assets/js/config.js; fi; rm -rf Messon_Eiffel/docs Messon_Eiffel/supabase"
 
 # ── Seguridad (todas las rutas) ──────────────────────────────
 [[headers]]

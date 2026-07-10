@@ -83,7 +83,9 @@ BEGIN
     RETURN NEW;
   END IF;
 
-  NEW.ip_hash := encode(digest(v_ip, 'sha256'), 'hex');
+  -- pgcrypto vive en el esquema `extensions` en Supabase: hay que
+  -- cualificarlo porque esta función fija search_path = public
+  NEW.ip_hash := encode(extensions.digest(v_ip, 'sha256'::text), 'hex');
 
   SELECT COUNT(*) INTO v_ultima_hora
     FROM reservas
