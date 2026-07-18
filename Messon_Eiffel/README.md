@@ -1,6 +1,6 @@
 # Mesón Cafetería de Eiffel — Web Oficial
 
-Página web profesional del **Mesón Cafetería de Eiffel** (Motril, Granada), con carta completa, sistema de reservas online y panel de administración.
+Página web profesional del **Mesón Cafetería de Eiffel** (Motril, Granada), con carta completa, sistema de reservas online con disponibilidad en tiempo real y panel de administración.
 
 ---
 
@@ -10,11 +10,21 @@ Página web profesional del **Mesón Cafetería de Eiffel** (Motril, Granada), c
 |------|--------|-------------|
 | 1. Planificación | ✅ Completo | Estructura, tecnologías y diseño definidos |
 | 2. Frontend | ✅ Completo | 5 páginas (Home, Nosotros, Carta, Reservas, Contacto) + panel admin |
-| 3. Auditoría de calidad | ✅ Completo | Accesibilidad, SEO, performance y limpieza de código (ver `docs/AUDITORIA.md`) |
-| 3b. Mejoras UX/responsive | ✅ Completo | Scroll-to-top global, corrección de overflow móvil, drawer de categorías en carta, teléfono centrado en contacto (ver *Registro de cambios*) |
-| 4. Base de datos | ⚙️ Estructura lista | CLI de Supabase inicializada, migración creada (`supabase/migrations/`) e integración con GitHub conectada. Falta rellenar `assets/js/config.js` con las claves reales |
-| 5. Panel admin con datos reales | ⚙️ Código listo | `admin.js`/`reservas.js` ya usan Supabase automáticamente en cuanto haya claves reales en `config.js`; sin ellas, siguen funcionando en modo demo (`localStorage`) |
-| 6. Publicación | ⏳ Pendiente | Deploy en Netlify/Vercel + dominio |
+| 3. Auditoría de calidad | ✅ Completo | Accesibilidad, SEO, performance y limpieza de código (ver `docs/`) |
+| 4. Base de datos | ✅ Completo | Supabase conectado: tabla `reservas` con RLS, capacidad por franja, funciones de disponibilidad y triggers de validación en servidor |
+| 5. Panel admin | ✅ Completo | Login con Supabase Auth, CRUD de reservas en tiempo real (Realtime), filtros, exportación e impresión |
+| 6. Publicación | ✅ Completo | Deploy automático en Netlify con headers de seguridad (CSP estricta) + tests E2E en GitHub Actions |
+
+---
+
+## Horario del restaurante
+
+| Día | Horario |
+|-----|---------|
+| Jueves a martes | 07:00 – 16:00 y 20:00 – 23:30 |
+| Miércoles | Cerrado |
+
+El día de cierre está bloqueado en el calendario de reservas y también se rechaza a nivel de base de datos (trigger `validar_capacidad_reserva`).
 
 ---
 
@@ -22,8 +32,8 @@ Página web profesional del **Mesón Cafetería de Eiffel** (Motril, Granada), c
 
 ```
 Messon_Eiffel/
-├── index.html                   ← Home
-├── README.md
+├── index.html                   ← Home (con datos estructurados Schema.org)
+├── _headers                     ← Headers de seguridad (respaldo de netlify.toml)
 │
 ├── pages/
 │   ├── nosotros.html
@@ -32,31 +42,43 @@ Messon_Eiffel/
 │   └── contacto.html
 │
 ├── admin/
-│   └── index.html               ← Panel de administración (demo, ver aviso de seguridad)
+│   └── index.html               ← Panel de administración (Supabase Auth)
 │
 ├── assets/
-│   ├── css/
-│   │   ├── base.css             ← Variables, nav, footer, botones (compartido)
-│   │   ├── home.css / nosotros.css / carta.css / reservas.css / contacto.css
-│   │   └── admin.css            ← Estilos propios del panel admin
+│   ├── css/                     ← base.css compartido + un CSS por página
+│   ├── fonts/                   ← Cormorant Garamond + Inter autoalojadas (woff2)
 │   ├── js/
-│   │   ├── nav.js               ← Nav + scroll reveal + reset de scroll (todas las páginas)
-│   │   ├── carta.js             ← Pestañas de la carta (teclado/ARIA) + selector inicial y drawer móvil
-│   │   ├── reservas.js          ← Wizard de reservas (usa Supabase si está configurado, si no simula el envío)
-│   │   ├── admin.js             ← Lógica del panel (usa Supabase Auth + CRUD si está configurado, si no localStorage de demo)
+│   │   ├── nav.js               ← Nav + scroll reveal + reset de scroll
+│   │   ├── intro.js             ← Overlay de entrada (extraído para CSP sin unsafe-inline)
+│   │   ├── carta.js             ← Pestañas de la carta + drawer móvil
+│   │   ├── reservas.js          ← Wizard de reservas con disponibilidad real por día/hora
+│   │   ├── admin.js             ← Panel admin (Auth + CRUD + Realtime)
 │   │   ├── config.example.js    ← Plantilla de claves de Supabase (sí se versiona)
-│   │   └── config.js            ← Tus claves reales (NO se versiona, créalo copiando config.example.js)
-│   └── img/
+│   │   ├── config.js            ← Claves reales (NO se versiona; en Netlify se genera en el build)
+│   │   └── vendor/              ← supabase-js autoalojado
+│   └── img/                     ← Imágenes + iconos de alérgenos (SVG)
 │
 ├── supabase/
-│   ├── config.toml               ← Configuración de la CLI de Supabase (generado con `supabase init`)
+│   ├── config.toml
 │   ├── migrations/
-│   │   └── 20260701000000_init_reservas.sql  ← Migración con la tabla `reservas` + políticas RLS
-│   ├── schema.sql                ← Mismo esquema en un único archivo, como referencia legible
+│   │   ├── 20260701000000_init_reservas.sql            ← Tabla reservas + RLS
+│   │   ├── 20260706000000_capacidad_disponibilidad.sql ← Aforo por franja + funciones de disponibilidad
+│   │   ├── 20260710120000_endurecimiento_reservas.sql  ← Límites de longitud, personas y rate limiting
+│   │   └── 20260718000000_nuevo_horario.sql            ← Horario actual (07:00 + miércoles cerrado)
+│   ├── functions/
+│   │   └── confirmar-reserva/   ← Edge Function: email de confirmación al cliente
+│   ├── schema.sql               ← Esquema de referencia legible
 │   └── queries_test.sql
 │
+├── docs/                        ← Auditorías y notas internas (no se publican)
 ├── robots.txt
 └── sitemap.xml
+
+(raíz del repo)
+├── netlify.toml                 ← Build, CSP y caché
+├── playwright.config.js
+├── tests/e2e/                   ← Tests de navegación y del wizard de reservas
+└── .github/workflows/e2e.yml    ← CI: tests E2E en cada push/PR
 ```
 
 ---
@@ -64,10 +86,11 @@ Messon_Eiffel/
 ## Tecnologías
 
 - **Frontend:** HTML5 / CSS3 / JavaScript (vanilla, sin frameworks ni build step)
-- **Tipografías:** Cormorant Garamond + Inter (Google Fonts)
-- **Iconos:** SVG inline
-- **Base de datos:** Supabase (PostgreSQL) — esquema listo, conexión _pendiente_
-- **Hosting:** Netlify o Vercel — _pendiente de configurar_
+- **Tipografías:** Cormorant Garamond + Inter (autoalojadas, sin CDN de terceros)
+- **Base de datos:** Supabase (PostgreSQL) con RLS, funciones `SECURITY DEFINER` y triggers de validación
+- **Email:** Edge Function `confirmar-reserva` (Resend) para confirmar reservas
+- **Hosting:** Netlify (deploy automático por push, CSP estricta, caché por tipo de asset)
+- **Tests:** Playwright (E2E del wizard de reservas) + GitHub Actions
 - **Dominio:** mesoncafeteriadeeiffel.es
 
 ---
@@ -76,86 +99,51 @@ Messon_Eiffel/
 
 - Diseño cálido y rústico (tonos tierra, dorado, crema)
 - Carta completa dividida en **Desayunos** y **Comidas**, con navegación por pestañas accesible (teclado + ARIA)
-- En móvil/tablet (<900px), la carta se abre con una **pantalla de selección de apartados** (tarjetas animadas) y las categorías viven en un **drawer lateral** que se despliega con una flechita fija a media altura
+- En móvil/tablet (<900px), pantalla de selección de apartados y **drawer lateral** de categorías
 - Iconos de **alérgenos** por plato según el Reglamento UE 1169/2011
-- Wizard de reservas en 3 pasos con validación y confirmación
-- Panel de administración con listado, filtros, alta/edición/baja de reservas (datos de demo en `localStorage`)
-- Diseño **responsive** (móvil, tablet, escritorio) sin desbordamiento horizontal
-- **Reset de scroll** en toda la navegación: cada página/sección/paso empieza siempre arriba
-- SEO on-page: metadatos Open Graph, datos estructurados (Schema.org Restaurant), `robots.txt` y `sitemap.xml`
-
-> **Nota sobre imágenes:** el hero de portada, la intro, la cabecera de *Nosotros* y la foto de *Historia* usan fotos de **Unsplash enlazadas desde su CDN** (licencia libre). Para producción se recomienda descargarlas a `assets/img/` y actualizar las rutas. Las tarjetas Cocina/Sala/Barra siguen usando los archivos locales de `assets/img/`.
+- Wizard de reservas en 3 pasos con **disponibilidad real por día y franja** (calendario con niveles de ocupación, miércoles bloqueado)
+- Validación en servidor: aforo por franja con advisory locks (sin dobles reservas), día de cierre y rate limiting anti-spam
+- Panel de administración con login real, agenda del día, filtros, edición, exportación e impresión, actualizado en tiempo real
+- Diseño **responsive** sin desbordamiento horizontal y reset de scroll en toda la navegación
+- SEO on-page: Open Graph, datos estructurados (Schema.org Restaurant con horario real), `robots.txt` y `sitemap.xml`
 
 ---
 
-## ⚠️ Aviso importante de seguridad (panel admin)
+## Cómo trabajar en local
 
-El panel `/admin` usa **credenciales de demostración embebidas en el JavaScript del cliente**
-(`assets/js/admin.js`) y guarda las reservas en `localStorage` del navegador. Esto es
-**solo para pruebas/demo** y **no debe usarse en producción**:
-
-- Cualquiera puede ver el usuario/contraseña abriendo el código fuente.
-- Los datos no se sincronizan entre dispositivos ni persisten de verdad.
-- El formulario público de reservas (`reservas.js`) todavía **no está conectado** a ningún
-  almacenamiento real — hoy solo simula el envío.
-
-**Antes de publicar el sitio:** conectar Supabase (esquema ya preparado), sustituir el login
-por Supabase Auth, y mover el formulario público y el panel admin a leer/escribir en la
-tabla `reservas` real. Ver pasos detallados en `supabase/schema.sql`.
-
----
-
-## Cómo abrir el proyecto localmente
-
-1. Clona el repositorio:
+1. Clona el repositorio y entra en la carpeta.
+2. Para la web basta abrir `Messon_Eiffel/index.html` en el navegador. Sin `config.js`, reservas y admin funcionan en **modo demo** (no tocan la base de datos).
+3. Para conectar con Supabase en local: copia `assets/js/config.example.js` como `assets/js/config.js` y pon la URL y la `anon key` del proyecto.
+4. Tests E2E (siempre corren en modo demo, nunca tocan datos reales):
    ```bash
-   git clone https://github.com/TU_USUARIO/meson-eiffel.git
+   npm install
+   npm run test:e2e
    ```
-2. Abre `index.html` directamente en el navegador (no necesita servidor local).
 
 ---
 
-## Próximos pasos
+## Despliegue
 
-### Conectar Supabase (lo único que falta — todo lo demás ya está hecho)
-1. Crear cuenta y proyecto en [supabase.com](https://supabase.com) (si aún no existe).
-2. La integración con GitHub ya está configurada apuntando al directorio `Messon_Eiffel`; al hacer push a `main` con `Deploy to production` activado, se aplica automáticamente la migración de `supabase/migrations/`.
-3. Ir a Project Settings → API y copiar el `Project URL` y la `anon public key`.
-4. Copiar `assets/js/config.example.js` como `assets/js/config.js` y pegar ahí esas dos claves (este archivo no se sube a Git).
-5. Crear el usuario admin en Authentication → Users → Add user (con email + contraseña reales).
-6. Recargar `reservas.html` y `admin/index.html`: en cuanto `config.js` tenga las claves reales, ambos pasan automáticamente de "modo demo" a usar Supabase de verdad — no hace falta tocar más código.
-
-### Publicar en Netlify/Vercel
-1. Conectar el repositorio de GitHub
-2. Deploy automático en cada push
-3. Configurar el dominio `mesoncafeteriadeeiffel.es`
-4. Actualizar las URLs de `robots.txt`, `sitemap.xml` y las etiquetas `og:url`/`canonical` si el dominio final cambia
+- **Netlify** publica `Messon_Eiffel/` en cada push: genera `config.js` desde las variables de entorno `SUPABASE_URL`/`SUPABASE_ANON_KEY` y retira `docs/` y `supabase/` de la copia publicada.
+- **GitHub Actions** ejecuta los tests E2E en cada push y PR (Chromium + WebKit).
+- Las migraciones de `supabase/migrations/` se aplican vía la integración de Supabase con GitHub (o manualmente en el SQL Editor).
 
 ---
 
 ## Registro de cambios
 
+### 2026-07-18 — Nuevo horario
+- Apertura a las 07:00 (nuevas franjas de desayuno 07:00/07:30/08:00), cierre a las 23:30 y **miércoles cerrado**.
+- Miércoles bloqueado en calendario, funciones de disponibilidad y trigger de validación (`DIA_CERRADO`).
+- Actualizados JSON-LD, página de contacto, selects del admin y tests E2E.
+
 ### 2026-07-05 — Mejoras UX, responsive y contenido
+- Reset de scroll global; cada vista empieza siempre arriba.
+- Blindaje anti-overflow, foco visible por teclado, mejoras móvil 320–400px.
+- Carta en móvil: pantalla de selección de apartados + drawer lateral de categorías.
+- Fotos de Unsplash (CDN) en hero/intro/Nosotros; tarjetas Cocina/Sala/Barra locales.
 
-**Scroll y navegación**
-- `nav.js`: reset de scroll global (`scrollRestoration: manual` + `scrollTo(0,0)` al cargar y al volver desde bfcache). Cada vista empieza siempre arriba.
-- `index.html`: el botón "Entrar al mesón" resetea el scroll y bloquea el deslizamiento de fondo mientras la intro está visible.
-- `carta.js` / `reservas.js`: al cambiar de categoría o de paso, la vista sube al inicio del contenido compensando el nav fijo.
-
-**Responsive / overflow**
-- `base.css`: blindaje anti-overflow (`max-width` en html/body/medios, `overflow-wrap`), `line-height` legible, foco visible por teclado, menú móvil con separadores y animación.
-- `home.css`: hero con `100svh`, títulos con mínimos aptos para 320–400px, botones del hero con wrap (ancho completo en móvil).
-- `carta.css`: la tabla de alérgenos pasa a rejilla fluida en móvil (ya no desborda).
-- `contacto.css`: teléfono completamente centrado en todas las resoluciones; hover sutil en las tarjetas.
-
-**Carta en móvil/tablet (<900px)**
-- Nueva pantalla inicial de selección de apartados con tarjetas animadas (sale en cada visita).
-- Las categorías pasan de tira horizontal a drawer lateral (aspecto de escritorio) con flechita fija a media altura; la flechita solo aparece tras elegir el primer apartado. Se cierra al elegir categoría, tocar fuera o Escape. Anclado `top/bottom` para cubrir siempre el alto completo.
-
-**Contenido**
-- `nosotros.html`: eliminada la sección de galería "El espacio / Un rincón de Motril" (y su CSS).
-- Quitada la pista "Desliza" del hero de portada.
-- Fotos de Unsplash (CDN) para: hero de portada, intro, cabecera de *Nosotros* e imagen de *Historia*. Tarjetas Cocina/Sala/Barra intactas.
+*(Historial completo de auditorías y endurecimiento en `docs/`.)*
 
 ---
 
@@ -166,8 +154,8 @@ tabla `reservas` real. Ver pasos detallados en `supabase/schema.sql`.
 | Dirección | C/ Rio Mundo, Local 2 — Motril, Granada |
 | Teléfono | 958 87 24 24 |
 | Instagram | [@meson_cafeteria_de_eiffel](https://instagram.com/meson_cafeteria_de_eiffel) |
-| Web actual | [mesoncafeteriadeeiffel.es](https://mesoncafeteriadeeiffel.es) |
+| Web | [mesoncafeteriadeeiffel.es](https://mesoncafeteriadeeiffel.es) |
 
 ---
 
-*Desarrollado con ayuda de Claude (Anthropic) · 2025–2026*
+*Desarrollado por Aaron Jiménez Martínez · 2025–2026*

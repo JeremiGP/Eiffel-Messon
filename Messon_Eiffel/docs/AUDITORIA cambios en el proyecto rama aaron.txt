@@ -130,4 +130,4 @@ Los puntos 13–15 son, con diferencia, lo más importante que queda por hacer. 
 
 ---
 
-*Auditoría e implementación realizadas por Claude (Anthropic), 1 de julio de 2026.*
+*Auditoría e implementación realizadas por Aaron Jiménez Martínez, 1 de julio de 2026.*
