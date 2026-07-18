@@ -25,9 +25,11 @@ test('flujo completo: fecha → hora → personas → datos → confirmación', 
   await page.goto('/pages/reservas.html');
 
   // Paso 1 — ir al mes siguiente (todos sus días son futuros y, en
-  // demo, con disponibilidad) y elegir el día 15
+  // demo, con disponibilidad) y elegir el primer día habilitado
+  // (no se usa un día fijo: los miércoles están cerrados y un día
+  // concreto puede caer en miércoles según el mes)
   await page.getByLabel('Mes siguiente').click();
-  await page.locator('.cal-day:not(.cal-day--disabled)', { hasText: /^15$/ }).click();
+  await page.locator('.cal-day:not(.cal-day--disabled)').first().click();
 
   // Hora: primera franja disponible
   await page.locator('.hora-pill:not(.hora-pill--disabled)').first().click();
@@ -66,7 +68,7 @@ test('validación: teléfono español debe tener 9 dígitos', async ({ page }) =
   await page.goto('/pages/reservas.html');
 
   await page.getByLabel('Mes siguiente').click();
-  await page.locator('.cal-day:not(.cal-day--disabled)', { hasText: /^15$/ }).click();
+  await page.locator('.cal-day:not(.cal-day--disabled)').first().click();
   await page.locator('.hora-pill:not(.hora-pill--disabled)').first().click();
   await page.locator('.persona-btn[data-n="4"]').click();
   await page.locator('#next-1').click();

@@ -16,12 +16,18 @@ document.addEventListener('DOMContentLoaded', () => {
   ) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
   // ── Catálogo fijo de franjas (debe coincidir con
-  //    supabase/migrations/20260706000000_capacidad_disponibilidad.sql) ──
+  //    supabase/migrations/20260706000000_capacidad_disponibilidad.sql
+  //    + 20260718000000_nuevo_horario.sql) ──
   const HORAS_CATALOGO = [
-    { grupo: 'Desayuno', horas: ['08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00'] },
+    { grupo: 'Desayuno', horas: ['07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00'] },
     { grupo: 'Comida',    horas: ['13:00', '13:30', '14:00', '14:30', '15:00', '15:30'] },
     { grupo: 'Cena',      horas: ['20:00', '20:30', '21:00', '21:30', '22:00', '22:30'] },
   ];
+
+  // Día semanal de cierre (0=Dom … 3=Mié). El restaurante cierra los
+  // miércoles: se deshabilita en el calendario y, además, la base de
+  // datos lo rechaza (trigger validar_capacidad_reserva).
+  const DIA_CERRADO = 3;
   const CAPACIDAD_DEMO = 20; // usado solo en modo demo (sin Supabase)
 
   // Prefijo por defecto España (+34) primero; el resto ordenado por
@@ -174,19 +180,20 @@ document.addEventListener('DOMContentLoaded', () => {
       const key    = `${calAnio}-${String(calMes).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
       const fecha  = new Date(calAnio, calMes - 1, d);
       const esPasado = fecha < hoyDate;
+      const esCerrado = fecha.getDay() === DIA_CERRADO; // miércoles: cerrado
       const nivel  = nivelPorDia[key] || 'alta';
       const completo = nivel === 'completo';
-      const deshabilitado = esPasado || completo;
+      const deshabilitado = esPasado || completo || esCerrado;
 
       // aria-label completa (día + mes + año + estado) para lectores de pantalla
-      const etiqueta = `${d} de ${MES_NOMBRES[calMes - 1]} de ${calAnio}${completo ? ', completo' : ''}`;
+      const etiqueta = `${d} de ${MES_NOMBRES[calMes - 1]} de ${calAnio}${esCerrado ? ', cerrado' : completo ? ', completo' : ''}`;
 
       html += `
         <button type="button" class="cal-day ${deshabilitado ? 'cal-day--disabled' : ''} ${key === fechaSeleccionada ? 'cal-day--sel' : ''}"
                 data-fecha="${key}" ${deshabilitado ? 'disabled' : ''}
                 aria-label="${etiqueta}" aria-pressed="${key === fechaSeleccionada}">
           ${d}
-          ${!esPasado ? `<span class="cal-dot nivel-${nivel}"></span>` : ''}
+          ${!esPasado && !esCerrado ? `<span class="cal-dot nivel-${nivel}"></span>` : ''}
         </button>`;
     }
 
@@ -637,19 +644,23 @@ document.addEventListener('DOMContentLoaded', () => {
         // Códigos que manda la base de datos:
         // - SIN_DISPONIBILIDAD: alguien se adelantó con la última mesa
         //   (dos reservas casi simultáneas para la misma franja).
+        // - DIA_CERRADO: la fecha cae en día de cierre semanal (miércoles).
         // - DEMASIADAS_SOLICITUDES: rate limiting anti-spam del trigger
         //   trg_limitar_reservas (demasiadas reservas desde la misma IP).
         const sinCupo     = error.message && error.message.includes('SIN_DISPONIBILIDAD');
+        const diaCerrado  = error.message && error.message.includes('DIA_CERRADO');
         const rateLimited = error.message && error.message.includes('DEMASIADAS_SOLICITUDES');
         if (formError) {
           formError.textContent = sinCupo
             ? 'Uy, esa hora se acaba de completar. Elegí otra franja disponible.'
-            : rateLimited
-              ? 'Hemos recibido varias solicitudes desde tu conexión. Llámanos al 958 87 24 24 y te atendemos al momento.'
-              : 'No se pudo enviar la reserva. Inténtalo de nuevo o llámanos al 958 87 24 24.';
+            : diaCerrado
+              ? 'Ese día el restaurante está cerrado (cerramos los miércoles). Elige otra fecha.'
+              : rateLimited
+                ? 'Hemos recibido varias solicitudes desde tu conexión. Llámanos al 958 87 24 24 y te atendemos al momento.'
+                : 'No se pudo enviar la reserva. Inténtalo de nuevo o llámanos al 958 87 24 24.';
           formError.style.display = 'block';
         }
-        if (sinCupo) {
+        if (sinCupo || diaCerrado) {
           goToStep(1);
           renderHoras(datos.fecha);
           horaInput.value = '';

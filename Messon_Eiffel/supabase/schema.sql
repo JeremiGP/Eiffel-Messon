@@ -72,15 +72,19 @@ CREATE POLICY "admin_delete_reservas"
 
 -- ── DISPONIBILIDAD POR FRANJA HORARIA ──────────────────────────
 -- Ver supabase/migrations/20260706000000_capacidad_disponibilidad.sql
+-- y supabase/migrations/20260718000000_nuevo_horario.sql
 -- para el contenido completo (tabla capacidad_horarios + funciones
 -- disponibilidad_dia / disponibilidad_mes + trigger anti doble-reserva).
 -- Se resume aquí solo para que este archivo siga siendo legible
 -- como referencia completa del esquema:
 --   · capacidad_horarios(hora, capacidad_mesas) — aforo por franja
+--     (desayuno desde 07:00, comida hasta 15:30, cena hasta 22:30)
 --   · disponibilidad_dia(fecha)   → nivel de ocupación por hora
+--     (devuelve 0 filas los miércoles: día de cierre semanal)
 --   · disponibilidad_mes(anio,mes)→ nivel de ocupación por día (calendario)
---   · trigger trg_validar_capacidad — revalida cupo en el servidor
---     antes de cada INSERT (con advisory lock para evitar carreras)
+--   · trigger trg_validar_capacidad — rechaza reservas en miércoles
+--     (DIA_CERRADO) y revalida cupo en el servidor antes de cada
+--     INSERT (con advisory lock para evitar carreras)
 
 
 -- ── PASOS PARA LA CONEXIÓN (Fase 3 — pendiente) ───────────────

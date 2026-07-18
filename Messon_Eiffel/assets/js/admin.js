@@ -32,9 +32,10 @@ const FILAS_POR_PAGINA = 20;
 const EMAIL_RE = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
 
 // Catálogo de franjas para agrupar la agenda del día (mismo orden
-// que supabase/migrations/20260706000000_capacidad_disponibilidad.sql)
+// que supabase/migrations/20260706000000_capacidad_disponibilidad.sql
+// + 20260718000000_nuevo_horario.sql)
 const HORAS_CATALOGO = [
-  { grupo: 'Desayuno', horas: ['08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00'] },
+  { grupo: 'Desayuno', horas: ['07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00'] },
   { grupo: 'Comida',    horas: ['13:00', '13:30', '14:00', '14:30', '15:00', '15:30'] },
   { grupo: 'Cena',      horas: ['20:00', '20:30', '21:00', '21:30', '22:00', '22:30'] },
 ];
