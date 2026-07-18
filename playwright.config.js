@@ -9,6 +9,10 @@ module.exports = defineConfig({
   use: {
     baseURL: 'http://localhost:5173',
     trace: 'on-first-retry',
+    // El sitio ahora detecta el idioma del navegador y redirige a /en/ o
+    // /fr/ en la primera visita. Los tests validan el flujo en español,
+    // así que fijamos el locale para que no nos saque de la raíz.
+    locale: 'es-ES',
   },
   // Sirve el sitio estático durante los tests
   webServer: {

@@ -306,7 +306,26 @@ footer { background: var(--carbon); padding: 0; }
 
 .footer-bottom {
   display: flex; justify-content: center; align-items: center;
+  flex-wrap: wrap; gap: 0.6rem 1.4rem;
   font-size: 0.72rem; color: rgba(255,255,255,0.55); /* contraste AA sobre --carbon */
+}
+
+/* ── SELECTOR DE IDIOMA (pie de página, discreto) ──────────── */
+.lang-switch {
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.lang-switch a {
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease;
+}
+.lang-switch a:hover,
+.lang-switch a:focus-visible { color: rgba(255,255,255,0.85); }
+.lang-switch a[aria-current="page"] {
+  color: var(--dorado-cl, #B8833A);
+  font-weight: 600;
 }
 
 /* ── SCROLL REVEAL ───────────────────────────────────────── */

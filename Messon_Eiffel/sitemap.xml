@@ -1,33 +1,165 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- ── INICIO ── -->
   <url>
     <loc>https://mesoncafeteriadeeiffel.es/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/"/>
+    <lastmod>2026-07-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://mesoncafeteriadeeiffel.es/en/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/"/>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mesoncafeteriadeeiffel.es/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/"/>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ── NOSOTROS ── -->
+  <url>
     <loc>https://mesoncafeteriadeeiffel.es/pages/nosotros.html</loc>
-    <lastmod>2026-07-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/pages/nosotros.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/pages/nosotros.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/pages/nosotros.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/pages/nosotros.html"/>
+    <lastmod>2026-07-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://mesoncafeteriadeeiffel.es/en/pages/nosotros.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/pages/nosotros.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/pages/nosotros.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/pages/nosotros.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/pages/nosotros.html"/>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mesoncafeteriadeeiffel.es/fr/pages/nosotros.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/pages/nosotros.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/pages/nosotros.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/pages/nosotros.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/pages/nosotros.html"/>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- ── CARTA ── -->
+  <url>
     <loc>https://mesoncafeteriadeeiffel.es/pages/carta.html</loc>
-    <lastmod>2026-07-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/pages/carta.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/pages/carta.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/pages/carta.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/pages/carta.html"/>
+    <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://mesoncafeteriadeeiffel.es/en/pages/carta.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/pages/carta.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/pages/carta.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/pages/carta.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/pages/carta.html"/>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesoncafeteriadeeiffel.es/fr/pages/carta.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/pages/carta.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/pages/carta.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/pages/carta.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/pages/carta.html"/>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ── RESERVAS ── -->
+  <url>
     <loc>https://mesoncafeteriadeeiffel.es/pages/reservas.html</loc>
-    <lastmod>2026-07-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/pages/reservas.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/pages/reservas.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/pages/reservas.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/pages/reservas.html"/>
+    <lastmod>2026-07-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://mesoncafeteriadeeiffel.es/en/pages/reservas.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/pages/reservas.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/pages/reservas.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/pages/reservas.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/pages/reservas.html"/>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mesoncafeteriadeeiffel.es/fr/pages/reservas.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/pages/reservas.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/pages/reservas.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/pages/reservas.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/pages/reservas.html"/>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ── CONTACTO ── -->
+  <url>
     <loc>https://mesoncafeteriadeeiffel.es/pages/contacto.html</loc>
-    <lastmod>2026-07-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/pages/contacto.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/pages/contacto.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/pages/contacto.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/pages/contacto.html"/>
+    <lastmod>2026-07-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://mesoncafeteriadeeiffel.es/en/pages/contacto.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/pages/contacto.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/pages/contacto.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/pages/contacto.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/pages/contacto.html"/>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://mesoncafeteriadeeiffel.es/fr/pages/contacto.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mesoncafeteriadeeiffel.es/pages/contacto.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mesoncafeteriadeeiffel.es/en/pages/contacto.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mesoncafeteriadeeiffel.es/fr/pages/contacto.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mesoncafeteriadeeiffel.es/pages/contacto.html"/>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
 </urlset>

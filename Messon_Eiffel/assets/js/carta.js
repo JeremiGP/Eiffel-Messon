@@ -6,6 +6,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  const T = window.MESON_I18N || {};
   const sidebarBtns = Array.from(document.querySelectorAll('.sidebar-btn'));
   const cartaPanels = document.querySelectorAll('.carta-panel');
 
@@ -23,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     backdrop.classList.toggle('visible', open);
     document.body.classList.toggle('drawer-abierto', open);
     drawerToggle.setAttribute('aria-expanded', String(open));
-    drawerToggle.setAttribute('aria-label', open ? 'Cerrar categorías' : 'Abrir categorías');
+    drawerToggle.setAttribute('aria-label', open ? (T.drawerCerrar || 'Cerrar categorías') : (T.drawerAbrir || 'Abrir categorías'));
   }
 
   if (drawerToggle && sidebar && backdrop) {

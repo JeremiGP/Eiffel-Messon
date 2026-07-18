@@ -4,6 +4,10 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // ── Textos según idioma (ver assets/js/i18n-strings.js, cargado
+  //    antes que este script) ────────────────────────────────
+  const T = window.MESON_I18N || {};
+
   // ── Cliente de Supabase ───────────────────────────────────
   // Si assets/js/config.js tiene claves reales, se usa Supabase
   // de verdad. Si no existe o sigue con los valores de ejemplo,
@@ -19,9 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
   //    supabase/migrations/20260706000000_capacidad_disponibilidad.sql
   //    + 20260718000000_nuevo_horario.sql) ──
   const HORAS_CATALOGO = [
-    { grupo: 'Desayuno', horas: ['07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00'] },
-    { grupo: 'Comida',    horas: ['13:00', '13:30', '14:00', '14:30', '15:00', '15:30'] },
-    { grupo: 'Cena',      horas: ['20:00', '20:30', '21:00', '21:30', '22:00', '22:30'] },
+    { grupo: T.grupoDesayuno || 'Desayuno', horas: ['07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00'] },
+    { grupo: T.grupoComida   || 'Comida',    horas: ['13:00', '13:30', '14:00', '14:30', '15:00', '15:30'] },
+    { grupo: T.grupoCena     || 'Cena',      horas: ['20:00', '20:30', '21:00', '21:30', '22:00', '22:30'] },
   ];
 
   // Día semanal de cierre (0=Dom … 3=Mié). El restaurante cierra los
@@ -33,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Prefijo por defecto España (+34) primero; el resto ordenado por
   // relevancia para la clientela habitual del Mesón (Europa, Magreb,
   // Latinoamérica) y grandes bloques internacionales al final.
-  const PREFIJOS_PAIS = [
+  const PREFIJOS_PAIS = T.prefijos || [
     { code: '+34',  pais: 'España' },
     { code: '+351', pais: 'Portugal' },
     { code: '+33',  pais: 'Francia' },
@@ -127,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const calPrevBtn   = document.getElementById('calPrev');
   const calNextBtn   = document.getElementById('calNext');
 
-  const MES_NOMBRES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+  const MES_NOMBRES = T.mesNombres || ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
     'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
   // Trae el nivel de ocupación de cada día del mes. Si no hay Supabase
@@ -161,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function renderCalendario() {
     const token = ++calRenderToken;
     calMesLabel.textContent = `${MES_NOMBRES[calMes - 1]} ${calAnio}`;
-    calGrid.innerHTML = '<p class="cal-cargando">Cargando disponibilidad…</p>';
+    calGrid.innerHTML = `<p class="cal-cargando">${T.cargandoDisponibilidad || 'Cargando disponibilidad…'}</p>`;
 
     // No dejar navegar a meses anteriores al actual
     const esMesActual = calAnio === hoyDate.getFullYear() && calMes === hoyDate.getMonth() + 1;
@@ -186,7 +190,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const deshabilitado = esPasado || completo || esCerrado;
 
       // aria-label completa (día + mes + año + estado) para lectores de pantalla
-      const etiqueta = `${d} de ${MES_NOMBRES[calMes - 1]} de ${calAnio}${esCerrado ? ', cerrado' : completo ? ', completo' : ''}`;
+      const fechaBase = T.fechaLabel
+        ? T.fechaLabel(d, MES_NOMBRES[calMes - 1], calAnio)
+        : `${d} de ${MES_NOMBRES[calMes - 1]} de ${calAnio}`;
+      const etiqueta = `${fechaBase}${esCerrado ? (T.sufijoCerrado || ', cerrado') : completo ? (T.sufijoCompleto || ', completo') : ''}`;
 
       html += `
         <button type="button" class="cal-day ${deshabilitado ? 'cal-day--disabled' : ''} ${key === fechaSeleccionada ? 'cal-day--sel' : ''}"
@@ -283,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function renderHoras(fecha) {
     const token = ++horasRenderToken;
     horasVacioEl.style.display = 'none';
-    horasPillsEl.innerHTML = '<p class="cal-cargando">Cargando horas…</p>';
+    horasPillsEl.innerHTML = `<p class="cal-cargando">${T.cargandoHoras || 'Cargando horas…'}</p>`;
 
     const disponibilidad = await fetchDisponibilidadDia(fecha);
     if (token !== horasRenderToken) return; // respuesta obsoleta
@@ -294,11 +301,15 @@ document.addEventListener('DOMContentLoaded', () => {
       grupo.horas.forEach(hora => {
         const info = disponibilidad[hora] || { disponibles: 0, nivel: 'completo' };
         const sinCupo = info.disponibles <= 0;
+        const sinMesasAria = T.sinMesasAria || ', sin mesas disponibles';
+        const mesasLibresAria = T.mesasLibresAria ? T.mesasLibresAria(info.disponibles) : `, ${info.disponibles} mesas libres`;
+        const sinMesasTitle = T.sinMesasTitle || 'Sin mesas disponibles';
+        const mesasLibresTitle = T.mesasLibresTitle ? T.mesasLibresTitle(info.disponibles) : `${info.disponibles} mesas libres`;
         html += `
           <button type="button" class="hora-pill nivel-${info.nivel} ${sinCupo ? 'hora-pill--disabled' : ''}"
                   data-hora="${hora}" ${sinCupo ? 'disabled' : ''} aria-pressed="false"
-                  aria-label="${hora}${sinCupo ? ', sin mesas disponibles' : `, ${info.disponibles} mesas libres`}"
-                  title="${sinCupo ? 'Sin mesas disponibles' : `${info.disponibles} mesas libres`}">
+                  aria-label="${hora}${sinCupo ? sinMesasAria : mesasLibresAria}"
+                  title="${sinCupo ? sinMesasTitle : mesasLibresTitle}">
             ${hora}
           </button>`;
       });
@@ -399,15 +410,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let ok = true;
     if (!fechaInput.value) {
-      mostrarErrorBloque('calendarioWrap', 'fecha', 'Elige una fecha para tu reserva.');
+      mostrarErrorBloque('calendarioWrap', 'fecha', T.errFecha || 'Elige una fecha para tu reserva.');
       ok = false;
     }
     if (!horaInput.value) {
-      mostrarErrorBloque('horasWrap', 'hora', 'Elige una hora disponible.');
+      mostrarErrorBloque('horasWrap', 'hora', T.errHora || 'Elige una hora disponible.');
       ok = false;
     }
     if (!document.getElementById('personas').value) {
-      mostrarErrorGrupo('personasSelector', 'Selecciona cuántas personas venís.');
+      mostrarErrorGrupo('personasSelector', T.errPersonas || 'Selecciona cuántas personas venís.');
       ok = false;
     }
     return ok;
@@ -425,22 +436,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const email     = document.getElementById('email').value.trim();
     let ok = true;
 
-    if (!nombre)    { mostrarError('nombre', 'Escribe tu nombre.'); ok = false; }
-    if (!apellidos) { mostrarError('apellidos', 'Escribe tus apellidos.'); ok = false; }
+    if (!nombre)    { mostrarError('nombre', T.errNombre || 'Escribe tu nombre.'); ok = false; }
+    if (!apellidos) { mostrarError('apellidos', T.errApellidos || 'Escribe tus apellidos.'); ok = false; }
 
     const esEspana = prefijoSelect && prefijoSelect.value === '+34';
     if (!telefono) {
-      mostrarError('telefono', 'Escribe un teléfono de contacto.'); ok = false;
+      mostrarError('telefono', T.errTelVacio || 'Escribe un teléfono de contacto.'); ok = false;
     } else if (esEspana && telefono.length !== 9) {
-      mostrarError('telefono', 'El teléfono en España debe tener 9 dígitos.'); ok = false;
+      mostrarError('telefono', T.errTelEspana || 'El teléfono en España debe tener 9 dígitos.'); ok = false;
     } else if (!esEspana && telefono.length < 6) {
-      mostrarError('telefono', 'Ese número parece incompleto.'); ok = false;
+      mostrarError('telefono', T.errTelIncompleto || 'Ese número parece incompleto.'); ok = false;
     }
 
     // Email: si se escribe algo, debe tener formato de correo real
     // (dominio con punto y extensión válida), no cualquier texto con @.
     if (email && !EMAIL_RE.test(email)) {
-      mostrarError('email', 'Revisa el formato del email (algo@dominio.com).');
+      mostrarError('email', T.errEmail || 'Revisa el formato del email (algo@dominio.com).');
       ok = false;
     }
 
@@ -600,7 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
 
     const btnSubmit = form.querySelector('.btn-submit');
-    btnSubmit.textContent = 'Enviando…';
+    btnSubmit.textContent = T.enviando || 'Enviando…';
     btnSubmit.disabled    = true;
     if (formError) formError.style.display = 'none';
 
@@ -622,10 +633,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const disponibilidadActual = await fetchDisponibilidadDia(datos.fecha);
       const infoHora = disponibilidadActual[datos.hora];
       if (!infoHora || infoHora.disponibles <= 0) {
-        btnSubmit.textContent = 'Solicitar reserva';
+        btnSubmit.textContent = T.solicitarReserva || 'Solicitar reserva';
         btnSubmit.disabled    = false;
         if (formError) {
-          formError.textContent = 'Uy, esa hora se acaba de completar. Elegí otra franja disponible.';
+          formError.textContent = T.errSinCupo || 'Uy, esa hora se acaba de completar. Elegí otra franja disponible.';
           formError.style.display = 'block';
         }
         goToStep(1);
@@ -638,7 +649,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const { error } = await supabaseClient.from('reservas').insert([datos]);
       if (error) {
         console.error('Error al guardar la reserva:', error);
-        btnSubmit.textContent = 'Solicitar reserva';
+        btnSubmit.textContent = T.solicitarReserva || 'Solicitar reserva';
         btnSubmit.disabled    = false;
 
         // Códigos que manda la base de datos:
@@ -652,12 +663,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const rateLimited = error.message && error.message.includes('DEMASIADAS_SOLICITUDES');
         if (formError) {
           formError.textContent = sinCupo
-            ? 'Uy, esa hora se acaba de completar. Elegí otra franja disponible.'
+            ? (T.errSinCupo || 'Uy, esa hora se acaba de completar. Elegí otra franja disponible.')
             : diaCerrado
-              ? 'Ese día el restaurante está cerrado (cerramos los miércoles). Elige otra fecha.'
+              ? (T.errDiaCerrado || 'Ese día el restaurante está cerrado (cerramos los miércoles). Elige otra fecha.')
               : rateLimited
-                ? 'Hemos recibido varias solicitudes desde tu conexión. Llámanos al 958 87 24 24 y te atendemos al momento.'
-                : 'No se pudo enviar la reserva. Inténtalo de nuevo o llámanos al 958 87 24 24.';
+                ? (T.errRateLimit || 'Hemos recibido varias solicitudes desde tu conexión. Llámanos al 958 87 24 24 y te atendemos al momento.')
+                : (T.errGenerico || 'No se pudo enviar la reserva. Inténtalo de nuevo o llámanos al 958 87 24 24.');
           formError.style.display = 'block';
         }
         if (sinCupo || diaCerrado) {
