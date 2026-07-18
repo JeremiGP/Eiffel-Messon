@@ -15,7 +15,7 @@
   <meta property="og:url" content="https://mesoncafeteriadeeiffel.es/">
   <!-- La foto real del hero (los .jpg locales son placeholders difusos:
        usarlos aquí haría que la preview al compartir saliera borrosa) -->
-  <meta property="og:image" content="https://images.unsplash.com/photo-1508615263227-c5d58c1e5821?auto=format&fit=crop&w=1200&h=630&q=80">
+  <meta property="og:image" content="https://mesoncafeteriadeeiffel.es/assets/img/og-logo.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="es_ES">
@@ -24,7 +24,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Mesón Cafetería de Eiffel — Motril, Granada">
   <meta name="twitter:description" content="Cocina andaluza de siempre en Motril. Desayunos, tapas y brasas.">
-  <meta name="twitter:image" content="https://images.unsplash.com/photo-1508615263227-c5d58c1e5821?auto=format&fit=crop&w=1200&h=630&q=80">
+  <meta name="twitter:image" content="https://mesoncafeteriadeeiffel.es/assets/img/og-logo.jpg">
 
   <title>Mesón Cafetería de Eiffel – Motril, Granada</title>
 
@@ -48,7 +48,7 @@
     "@context": "https://schema.org",
     "@type": "Restaurant",
     "name": "Mesón Cafetería de Eiffel",
-    "image": "https://images.unsplash.com/photo-1508615263227-c5d58c1e5821?auto=format&fit=crop&w=1200&h=630&q=80",
+    "image": "https://mesoncafeteriadeeiffel.es/assets/img/og-logo.jpg",
     "url": "https://mesoncafeteriadeeiffel.es/",
     "telephone": "+34958872424",
     "servesCuisine": "Andaluza",
@@ -88,9 +88,97 @@
 <!-- ── INTRO OVERLAY ── -->
 <div class="intro-overlay" id="introOverlay">
   <div class="intro-inner">
+
+    <!-- Logo dibujado a trazo (4 escenas: marco → taza → rótulo → cierre).
+         SVG + CSS puro: cada trazo usa pathLength=1 y anima stroke-dashoffset
+         con --dl (delay) y --dd (duración); los textos se revelan con máscaras
+         de barrido (.il-wipe). Sin JS ni estilos inline de script → CSP OK. -->
+    <div class="intro-logo" role="img" aria-label="Mesón Cafetería de Eiffel">
+      <svg viewBox="0 0 1240 850" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <defs>
+          <mask id="ilBand" maskUnits="userSpaceOnUse">
+            <rect x="-40" y="-40" width="1320" height="930" fill="#fff"/>
+            <rect x="80" y="332" width="1080" height="192" fill="#000"/>
+          </mask>
+          <mask id="ilTitleWipe" maskUnits="userSpaceOnUse">
+            <rect class="il-wipe" style="--dl:2.9s;--dd:1s" x="60" y="336" width="1130" height="190" fill="#fff"/>
+          </mask>
+          <mask id="ilSubWipe" maskUnits="userSpaceOnUse">
+            <rect class="il-wipe" style="--dl:4.15s;--dd:.8s" x="370" y="560" width="510" height="220" fill="#fff"/>
+          </mask>
+          <path id="ilArc" d="M448,682 A234,234 0 0 0 792,682" fill="none"/>
+        </defs>
+
+        <!-- Escena 1 · Marco: aros ocultos tras la banda del rótulo -->
+        <g mask="url(#ilBand)">
+          <g transform="rotate(-90 620 435)">
+            <circle class="ild" style="--dl:.15s;--dd:.95s" cx="620" cy="435" r="342" pathLength="1" stroke-width="3.6"/>
+            <circle class="ild" style="--dl:.3s;--dd:.95s"  cx="620" cy="435" r="327" pathLength="1" stroke-width="2"/>
+          </g>
+        </g>
+        <circle class="ild ilf" style="--dl:0s;--dd:.3s;--df:.15s" cx="620" cy="60" r="6" pathLength="1" stroke-width="2.4"/>
+        <path class="ild" style="--dl:.05s;--dd:.35s" d="M620,80 C606,95 606,110 620,118 C634,110 634,95 620,80 Z" pathLength="1" stroke-width="2.6"/>
+        <path class="ild" style="--dl:1s;--dd:.35s" d="M620,786 C634,800 634,815 620,823 C606,815 606,800 620,786 Z" pathLength="1" stroke-width="2.6"/>
+        <circle class="ild ilf" style="--dl:1.1s;--dd:.3s;--df:1.25s" cx="620" cy="839" r="6" pathLength="1" stroke-width="2.4"/>
+
+        <!-- Escena 2 · Taza con arte latte y ornamentos -->
+        <ellipse class="ild" style="--dl:1.2s;--dd:.45s" cx="620" cy="306" rx="118" ry="20" pathLength="1" stroke-width="3.2"/>
+        <ellipse class="ild" style="--dl:1.4s;--dd:.35s" cx="620" cy="304" rx="78" ry="12" pathLength="1" stroke-width="2"/>
+        <path class="ild" style="--dl:1.35s;--dd:.55s" d="M513,190 C516,246 552,283 620,283 C688,283 724,246 727,190" pathLength="1" stroke-width="4"/>
+        <ellipse class="ild" style="--dl:1.55s;--dd:.5s" cx="620" cy="188" rx="107" ry="26" pathLength="1" stroke-width="4"/>
+        <path class="ild" style="--dl:1.9s;--dd:.35s" d="M725,200 C758,192 776,208 772,228 C768,247 746,257 726,253" pathLength="1" stroke-width="4"/>
+        <ellipse class="ild" style="--dl:1.95s;--dd:.3s" cx="620" cy="187" rx="90" ry="19" pathLength="1" stroke-width="2.2"/>
+        <path class="ild" style="--dl:2.1s;--dd:.25s"  d="M620,172 C620,182 620,191 620,199" pathLength="1" stroke-width="2.2"/>
+        <path class="ild" style="--dl:2.2s;--dd:.25s"  d="M620,176 C600,171 585,179 581,190" pathLength="1" stroke-width="2"/>
+        <path class="ild" style="--dl:2.2s;--dd:.25s"  d="M620,176 C640,171 655,179 659,190" pathLength="1" stroke-width="2"/>
+        <path class="ild" style="--dl:2.35s;--dd:.25s" d="M620,184 C603,181 593,187 589,195" pathLength="1" stroke-width="2"/>
+        <path class="ild" style="--dl:2.35s;--dd:.25s" d="M620,184 C637,181 647,187 651,195" pathLength="1" stroke-width="2"/>
+        <path class="ild" style="--dl:2.5s;--dd:.25s"  d="M605,197 C611,204 629,204 635,197" pathLength="1" stroke-width="2"/>
+        <g class="il-flourish">
+          <path class="ild" style="--dl:1.6s;--dd:.5s"  d="M420,314 C448,294 462,268 450,250 C441,236 420,239 418,253 C416,266 431,272 439,263" pathLength="1" stroke-width="2.6"/>
+          <path class="ild" style="--dl:1.85s;--dd:.45s" d="M452,306 C474,286 500,280 514,292" pathLength="1" stroke-width="2.4"/>
+          <path class="ild" style="--dl:2.05s;--dd:.4s"  d="M470,318 C486,312 502,312 514,318" pathLength="1" stroke-width="2.2"/>
+        </g>
+        <g class="il-flourish" transform="translate(1240 0) scale(-1 1)">
+          <path class="ild" style="--dl:1.6s;--dd:.5s"  d="M420,314 C448,294 462,268 450,250 C441,236 420,239 418,253 C416,266 431,272 439,263" pathLength="1" stroke-width="2.6"/>
+          <path class="ild" style="--dl:1.85s;--dd:.45s" d="M452,306 C474,286 500,280 514,292" pathLength="1" stroke-width="2.4"/>
+          <path class="ild" style="--dl:2.05s;--dd:.4s"  d="M470,318 C486,312 502,312 514,318" pathLength="1" stroke-width="2.2"/>
+        </g>
+
+        <!-- Escena 3 · Reglas y rótulo entintado -->
+        <path class="ild ild--butt" style="--dl:2.55s;--dd:.5s" d="M620,318 H248" pathLength="1" stroke-width="3"/>
+        <path class="ild ild--butt" style="--dl:2.55s;--dd:.5s" d="M620,318 H992" pathLength="1" stroke-width="3"/>
+        <path class="ild" style="--dl:2.95s;--dd:.3s" d="M248,318 c-13,-1 -21,8 -18,16 c3,8 14,9 17,1 c2,-5 -2,-10 -8,-9" pathLength="1" stroke-width="2.4"/>
+        <path class="ild" style="--dl:2.95s;--dd:.3s" d="M992,318 c13,-1 21,8 18,16 c-3,8 -14,9 -17,1 c-2,-5 2,-10 8,-9" pathLength="1" stroke-width="2.4"/>
+        <path class="ild ild--butt" style="--dl:2.7s;--dd:.5s" d="M620,528 H248" pathLength="1" stroke-width="3"/>
+        <path class="ild ild--butt" style="--dl:2.7s;--dd:.5s" d="M620,528 H992" pathLength="1" stroke-width="3"/>
+        <path class="ild" style="--dl:3.1s;--dd:.3s" d="M248,528 c-13,-1 -21,8 -18,16 c3,8 14,9 17,1 c2,-5 -2,-10 -8,-9" pathLength="1" stroke-width="2.4"/>
+        <path class="ild" style="--dl:3.1s;--dd:.3s" d="M992,528 c13,-1 21,8 18,16 c-3,8 -14,9 -17,1 c-2,-5 2,-10 8,-9" pathLength="1" stroke-width="2.4"/>
+        <g mask="url(#ilTitleWipe)">
+          <text class="il-ts" x="620" y="464" text-anchor="middle" font-size="92" letter-spacing="3" textLength="1064" lengthAdjust="spacingAndGlyphs">MESÓN CAFETERÍA</text>
+        </g>
+        <text class="il-tf" style="--dl:3.6s;--dd:.8s" x="620" y="464" text-anchor="middle" font-size="92" letter-spacing="3" textLength="1064" lengthAdjust="spacingAndGlyphs">MESÓN CAFETERÍA</text>
+        <g class="il-scroll">
+          <path class="ild" style="--dl:3.25s;--dd:.55s" d="M608,548 C556,558 498,562 468,586 C444,604 450,632 473,636 C492,639 502,621 490,611 C480,603 467,611 471,621" pathLength="1" stroke-width="2.6"/>
+          <path class="ild" style="--dl:3.5s;--dd:.45s"  d="M598,572 C568,592 558,618 576,634 C589,645 606,638 604,625 C602,614 590,612 586,620" pathLength="1" stroke-width="2.4"/>
+          <path class="ild" style="--dl:3.7s;--dd:.35s"  d="M520,560 C542,568 554,582 556,598" pathLength="1" stroke-width="2.2"/>
+        </g>
+        <g class="il-scroll" transform="translate(1240 0) scale(-1 1)">
+          <path class="ild" style="--dl:3.25s;--dd:.55s" d="M608,548 C556,558 498,562 468,586 C444,604 450,632 473,636 C492,639 502,621 490,611 C480,603 467,611 471,621" pathLength="1" stroke-width="2.6"/>
+          <path class="ild" style="--dl:3.5s;--dd:.45s"  d="M598,572 C568,592 558,618 576,634 C589,645 606,638 604,625 C602,614 590,612 586,620" pathLength="1" stroke-width="2.4"/>
+          <path class="ild" style="--dl:3.7s;--dd:.35s"  d="M520,560 C542,568 554,582 556,598" pathLength="1" stroke-width="2.2"/>
+        </g>
+        <path class="ild ilf" style="--dl:4s;--dd:.3s;--df:4.2s" d="M620,545 l8,10 -8,10 -8,-10 Z" pathLength="1" stroke-width="2"/>
+        <g mask="url(#ilSubWipe)">
+          <text class="il-sub" font-size="46" letter-spacing="12">
+            <textPath href="#ilArc" startOffset="50%" text-anchor="middle">DE EIFFEL</textPath>
+          </text>
+        </g>
+      </svg>
+    </div>
+
     <div class="intro-barra"></div>
     <div class="intro-sub-label">Motril, Granada</div>
-    <p class="intro-nombre display">Mesón <em>de Eiffel</em></p>
     <div class="intro-lugar">Cocina andaluza · Desayunos · Brasas</div>
     <button class="intro-btn" id="introBtn">Entrar al mesón</button>
   </div>
@@ -98,7 +186,9 @@
 
 <!-- ── NAV ── -->
 <nav id="nav">
-  <a href="index.html" class="nav-logo">Mesón <span>de Eiffel</span></a>
+  <a href="index.html" class="nav-logo" aria-label="Mesón Cafetería de Eiffel — inicio">
+    <img class="logo-emblema" src="assets/img/logo-nav.png" alt="" width="523" height="360" decoding="async">
+  </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="pages/nosotros.html">Nosotros</a></li>
     <li><a href="pages/carta.html">Carta</a></li>

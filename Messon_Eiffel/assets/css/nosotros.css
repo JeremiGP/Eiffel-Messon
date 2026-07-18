@@ -108,12 +108,18 @@
   pointer-events: none; user-select: none;
 }
 .cita-texto {
+  /* La cita mantiene la serif en caja normal (no hereda el estilo
+     de titulares en mayúsculas de .display) */
+  font-family: 'Cormorant Garamond', serif;
+  text-transform: none;
+  letter-spacing: normal;
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   color: var(--crema);
   font-style: italic; font-weight: 300;
   max-width: 780px; margin: 0 auto 2.5rem;
   position: relative; line-height: 1.4;
 }
+.cita-texto em { font-size: 1em; }
 .cita-texto em { color: var(--dorado-cl); }
 .cita-autor {
   font-size: 0.72rem; letter-spacing: 0.2em;
@@ -136,6 +142,9 @@
 }
 .nos-stat:last-child { border-right: none; }
 .nos-stat-num {
+  /* Las cifras siguen en serif elegante, no en Inter mayúsculas */
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: normal;
   font-size: clamp(3rem, 5vw, 4.5rem);
   color: var(--dorado-cl);
   line-height: 1; display: block;

@@ -67,13 +67,24 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 }
 
 /* ── TIPOGRAFÍA BASE ──────────────────────────────────────── */
+/* Titulares "mixtos": la parte principal en MAYÚSCULAS (Inter ligera
+   con tracking amplio) y el acento <em> en cursiva serif dorada. */
 .display {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 300;
-  line-height: 1.08;
-  letter-spacing: -0.01em;
+  line-height: 1.18;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
-.display em { font-style: italic; color: var(--dorado-cl); }
+.display em {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--dorado-cl);
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 1.12em;
+}
 
 .eyebrow {
   display: flex;
@@ -88,7 +99,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .eyebrow-bar { width: 32px; height: 1px; background: var(--tierra-md); flex-shrink: 0; }
 
 .section-h {
-  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-size: clamp(1.9rem, 4vw, 3.1rem);
   color: var(--tierra);
   margin-bottom: 2rem;
 }
@@ -105,13 +116,18 @@ nav.scrolled {
   background: rgba(26, 17, 10, 0.94);
   backdrop-filter: blur(12px);
 }
+/* Logo: emblema de la marca (imagen original en crema para el
+   nav oscuro — assets/img/logo-nav.png) */
 .nav-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.15rem; font-weight: 400;
-  color: #fff; text-decoration: none;
-  letter-spacing: 0.06em; text-transform: uppercase;
+  display: block;
+  text-decoration: none;
 }
-.nav-logo span { color: var(--dorado-cl); font-style: italic; }
+.logo-emblema {
+  display: block;
+  height: 72px; width: auto;
+  transition: height 0.5s ease;
+}
+nav.scrolled .logo-emblema { height: 52px; }
 
 .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
 .nav-links a {

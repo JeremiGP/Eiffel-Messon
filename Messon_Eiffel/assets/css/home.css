@@ -50,9 +50,10 @@
   text-transform: uppercase; color: rgba(255,255,255,0.6);
 }
 h1.hero-title {
-  /* mínimo 2.5rem: en pantallas de 320–400px el anterior (3.5rem)
-     rompía la línea y rozaba el borde */
-  font-size: clamp(2.5rem, 8vw, 7rem); color: #fff;
+  /* En mayúsculas (estilo mixto) el texto es más ancho que en serif:
+     máximo 5.5rem para no desbordar en escritorio, mínimo 2.2rem
+     para que quepa en pantallas de 320–400px */
+  font-size: clamp(2.2rem, 7vw, 5.5rem); color: #fff;
   margin-bottom: 2.5rem; opacity: 0;
   animation: rise 1s 0.85s cubic-bezier(0.16,1,0.3,1) forwards;
 }
@@ -150,29 +151,72 @@ body.intro-bloqueada { overflow: hidden; height: 100vh; }
   opacity: 0;
   animation: intro-rise 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-.intro-barra     { animation-delay: 0.30s; }
-.intro-sub-label { animation-delay: 0.46s; }
-.intro-nombre    { animation-delay: 0.58s; }
-.intro-lugar     { animation-delay: 0.74s; }
-.intro-btn       { animation-delay: 0.96s; }
+/* El logo aparece enseguida y se dibuja a trazo; el resto del
+   contenido espera a que el rótulo termine de entintarse (~4.8s) */
+.intro-logo      { animation-delay: 0.05s; }
+.intro-barra     { animation-delay: 4.80s; }
+.intro-sub-label { animation-delay: 4.95s; }
+.intro-lugar     { animation-delay: 5.10s; }
+.intro-btn       { animation-delay: 5.25s; }
 
 @keyframes intro-rise {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Logo dibujado a trazo (adaptado del diseño "Logo Draw Animation") ──
+   Cada trazo lleva pathLength=1: un único dashoffset 1→0 lo dibuja
+   entero. --dl = delay, --dd = duración (inline en cada elemento).
+   Escenas: marco (0–1.3s) → taza (1.2–2.8s) → rótulo (2.5–5s) → cierre. */
+.intro-logo { width: min(520px, 86vw); }
+.intro-logo svg {
+  display: block; width: 100%; height: auto;
+  overflow: visible;
+  animation: il-settle 1.2s ease 4.5s forwards; /* zoom sutil de cierre */
+}
+.intro-logo .ild {
+  fill: none;
+  stroke: var(--crema);
+  stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1 1; stroke-dashoffset: 1;
+  animation: il-draw var(--dd, .8s) ease var(--dl, 0s) forwards;
+}
+.intro-logo .ild--butt { stroke-linecap: butt; }
+/* Formas que además se rellenan (remates, rombo) */
+.intro-logo .ilf {
+  fill: var(--crema); fill-opacity: 0;
+  animation:
+    il-draw   var(--dd, .8s) ease var(--dl, 0s) forwards,
+    il-fillin .45s          ease var(--df, 0s) forwards;
+}
+/* Rótulo: contorno revelado por barrido, relleno que entinta después */
+.intro-logo text {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+}
+.intro-logo .il-ts { fill: none; stroke: var(--crema); stroke-width: 1.5; }
+.intro-logo .il-tf {
+  fill: var(--crema); fill-opacity: 0;
+  animation: il-fillin var(--dd, .8s) ease var(--dl, 0s) forwards;
+}
+.intro-logo .il-sub { fill: var(--dorado-cl); }
+/* Rectángulos de máscara que barren de izquierda a derecha */
+.intro-logo .il-wipe {
+  transform-box: fill-box; transform-origin: left center;
+  transform: scaleX(0);
+  animation: il-wipe var(--dd, .8s) ease var(--dl, 0s) forwards;
+}
+
+@keyframes il-draw   { to { stroke-dashoffset: 0; } }
+@keyframes il-fillin { to { fill-opacity: 1; } }
+@keyframes il-wipe   { to { transform: scaleX(1); } }
+@keyframes il-settle { to { transform: scale(1.015); } }
+
 .intro-barra { width: 52px; height: 1px; background: var(--dorado); }
 .intro-sub-label {
   font-size: 0.62rem; letter-spacing: 0.26em;
   text-transform: uppercase; color: rgba(255,255,255,0.38);
 }
-.intro-nombre {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.6rem, 10vw, 6.5rem); /* no desborda en 320px */
-  font-weight: 300; color: var(--crema);
-  line-height: 1; margin: 0.5rem 0;
-}
-.intro-nombre em { font-style: italic; color: var(--dorado-cl); }
 .intro-lugar {
   font-size: 0.65rem; letter-spacing: 0.22em;
   text-transform: uppercase; color: rgba(255,255,255,0.3);
@@ -223,6 +267,16 @@ body.intro-bloqueada { overflow: hidden; height: 100vh; }
 @media (prefers-reduced-motion: reduce) {
   .hero-bg { animation: none; }
   .intro-inner > * { animation: none; opacity: 1; }
+  /* Logo en su estado final, sin dibujo progresivo */
+  .intro-logo svg,
+  .intro-logo .ild,
+  .intro-logo .ilf,
+  .intro-logo .il-tf,
+  .intro-logo .il-wipe { animation: none; }
+  .intro-logo .ild  { stroke-dashoffset: 0; }
+  .intro-logo .ilf,
+  .intro-logo .il-tf { fill-opacity: 1; }
+  .intro-logo .il-wipe { transform: none; }
   .intro-overlay.saliendo {
     animation: none;
     opacity: 0;
