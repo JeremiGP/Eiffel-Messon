@@ -26,29 +26,74 @@ interface ReservaRecord {
   fecha: string;    // YYYY-MM-DD
   hora: string;     // HH:MM
   personas: number;
+  idioma?: string;  // 'es' | 'en' | 'fr' (migración 20260719000000; puede faltar en filas antiguas)
 }
 
-function formatFecha(iso: string): string {
+type Idioma = 'es' | 'en' | 'fr';
+
+function normalizarIdioma(v: string | undefined | null): Idioma {
+  return v === 'en' || v === 'fr' ? v : 'es';
+}
+
+const LOCALES: Record<Idioma, string> = { es: 'es-ES', en: 'en-GB', fr: 'fr-FR' };
+
+function formatFecha(iso: string, idioma: Idioma): string {
   const [y, m, d] = iso.split('-').map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString('es-ES', {
+  return new Date(y, m - 1, d).toLocaleDateString(LOCALES[idioma], {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
   });
 }
 
-function plantillaHtml(r: ReservaRecord): string {
+// Textos por idioma. Mismo patrón que assets/js/i18n-strings.js: nombres de
+// platos/marca en español, solo se traduce el texto de interfaz.
+const TEXTOS: Record<Idioma, {
+  asunto: (fechaHora: string, hora: string) => string;
+  hola: (nombre: string) => string;
+  recibido: string;
+  fecha: string; hora: string; personas: string;
+  confirmacion: string;
+  llamar: string;
+}> = {
+  es: {
+    asunto: (fecha, hora) => `Solicitud de reserva recibida — ${fecha}, ${hora}`,
+    hola: (nombre) => `Hola ${nombre},`,
+    recibido: 'Hemos recibido tu solicitud de reserva:',
+    fecha: 'Fecha', hora: 'Hora', personas: 'Personas',
+    confirmacion: 'Te <strong>confirmaremos la disponibilidad por teléfono</strong> en breve. Si necesitas cambiar algo, llámanos al',
+    llamar: '958 87 24 24',
+  },
+  en: {
+    asunto: (fecha, hora) => `Booking request received — ${fecha}, ${hora}`,
+    hola: (nombre) => `Hi ${nombre},`,
+    recibido: "We've received your booking request:",
+    fecha: 'Date', hora: 'Time', personas: 'People',
+    confirmacion: "We'll <strong>confirm availability by phone</strong> shortly. If you need to change anything, call us at",
+    llamar: '+34 958 87 24 24',
+  },
+  fr: {
+    asunto: (fecha, hora) => `Demande de réservation reçue — ${fecha}, ${hora}`,
+    hola: (nombre) => `Bonjour ${nombre},`,
+    recibido: 'Nous avons bien reçu votre demande de réservation :',
+    fecha: 'Date', hora: 'Heure', personas: 'Personnes',
+    confirmacion: "Nous vous <strong>confirmerons la disponibilité par téléphone</strong> sous peu. Pour tout changement, appelez-nous au",
+    llamar: '+34 958 87 24 24',
+  },
+};
+
+function plantillaHtml(r: ReservaRecord, idioma: Idioma): string {
+  const t = TEXTOS[idioma];
   // Texto plano + HTML mínimo: máxima entregabilidad, sin imágenes remotas
   return `
   <div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#1A110A">
     <h1 style="font-weight:normal;color:#5C3317">Mesón <em style="color:#B8833A">de Eiffel</em></h1>
-    <p>Hola ${r.nombre.split(' ')[0]},</p>
-    <p>Hemos recibido tu solicitud de reserva:</p>
+    <p>${t.hola(r.nombre.split(' ')[0])}</p>
+    <p>${t.recibido}</p>
     <table style="border-collapse:collapse;margin:1em 0">
-      <tr><td style="padding:4px 12px 4px 0"><strong>Fecha</strong></td><td>${formatFecha(r.fecha)}</td></tr>
-      <tr><td style="padding:4px 12px 4px 0"><strong>Hora</strong></td><td>${r.hora}</td></tr>
-      <tr><td style="padding:4px 12px 4px 0"><strong>Personas</strong></td><td>${r.personas}</td></tr>
+      <tr><td style="padding:4px 12px 4px 0"><strong>${t.fecha}</strong></td><td>${formatFecha(r.fecha, idioma)}</td></tr>
+      <tr><td style="padding:4px 12px 4px 0"><strong>${t.hora}</strong></td><td>${r.hora}</td></tr>
+      <tr><td style="padding:4px 12px 4px 0"><strong>${t.personas}</strong></td><td>${r.personas}</td></tr>
     </table>
-    <p>Te <strong>confirmaremos la disponibilidad por teléfono</strong> en breve.
-       Si necesitas cambiar algo, llámanos al <a href="tel:+34958872424">958 87 24 24</a>.</p>
+    <p>${t.confirmacion} <a href="tel:+34958872424">${t.llamar}</a>.</p>
     <p style="color:#6B5C4E;font-size:0.9em">C/ Rio Mundo, Local 2 · 18600 Motril, Granada</p>
   </div>`;
 }
@@ -79,6 +124,9 @@ Deno.serve(async (req: Request): Promise<Response> => {
     });
   }
 
+  const idioma = normalizarIdioma(r.idioma);
+  const t = TEXTOS[idioma];
+
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -88,8 +136,8 @@ Deno.serve(async (req: Request): Promise<Response> => {
     body: JSON.stringify({
       from: FROM,
       to: [r.email],
-      subject: `Solicitud de reserva recibida — ${formatFecha(r.fecha)}, ${r.hora}`,
-      html: plantillaHtml(r),
+      subject: t.asunto(formatFecha(r.fecha, idioma), r.hora),
+      html: plantillaHtml(r, idioma),
     }),
   });
 

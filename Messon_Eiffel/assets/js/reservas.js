@@ -624,6 +624,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // La columna `personas` es INT en la base (migración 20260710120000)
       personas: parseInt(document.getElementById('personas').value, 10),
       notas:    document.getElementById('notas').value.trim() || null,
+      // Idioma de la página desde la que reserva (migración 20260719000000):
+      // la Edge Function confirmar-reserva lo usa para mandar el email de
+      // confirmación en español, inglés o francés según corresponda.
+      idioma:   window.MESON_LANG || 'es',
     };
 
     if (supabaseClient) {

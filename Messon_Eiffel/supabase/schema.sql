@@ -25,6 +25,8 @@ CREATE TABLE IF NOT EXISTS reservas (
   notas      TEXT            NULL,
   estado     TEXT        NOT NULL DEFAULT 'pendiente'
                          CHECK (estado IN ('pendiente', 'confirmada', 'cancelada')),
+  idioma     TEXT        NOT NULL DEFAULT 'es'
+                         CHECK (idioma IN ('es', 'en', 'fr')),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
