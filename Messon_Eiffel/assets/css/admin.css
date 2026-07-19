@@ -947,3 +947,51 @@ body {
   .precio-campos { gap: 0.4rem; }
   .precio-input { width: 68px; }
 }
+
+/* ── PESTAÑA CIERRES (VACACIONES) ─────────────────────────────
+   Reutiliza .ff / .btn-nueva / .reservas-table / .btn-eliminar;
+   aquí solo lo específico del formulario y la tabla de cierres. */
+.cierres-intro {
+  color: var(--gris);
+  font-size: 0.85rem;
+  max-width: 62ch;
+  margin: 0 0 1.2rem;
+  line-height: 1.55;
+}
+
+.cierre-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+}
+.cierre-form .ff { flex: 0 0 auto; width: auto; }
+.cierre-form .ff input { width: auto; }
+.cierre-form .ff--motivo { flex: 1 1 220px; }
+.cierre-form .ff--motivo input { width: 100%; }
+.cierre-form .btn-nueva { flex: 0 0 auto; }
+
+.cierres-table td { vertical-align: middle; }
+
+.cierre-eliminar-btn {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  color: var(--rojo, #B84C36);
+  border: 1px solid rgba(184, 76, 54, 0.35);
+  padding: 0.42rem 0.85rem;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.cierre-eliminar-btn:hover { background: rgba(184, 76, 54, 0.1); }
+
+@media (max-width: 600px) {
+  .cierre-form { flex-direction: column; align-items: stretch; }
+  .cierre-form .ff input { width: 100%; }
+  .cierre-form .btn-nueva { justify-content: center; }
+}

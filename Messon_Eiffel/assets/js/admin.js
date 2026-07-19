@@ -53,15 +53,20 @@ let capacidadPorHora = {};   // { '13:00': 20, ... } — desde capacidad_horario
 let editingId        = null;
 let pendingDeleteId   = null; // eliminación individual
 let pendingBulkIds    = null; // eliminación en lote
+let pendingConfirmCallback = null; // acción genérica del modal de confirmación (cierres, etc.)
 let filtros           = { estado: '', fechaDesde: '', fechaHasta: '', texto: '' };
 let orden             = { campo: 'created_at', direccion: 'desc' };
 let paginaActual      = 1;
 let seleccionadas     = new Set();
-let vistaActual       = 'hoy'; // 'hoy' | 'todas' | 'precios'
+let vistaActual       = 'hoy'; // 'hoy' | 'todas' | 'precios' | 'cierres'
 
 // ── PRECIOS (carta) ────────────────────────────────────────────
 let precios          = [];    // filas de la tabla `precios`
 let preciosCargados  = false; // evita recargar cada vez que se cambia de pestaña
+
+// ── CIERRES (vacaciones / días bloqueados) ─────────────────────
+let cierres          = [];    // filas de la tabla `cierres`
+let cierresCargados  = false;
 let filtrosPrecios   = { categoria: '', texto: '' };
 
 // Etiquetas en español de cada apartado (mismo orden que la carta)
@@ -718,15 +723,20 @@ function cambiarVista(nueva) {
   document.getElementById('tab-hoy').classList.toggle('active', nueva === 'hoy');
   document.getElementById('tab-todas').classList.toggle('active', nueva === 'todas');
   document.getElementById('tab-precios').classList.toggle('active', nueva === 'precios');
+  document.getElementById('tab-cierres').classList.toggle('active', nueva === 'cierres');
   document.getElementById('tab-hoy').setAttribute('aria-selected', String(nueva === 'hoy'));
   document.getElementById('tab-todas').setAttribute('aria-selected', String(nueva === 'todas'));
   document.getElementById('tab-precios').setAttribute('aria-selected', String(nueva === 'precios'));
+  document.getElementById('tab-cierres').setAttribute('aria-selected', String(nueva === 'cierres'));
   document.getElementById('vista-hoy').classList.toggle('hidden', nueva !== 'hoy');
   document.getElementById('vista-todas').classList.toggle('hidden', nueva !== 'todas');
   document.getElementById('vista-precios').classList.toggle('hidden', nueva !== 'precios');
+  document.getElementById('vista-cierres').classList.toggle('hidden', nueva !== 'cierres');
 
   if (nueva === 'precios') {
     cargarYRenderPrecios();
+  } else if (nueva === 'cierres') {
+    cargarYRenderCierres();
   } else {
     renderTodo();
   }
@@ -864,6 +874,154 @@ async function guardarPrecioFila(tr) {
 
   ok.classList.add('show');
   setTimeout(() => ok.classList.remove('show'), 2000);
+}
+
+// ── PESTAÑA CIERRES (VACACIONES / DÍAS BLOQUEADOS) ────────────────
+async function cargarCierres() {
+  if (!supabaseClient) return;
+  const { data, error } = await supabaseClient
+    .from('cierres')
+    .select('*')
+    .order('fecha_inicio');
+  if (!error && data) cierres = data;
+}
+
+async function cargarYRenderCierres() {
+  const aviso = document.getElementById('cierresAvisoDemo');
+  if (!supabaseClient) {
+    // Modo demo (sin config.js real): no hay tabla que editar — se avisa
+    // en vez de fingir un CRUD contra localStorage para algo tan sensible
+    // como cerrar el restaurante.
+    aviso.classList.remove('hidden');
+    document.getElementById('cierres-tbody').innerHTML = '';
+    return;
+  }
+  aviso.classList.add('hidden');
+  if (!cierresCargados) {
+    await cargarCierres();
+    cierresCargados = true;
+  }
+  renderCierres();
+}
+
+function renderCierres() {
+  const tbody = document.getElementById('cierres-tbody');
+
+  if (!cierres.length) {
+    tbody.innerHTML = '<tr><td colspan="4" class="nd" style="padding:1.5rem 1.2rem">No hay cierres programados.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = cierres.map(c => `
+    <tr data-id="${c.id}">
+      <td>${formatFecha(c.fecha_inicio)}</td>
+      <td>${formatFecha(c.fecha_fin)}</td>
+      <td>${c.motivo ? escHtml(c.motivo) : '<span class="nd">—</span>'}</td>
+      <td>
+        <button type="button" class="cierre-eliminar-btn" data-accion="eliminar-cierre">Eliminar</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+// Cuenta reservas activas (no canceladas) dentro de un rango de fechas,
+// para avisar al jefe antes de bloquear días donde ya hay clientes citados.
+async function contarReservasEnRango(desde, hasta) {
+  if (!supabaseClient) return 0;
+  const { count, error } = await supabaseClient
+    .from('reservas')
+    .select('id', { count: 'exact', head: true })
+    .gte('fecha', desde)
+    .lte('fecha', hasta)
+    .neq('estado', 'cancelada');
+  if (error) {
+    console.error('Error al contar reservas del rango:', error);
+    return 0;
+  }
+  return count || 0;
+}
+
+async function insertarCierre(desde, hasta, motivo) {
+  const { data, error } = await supabaseClient
+    .from('cierres')
+    .insert([{ fecha_inicio: desde, fecha_fin: hasta, motivo: motivo || null }])
+    .select()
+    .single();
+  if (error) {
+    console.error('Error al guardar el cierre:', error);
+    mostrarToast('No se pudo guardar el cierre. Comprueba que "Hasta" no sea anterior a "Desde".', 'error');
+    return null;
+  }
+  cierres.push(data);
+  cierres.sort((a, b) => a.fecha_inicio.localeCompare(b.fecha_inicio));
+  return data;
+}
+
+async function manejarSubmitCierre(e) {
+  e.preventDefault();
+  if (!supabaseClient) return;
+
+  const desde  = document.getElementById('cierre-desde').value;
+  const hasta  = document.getElementById('cierre-hasta').value;
+  const motivo = document.getElementById('cierre-motivo').value.trim();
+
+  if (!desde || !hasta) {
+    mostrarToast('Elige fecha de inicio y de fin.', 'error');
+    return;
+  }
+  if (hasta < desde) {
+    mostrarToast('"Hasta" no puede ser anterior a "Desde".', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('cierre-submit-btn');
+  btn.disabled = true;
+  const numReservas = await contarReservasEnRango(desde, hasta);
+  btn.disabled = false;
+
+  const crear = async () => {
+    const creado = await insertarCierre(desde, hasta, motivo);
+    if (creado) {
+      renderCierres();
+      document.getElementById('cierre-form').reset();
+      mostrarToast('Cierre añadido. Ese rango ya no se puede reservar.');
+    }
+  };
+
+  if (numReservas > 0) {
+    // Avisar, no tocar: el cierre no cancela solas las reservas ya
+    // hechas — el jefe decide si llama a esos clientes.
+    pendingConfirmCallback = crear;
+    document.getElementById('confirm-title').textContent = 'Ya hay reservas en ese rango';
+    document.getElementById('confirm-text').innerHTML =
+      `Hay <strong>${numReservas}</strong> reserva(s) activa(s) entre <strong>${formatFecha(desde)}</strong> y <strong>${formatFecha(hasta)}</strong>. ` +
+      `El cierre NO las cancela automáticamente — tendrás que avisar a esos clientes tú mismo (pestaña "Todas las reservas"). ` +
+      `¿Seguro que quieres crear el cierre igualmente?`;
+    abrirConfirmModal();
+  } else {
+    await crear();
+  }
+}
+
+function confirmarEliminacionCierre(id) {
+  const c = cierres.find(c => c.id === id);
+  if (!c) return;
+  pendingConfirmCallback = async () => {
+    const { error } = await supabaseClient.from('cierres').delete().eq('id', id);
+    if (error) {
+      console.error('Error al eliminar el cierre:', error);
+      mostrarToast('No se pudo eliminar el cierre.', 'error');
+      return;
+    }
+    cierres = cierres.filter(x => x.id !== id);
+    renderCierres();
+    mostrarToast('Cierre eliminado. Esas fechas ya se pueden reservar.');
+  };
+  document.getElementById('confirm-title').textContent = 'Eliminar cierre';
+  document.getElementById('confirm-text').innerHTML =
+    `¿Seguro que quieres eliminar el cierre del <strong>${formatFecha(c.fecha_inicio)}</strong> al <strong>${formatFecha(c.fecha_fin)}</strong>? ` +
+    `Esas fechas volverán a estar disponibles para reservar.`;
+  abrirConfirmModal();
 }
 
 // ── MODAL DE RESERVA ──────────────────────────────────────────
@@ -1035,10 +1193,20 @@ function cerrarConfirmModal() {
     confirmModal.classList.add('hidden');
     pendingDeleteId = null;
     pendingBulkIds  = null;
+    pendingConfirmCallback = null;
   }, 300);
 }
 
 async function ejecutarEliminacion() {
+  if (pendingConfirmCallback) {
+    // Acción genérica (cierres, etc.) en vez de la eliminación de
+    // reserva individual/en lote de más abajo.
+    const cb = pendingConfirmCallback;
+    pendingConfirmCallback = null;
+    await cb();
+    cerrarConfirmModal();
+    return;
+  }
   if (pendingBulkIds && pendingBulkIds.length) {
     await Promise.all(pendingBulkIds.map(id => eliminarReserva(id)));
     seleccionadas.clear();
@@ -1189,6 +1357,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('tab-hoy').addEventListener('click', () => cambiarVista('hoy'));
   document.getElementById('tab-todas').addEventListener('click', () => cambiarVista('todas'));
   document.getElementById('tab-precios').addEventListener('click', () => cambiarVista('precios'));
+  document.getElementById('tab-cierres').addEventListener('click', () => cambiarVista('cierres'));
 
   // ── PRECIOS: filtros + guardar (delegado, las filas son dinámicas) ──
   document.getElementById('filtro-precios-categoria').addEventListener('change', e => {
@@ -1204,6 +1373,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!btn) return;
     const tr = btn.closest('tr[data-producto-id]');
     if (tr) guardarPrecioFila(tr);
+  });
+
+  // ── CIERRES: formulario + eliminar (delegado, las filas son dinámicas) ──
+  document.getElementById('cierre-form').addEventListener('submit', manejarSubmitCierre);
+  document.getElementById('cierres-tbody').addEventListener('click', e => {
+    const btn = e.target.closest('[data-accion="eliminar-cierre"]');
+    if (!btn) return;
+    const tr = btn.closest('tr[data-id]');
+    if (tr) confirmarEliminacionCierre(tr.dataset.id);
   });
 
   // ── IMPRIMIR AGENDA ──

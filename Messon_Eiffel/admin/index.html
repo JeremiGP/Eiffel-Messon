@@ -116,6 +116,7 @@
         <button class="view-tab active" id="tab-hoy" role="tab" aria-selected="true" type="button">Hoy</button>
         <button class="view-tab" id="tab-todas" role="tab" aria-selected="false" type="button">Todas las reservas</button>
         <button class="view-tab" id="tab-precios" role="tab" aria-selected="false" type="button">Precios</button>
+        <button class="view-tab" id="tab-cierres" role="tab" aria-selected="false" type="button">Cierres</button>
       </div>
 
       <!-- ── VISTA HOY (AGENDA) ──────────────────────────────── -->
@@ -273,6 +274,59 @@
               </tr>
             </thead>
             <tbody id="precios-tbody"></tbody>
+          </table>
+        </div>
+
+      </section>
+
+      <!-- ── VISTA CIERRES (VACACIONES / DÍAS CERRADOS) ──────── -->
+      <section id="vista-cierres" class="vista-panel hidden">
+
+        <p class="cierres-intro">
+          Bloquea un rango de fechas (ej. vacaciones) para que nadie pueda
+          reservar esos días. Se suma al cierre semanal de los miércoles,
+          que ya está fijado. Si ya hay reservas dentro del rango, se
+          avisa antes de crear el cierre — no se cancelan solas.
+        </p>
+
+        <form id="cierre-form" class="cierre-form">
+          <div class="ff">
+            <label for="cierre-desde">Desde *</label>
+            <input id="cierre-desde" type="date" required>
+          </div>
+          <div class="ff">
+            <label for="cierre-hasta">Hasta *</label>
+            <input id="cierre-hasta" type="date" required>
+          </div>
+          <div class="ff ff--motivo">
+            <label for="cierre-motivo">Motivo (opcional)</label>
+            <input id="cierre-motivo" type="text" maxlength="200" placeholder="Ej. Vacaciones de verano">
+          </div>
+          <button id="cierre-submit-btn" type="submit" class="btn-nueva">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Añadir cierre
+          </button>
+        </form>
+
+        <!-- Aviso si el panel está en modo demo (sin Supabase real) -->
+        <p id="cierresAvisoDemo" class="precios-aviso-demo hidden">
+          Esto necesita la conexión real a Supabase (assets/js/config.js con claves reales) — en modo demo no hay cierres que gestionar.
+        </p>
+
+        <div class="table-wrap" role="region" aria-label="Tabla de cierres">
+          <table class="reservas-table cierres-table">
+            <thead>
+              <tr>
+                <th scope="col">Desde</th>
+                <th scope="col">Hasta</th>
+                <th scope="col">Motivo</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="cierres-tbody"></tbody>
           </table>
         </div>
 

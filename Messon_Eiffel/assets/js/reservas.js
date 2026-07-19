@@ -134,15 +134,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const MES_NOMBRES = T.mesNombres || ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
     'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-  // Trae el nivel de ocupación de cada día del mes. Si no hay Supabase
-  // configurado, se simula "buena disponibilidad" todos los días (modo demo).
+  // Trae el nivel de ocupación de cada día del mes (y si está cerrado:
+  // miércoles o dentro de un rango de `cierres` — vacaciones, etc.).
+  // Si no hay Supabase configurado, se simula "buena disponibilidad"
+  // todos los días salvo miércoles (modo demo; los cierres temporales
+  // solo existen en la tabla real, no se simulan).
   async function fetchDisponibilidadMes(anio, mes) {
     if (!supabaseClient) {
       const dias = new Date(anio, mes, 0).getDate();
       const mapa = {};
       for (let d = 1; d <= dias; d++) {
         const key = `${anio}-${String(mes).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-        mapa[key] = 'alta';
+        const esMiercoles = new Date(anio, mes - 1, d).getDay() === DIA_CERRADO;
+        mapa[key] = { nivel: 'alta', cerrado: esMiercoles };
       }
       return mapa;
     }
@@ -153,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return {};
     }
     const mapa = {};
-    (data || []).forEach(fila => { mapa[fila.fecha] = fila.nivel; });
+    (data || []).forEach(fila => { mapa[fila.fecha] = { nivel: fila.nivel, cerrado: !!fila.cerrado }; });
     return mapa;
   }
 
@@ -184,9 +188,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const key    = `${calAnio}-${String(calMes).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
       const fecha  = new Date(calAnio, calMes - 1, d);
       const esPasado = fecha < hoyDate;
-      const esCerrado = fecha.getDay() === DIA_CERRADO; // miércoles: cerrado
-      const nivel  = nivelPorDia[key] || 'alta';
-      const completo = nivel === 'completo';
+      const info   = nivelPorDia[key] || { nivel: 'alta', cerrado: false };
+      // Cerrado = miércoles (cierre semanal) O dentro de un rango de
+      // `cierres` (vacaciones u otro periodo cerrado desde el admin);
+      // ambos casos ya vienen resueltos en el flag `cerrado` de la BD.
+      const esCerrado = info.cerrado;
+      const nivel  = info.nivel;
+      const completo = nivel === 'completo' && !esCerrado;
       const deshabilitado = esPasado || completo || esCerrado;
 
       // aria-label completa (día + mes + año + estado) para lectores de pantalla
@@ -660,22 +668,27 @@ document.addEventListener('DOMContentLoaded', () => {
         // - SIN_DISPONIBILIDAD: alguien se adelantó con la última mesa
         //   (dos reservas casi simultáneas para la misma franja).
         // - DIA_CERRADO: la fecha cae en día de cierre semanal (miércoles).
+        // - CERRADO_TEMPORAL: la fecha cae dentro de un cierre puntual
+        //   (vacaciones u otro periodo cerrado desde el admin).
         // - DEMASIADAS_SOLICITUDES: rate limiting anti-spam del trigger
         //   trg_limitar_reservas (demasiadas reservas desde la misma IP).
-        const sinCupo     = error.message && error.message.includes('SIN_DISPONIBILIDAD');
-        const diaCerrado  = error.message && error.message.includes('DIA_CERRADO');
-        const rateLimited = error.message && error.message.includes('DEMASIADAS_SOLICITUDES');
+        const sinCupo       = error.message && error.message.includes('SIN_DISPONIBILIDAD');
+        const diaCerrado    = error.message && error.message.includes('DIA_CERRADO');
+        const cerradoTemp   = error.message && error.message.includes('CERRADO_TEMPORAL');
+        const rateLimited   = error.message && error.message.includes('DEMASIADAS_SOLICITUDES');
         if (formError) {
           formError.textContent = sinCupo
             ? (T.errSinCupo || 'Uy, esa hora se acaba de completar. Elegí otra franja disponible.')
             : diaCerrado
               ? (T.errDiaCerrado || 'Ese día el restaurante está cerrado (cerramos los miércoles). Elige otra fecha.')
-              : rateLimited
-                ? (T.errRateLimit || 'Hemos recibido varias solicitudes desde tu conexión. Llámanos al 958 87 24 24 y te atendemos al momento.')
-                : (T.errGenerico || 'No se pudo enviar la reserva. Inténtalo de nuevo o llámanos al 958 87 24 24.');
+              : cerradoTemp
+                ? (T.errCerradoTemporal || 'El restaurante permanece cerrado esas fechas. Elige otro día.')
+                : rateLimited
+                  ? (T.errRateLimit || 'Hemos recibido varias solicitudes desde tu conexión. Llámanos al 958 87 24 24 y te atendemos al momento.')
+                  : (T.errGenerico || 'No se pudo enviar la reserva. Inténtalo de nuevo o llámanos al 958 87 24 24.');
           formError.style.display = 'block';
         }
-        if (sinCupo || diaCerrado) {
+        if (sinCupo || diaCerrado || cerradoTemp) {
           goToStep(1);
           renderHoras(datos.fecha);
           horaInput.value = '';

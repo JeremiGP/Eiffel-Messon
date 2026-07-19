@@ -103,6 +103,21 @@ CREATE POLICY "admin_delete_reservas"
 --     HTML si hay un valor; si falla la consulta, no toca nada.
 
 
+-- ── CIERRES TEMPORALES (VACACIONES) ───────────────────────────
+-- Ver supabase/migrations/20260719020000_cierres_temporales.sql
+-- para el contenido completo. Se resume aquí:
+--   · cierres(fecha_inicio, fecha_fin, motivo) — el admin añade y
+--     borra rangos de fechas cerradas desde la pestaña "Cierres".
+--   · disponibilidad_dia / disponibilidad_mes excluyen esos rangos
+--     (igual que ya excluían los miércoles) → el calendario público
+--     de reservas los pinta como cerrados automáticamente.
+--   · El trigger validar_capacidad_reserva rechaza cualquier
+--     intento de reserva en esas fechas (código CERRADO_TEMPORAL),
+--     como red de seguridad aunque el frontend fallara.
+--   · Sin política de UPDATE a propósito: para cambiar un cierre se
+--     borra y se crea de nuevo.
+
+
 -- ── PASOS PARA LA CONEXIÓN (Fase 3 — pendiente) ───────────────
 --
 --  1. Crear proyecto en https://supabase.com
