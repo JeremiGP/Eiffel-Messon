@@ -864,3 +864,86 @@ body {
   .stats-bar { grid-template-columns: 1fr 1fr; }
   .stat-card--ocupacion { grid-column: span 2; }
 }
+
+/* ── PESTAÑA PRECIOS ──────────────────────────────────────────
+   Reutiliza .reservas-table / .table-wrap / .ctrl-input / .btn-clear;
+   aquí solo lo específico de la tabla de precios editable. */
+.precios-aviso-demo {
+  background: var(--arena);
+  border: 1px solid var(--hueso);
+  border-radius: 8px;
+  padding: 0.9rem 1.2rem;
+  color: var(--gris);
+  font-size: 0.85rem;
+  margin-bottom: 1.2rem;
+}
+.precios-table .col-precio { min-width: 220px; }
+.td-precios-categoria {
+  color: var(--gris);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+.td-precios-nombre { font-weight: 400; }
+
+.precio-campos {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.precio-campo {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.precio-campo-lbl {
+  font-size: 0.68rem;
+  color: var(--gris);
+  white-space: nowrap;
+}
+.precio-input {
+  width: 84px;
+  border: 1px solid var(--hueso);
+  background: var(--blanco);
+  padding: 0.45rem 0.6rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--carbon);
+  border-radius: 6px;
+  transition: border-color 0.15s;
+}
+.precio-input:focus { border-color: var(--dorado); outline: none; }
+.precio-input.precio-input--sucio { border-color: var(--dorado); background: var(--arena-cl); }
+
+.precio-guardar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--tierra);
+  color: var(--blanco);
+  border: none;
+  padding: 0.48rem 0.9rem;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+.precio-guardar-btn:hover { background: var(--tierra-md); }
+.precio-guardar-btn:disabled { opacity: 0.5; cursor: default; }
+.precio-guardar-ok {
+  color: var(--verde);
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.precio-guardar-ok.show { opacity: 1; }
+
+@media (max-width: 600px) {
+  .precios-table .col-precio { min-width: 0; }
+  .precio-campos { gap: 0.4rem; }
+  .precio-input { width: 68px; }
+}

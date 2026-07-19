@@ -115,6 +115,7 @@
       <div class="view-tabs" role="tablist" aria-label="Vista de reservas">
         <button class="view-tab active" id="tab-hoy" role="tab" aria-selected="true" type="button">Hoy</button>
         <button class="view-tab" id="tab-todas" role="tab" aria-selected="false" type="button">Todas las reservas</button>
+        <button class="view-tab" id="tab-precios" role="tab" aria-selected="false" type="button">Precios</button>
       </div>
 
       <!-- ── VISTA HOY (AGENDA) ──────────────────────────────── -->
@@ -222,6 +223,57 @@
           <button id="pag-prev" class="pag-btn" type="button">‹ Anterior</button>
           <span id="pag-info" class="pag-info">Página 1 de 1</span>
           <button id="pag-next" class="pag-btn" type="button">Siguiente ›</button>
+        </div>
+
+      </section>
+
+      <!-- ── VISTA PRECIOS (TABLA EDITABLE) ──────────────────── -->
+      <section id="vista-precios" class="vista-panel hidden">
+
+        <div class="controls-bar">
+          <div class="controls-filters">
+            <select id="filtro-precios-categoria" class="ctrl-select" aria-label="Filtrar por apartado">
+              <option value="">Todos los apartados</option>
+              <option value="tostadas">Tostadas &amp; Molletes</option>
+              <option value="croissants">Croissants</option>
+              <option value="suizos">Suizos</option>
+              <option value="sandwiches">Sándwiches</option>
+              <option value="crepes">Crepes, Gofres &amp; Tortitas</option>
+              <option value="cafes">Cafés &amp; Bebidas</option>
+              <option value="chocolates">Chocolates especiales</option>
+              <option value="tes">Tés &amp; Infusiones</option>
+              <option value="compartimos">Para compartir</option>
+              <option value="huevos">Con dos huevos</option>
+              <option value="brasas">Nuestras brasas</option>
+              <option value="dulces">Dulces</option>
+            </select>
+            <input
+              id="filtro-precios-texto"
+              type="text"
+              class="ctrl-input"
+              placeholder="Buscar producto…"
+              aria-label="Buscar producto"
+            >
+          </div>
+        </div>
+
+        <!-- Aviso si el panel está en modo demo (sin Supabase real) -->
+        <p id="preciosAvisoDemo" class="precios-aviso-demo hidden">
+          Esto necesita la conexión real a Supabase (assets/js/config.js con claves reales) — en modo demo no hay tabla de precios que editar.
+        </p>
+
+        <div class="table-wrap" role="region" aria-label="Tabla de precios">
+          <table class="reservas-table precios-table">
+            <thead>
+              <tr>
+                <th scope="col">Apartado</th>
+                <th scope="col">Producto</th>
+                <th scope="col" class="col-precio">Precio</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="precios-tbody"></tbody>
+          </table>
         </div>
 
       </section>

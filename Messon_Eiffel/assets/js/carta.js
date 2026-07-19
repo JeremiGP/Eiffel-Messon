@@ -10,6 +10,52 @@ document.addEventListener('DOMContentLoaded', () => {
   const sidebarBtns = Array.from(document.querySelectorAll('.sidebar-btn'));
   const cartaPanels = document.querySelectorAll('.carta-panel');
 
+  // ── PRECIOS EN VIVO (tabla `precios`, editable desde el admin) ──
+  // Mismo patrón que reservas.js: si no hay config.js con claves
+  // reales, esto simplemente no hace nada y la carta se queda con
+  // los precios escritos en el HTML — el sitio nunca se rompe por
+  // no tener Supabase configurado.
+  (function cargarPreciosEnVivo() {
+    const supabaseClient = (
+      typeof SUPABASE_URL !== 'undefined' &&
+      SUPABASE_URL && !SUPABASE_URL.includes('TU-PROYECTO') &&
+      window.supabase
+    ) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+    if (!supabaseClient) return;
+
+    const fmt = (n) => {
+      const num = Number(n);
+      if (Number.isNaN(num)) return null;
+      return num.toFixed(2).replace('.', ',') + ' €';
+    };
+
+    supabaseClient
+      .from('precios')
+      .select('producto_id, precio, precio_media, precio_entera')
+      .then(({ data, error }) => {
+        if (error || !data) return; // fallo de red/consulta → se queda el precio del HTML
+        data.forEach((fila) => {
+          if (fila.precio !== null) {
+            const texto = fmt(fila.precio);
+            const el = document.querySelector(`[data-precio-id="${fila.producto_id}"]`);
+            if (el && texto) el.textContent = texto;
+          }
+          if (fila.precio_media !== null) {
+            const texto = fmt(fila.precio_media);
+            const el = document.querySelector(`[data-precio-id="${fila.producto_id}-media"]`);
+            if (el && texto) el.textContent = texto;
+          }
+          if (fila.precio_entera !== null) {
+            const texto = fmt(fila.precio_entera);
+            const el = document.querySelector(`[data-precio-id="${fila.producto_id}-entera"]`);
+            if (el && texto) el.textContent = texto;
+          }
+        });
+      })
+      .catch(() => { /* sin conexión: se queda el precio del HTML */ });
+  })();
+
   if (!sidebarBtns.length) return;
 
   // ── DRAWER DE CATEGORÍAS (solo <900px) ─────────────────────

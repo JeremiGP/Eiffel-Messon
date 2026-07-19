@@ -57,7 +57,28 @@ let filtros           = { estado: '', fechaDesde: '', fechaHasta: '', texto: '' 
 let orden             = { campo: 'created_at', direccion: 'desc' };
 let paginaActual      = 1;
 let seleccionadas     = new Set();
-let vistaActual       = 'hoy'; // 'hoy' | 'todas'
+let vistaActual       = 'hoy'; // 'hoy' | 'todas' | 'precios'
+
+// ── PRECIOS (carta) ────────────────────────────────────────────
+let precios          = [];    // filas de la tabla `precios`
+let preciosCargados  = false; // evita recargar cada vez que se cambia de pestaña
+let filtrosPrecios   = { categoria: '', texto: '' };
+
+// Etiquetas en español de cada apartado (mismo orden que la carta)
+const CATEGORIAS_CARTA = {
+  tostadas:    'Tostadas & Molletes',
+  croissants:  'Croissants',
+  suizos:      'Suizos',
+  sandwiches:  'Sándwiches',
+  crepes:      'Crepes, Gofres & Tortitas',
+  cafes:       'Cafés & Bebidas',
+  chocolates:  'Chocolates especiales',
+  tes:         'Tés & Infusiones',
+  compartimos: 'Para compartir',
+  huevos:      'Con dos huevos',
+  brasas:      'Nuestras brasas',
+  dulces:      'Dulces',
+};
 let realtimeChannel   = null;
 
 // ── UTILIDADES ────────────────────────────────────────────────
@@ -691,16 +712,158 @@ async function ejecutarAccionEnLote(nuevoEstado) {
   mostrarToast(`${ids.length} reserva(s) actualizada(s).`);
 }
 
-// ── VISTAS: TABS HOY / TODAS ────────────────────────────────────
+// ── VISTAS: TABS HOY / TODAS / PRECIOS ──────────────────────────
 function cambiarVista(nueva) {
   vistaActual = nueva;
   document.getElementById('tab-hoy').classList.toggle('active', nueva === 'hoy');
   document.getElementById('tab-todas').classList.toggle('active', nueva === 'todas');
+  document.getElementById('tab-precios').classList.toggle('active', nueva === 'precios');
   document.getElementById('tab-hoy').setAttribute('aria-selected', String(nueva === 'hoy'));
   document.getElementById('tab-todas').setAttribute('aria-selected', String(nueva === 'todas'));
+  document.getElementById('tab-precios').setAttribute('aria-selected', String(nueva === 'precios'));
   document.getElementById('vista-hoy').classList.toggle('hidden', nueva !== 'hoy');
   document.getElementById('vista-todas').classList.toggle('hidden', nueva !== 'todas');
-  renderTodo();
+  document.getElementById('vista-precios').classList.toggle('hidden', nueva !== 'precios');
+
+  if (nueva === 'precios') {
+    cargarYRenderPrecios();
+  } else {
+    renderTodo();
+  }
+}
+
+// ── PESTAÑA PRECIOS ──────────────────────────────────────────────
+async function cargarPrecios() {
+  if (!supabaseClient) return;
+  const { data, error } = await supabaseClient
+    .from('precios')
+    .select('*')
+    .order('categoria')
+    .order('nombre_ref');
+  if (!error && data) precios = data;
+}
+
+async function cargarYRenderPrecios() {
+  const aviso = document.getElementById('preciosAvisoDemo');
+  if (!supabaseClient) {
+    // Modo demo (sin config.js real): no hay tabla que editar — se avisa
+    // en vez de fingir un CRUD contra localStorage para algo tan sensible
+    // como precios reales.
+    aviso.classList.remove('hidden');
+    document.getElementById('precios-tbody').innerHTML = '';
+    return;
+  }
+  aviso.classList.add('hidden');
+  if (!preciosCargados) {
+    await cargarPrecios();
+    preciosCargados = true;
+  }
+  renderPrecios();
+}
+
+function formatearPrecio(valor) {
+  if (valor === null || valor === undefined) return '';
+  return Number(valor).toFixed(2).replace('.', ',');
+}
+
+function parsearPrecio(texto) {
+  const limpio = String(texto).trim().replace(',', '.');
+  if (limpio === '') return null;
+  const num = Number(limpio);
+  if (Number.isNaN(num) || num < 0) return null;
+  return Math.round(num * 100) / 100;
+}
+
+function filaPreciosVisibles() {
+  return precios.filter(p => {
+    if (filtrosPrecios.categoria && p.categoria !== filtrosPrecios.categoria) return false;
+    if (filtrosPrecios.texto) {
+      const t = filtrosPrecios.texto.toLowerCase();
+      if (!p.nombre_ref.toLowerCase().includes(t)) return false;
+    }
+    return true;
+  });
+}
+
+function renderPrecios() {
+  const tbody = document.getElementById('precios-tbody');
+  const visibles = filaPreciosVisibles();
+
+  if (!visibles.length) {
+    tbody.innerHTML = '<tr><td colspan="4" class="nd" style="padding:1.5rem 1.2rem">Sin productos para este filtro.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = visibles.map(p => {
+    const esDoble = p.precio === null;
+    const campos = esDoble
+      ? `
+        <div class="precio-campo">
+          <span class="precio-campo-lbl">½</span>
+          <input type="text" inputmode="decimal" class="precio-input" data-campo="precio_media" value="${formatearPrecio(p.precio_media)}">
+        </div>
+        <div class="precio-campo">
+          <span class="precio-campo-lbl">Entera</span>
+          <input type="text" inputmode="decimal" class="precio-input" data-campo="precio_entera" value="${formatearPrecio(p.precio_entera)}">
+        </div>
+      `
+      : `
+        <div class="precio-campo">
+          <span class="precio-campo-lbl">€</span>
+          <input type="text" inputmode="decimal" class="precio-input" data-campo="precio" value="${formatearPrecio(p.precio)}">
+        </div>
+      `;
+
+    return `
+      <tr data-producto-id="${p.producto_id}">
+        <td class="td-precios-categoria">${CATEGORIAS_CARTA[p.categoria] || p.categoria}</td>
+        <td class="td-precios-nombre">${p.nombre_ref}</td>
+        <td class="col-precio"><div class="precio-campos">${campos}</div></td>
+        <td>
+          <button type="button" class="precio-guardar-btn" data-accion="guardar-precio">Guardar</button>
+          <span class="precio-guardar-ok">Guardado ✓</span>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function guardarPrecioFila(tr) {
+  const productoId = tr.dataset.productoId;
+  const inputs = Array.from(tr.querySelectorAll('.precio-input'));
+  const btn = tr.querySelector('.precio-guardar-btn');
+  const ok  = tr.querySelector('.precio-guardar-ok');
+
+  const cambios = {};
+  for (const input of inputs) {
+    const valor = parsearPrecio(input.value);
+    if (input.value.trim() !== '' && valor === null) {
+      mostrarToast(`Precio no válido en "${productoId}".`, 'error');
+      input.focus();
+      return;
+    }
+    cambios[input.dataset.campo] = valor;
+  }
+  cambios.updated_at = new Date().toISOString();
+
+  btn.disabled = true;
+  const { error } = await supabaseClient
+    .from('precios')
+    .update(cambios)
+    .eq('producto_id', productoId);
+  btn.disabled = false;
+
+  if (error) {
+    mostrarToast('No se pudo guardar el precio. Inténtalo de nuevo.', 'error');
+    return;
+  }
+
+  // Reflejar el cambio en el estado local sin recargar toda la tabla
+  const fila = precios.find(p => p.producto_id === productoId);
+  if (fila) Object.assign(fila, cambios);
+
+  ok.classList.add('show');
+  setTimeout(() => ok.classList.remove('show'), 2000);
 }
 
 // ── MODAL DE RESERVA ──────────────────────────────────────────
@@ -1025,6 +1188,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ── TABS DE VISTA ──
   document.getElementById('tab-hoy').addEventListener('click', () => cambiarVista('hoy'));
   document.getElementById('tab-todas').addEventListener('click', () => cambiarVista('todas'));
+  document.getElementById('tab-precios').addEventListener('click', () => cambiarVista('precios'));
+
+  // ── PRECIOS: filtros + guardar (delegado, las filas son dinámicas) ──
+  document.getElementById('filtro-precios-categoria').addEventListener('change', e => {
+    filtrosPrecios.categoria = e.target.value;
+    renderPrecios();
+  });
+  document.getElementById('filtro-precios-texto').addEventListener('input', e => {
+    filtrosPrecios.texto = e.target.value.trim();
+    renderPrecios();
+  });
+  document.getElementById('precios-tbody').addEventListener('click', e => {
+    const btn = e.target.closest('[data-accion="guardar-precio"]');
+    if (!btn) return;
+    const tr = btn.closest('tr[data-producto-id]');
+    if (tr) guardarPrecioFila(tr);
+  });
 
   // ── IMPRIMIR AGENDA ──
   document.getElementById('btn-imprimir').addEventListener('click', () => window.print());

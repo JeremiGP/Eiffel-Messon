@@ -89,6 +89,20 @@ CREATE POLICY "admin_delete_reservas"
 --     INSERT (con advisory lock para evitar carreras)
 
 
+-- ── PRECIOS EDITABLES DESDE EL ADMIN ──────────────────────────
+-- Ver supabase/migrations/20260719010000_precios_editables.sql
+-- para el contenido completo (tabla precios + políticas RLS +
+-- semilla con los 89 productos de la carta). Se resume aquí:
+--   · precios(producto_id, categoria, nombre_ref, precio,
+--     precio_media, precio_entera) — un precio único o un par
+--     media/entera (solo tostadas), nunca ambos a la vez (CHECK)
+--   · Lectura pública (la carta la necesita sin login), escritura
+--     solo para el admin autenticado. Sin INSERT/DELETE: el panel
+--     admin únicamente edita precios de productos ya sembrados.
+--   · carta.js lee esta tabla al cargar y sustituye el precio del
+--     HTML si hay un valor; si falla la consulta, no toca nada.
+
+
 -- ── PASOS PARA LA CONEXIÓN (Fase 3 — pendiente) ───────────────
 --
 --  1. Crear proyecto en https://supabase.com
