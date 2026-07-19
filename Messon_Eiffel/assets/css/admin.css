@@ -865,6 +865,42 @@ body {
   .stat-card--ocupacion { grid-column: span 2; }
 }
 
+/* ── BLOQUE "GESTIÓN DEL RESTAURANTE" (Precios / Cierres) ──────
+   A propósito muy distinto del bloque de Reservas de arriba: tarjeta
+   propia con fondo y borde, cabecera con título, y pestañas en gris
+   en vez del dorado de Reservas — para que se note a simple vista
+   que Precios/Cierres no tienen nada que ver con una reserva. */
+.gestion-bloque {
+  margin-top: 2.5rem;
+  padding: 1.5rem 1.5rem 1.75rem;
+  background: var(--blanco);
+  border: 1px solid var(--hueso);
+  border-radius: 10px;
+}
+.gestion-bloque-header {
+  margin-bottom: 1.1rem;
+}
+.gestion-bloque-titulo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  color: var(--gris);
+  margin: 0 0 0.2rem;
+}
+.gestion-bloque-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  color: var(--gris);
+  opacity: 0.75;
+  margin: 0;
+}
+.view-tabs--gestion {
+  margin-bottom: 1.25rem;
+}
+.view-tabs--gestion .view-tab.active {
+  color: var(--gris);
+  border-bottom-color: var(--gris);
+}
+
 /* ── PESTAÑA PRECIOS ──────────────────────────────────────────
    Reutiliza .reservas-table / .table-wrap / .ctrl-input / .btn-clear;
    aquí solo lo específico de la tabla de precios editable. */

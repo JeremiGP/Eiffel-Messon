@@ -733,6 +733,10 @@ function cambiarVista(nueva) {
   document.getElementById('vista-precios').classList.toggle('hidden', nueva !== 'precios');
   document.getElementById('vista-cierres').classList.toggle('hidden', nueva !== 'cierres');
 
+  // Las estadísticas son de reservas: no aplican en Precios/Cierres,
+  // así que se ocultan para remarcar que es una sección aparte.
+  document.getElementById('statsBar').classList.toggle('hidden', nueva === 'precios' || nueva === 'cierres');
+
   if (nueva === 'precios') {
     cargarYRenderPrecios();
   } else if (nueva === 'cierres') {

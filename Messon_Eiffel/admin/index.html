@@ -87,8 +87,10 @@
     <!-- Contenido principal -->
     <main class="admin-main">
 
+      <!-- ══════ BLOQUE RESERVAS (Hoy / Todas) ══════ -->
+
       <!-- Estadísticas -->
-      <div class="stats-bar" role="region" aria-label="Resumen de reservas">
+      <div class="stats-bar" id="statsBar" role="region" aria-label="Resumen de reservas">
         <div class="stat-card">
           <div class="stat-val" id="stat-total">0</div>
           <div class="stat-lbl">Total reservas</div>
@@ -115,8 +117,6 @@
       <div class="view-tabs" role="tablist" aria-label="Vista de reservas">
         <button class="view-tab active" id="tab-hoy" role="tab" aria-selected="true" type="button">Hoy</button>
         <button class="view-tab" id="tab-todas" role="tab" aria-selected="false" type="button">Todas las reservas</button>
-        <button class="view-tab" id="tab-precios" role="tab" aria-selected="false" type="button">Precios</button>
-        <button class="view-tab" id="tab-cierres" role="tab" aria-selected="false" type="button">Cierres</button>
       </div>
 
       <!-- ── VISTA HOY (AGENDA) ──────────────────────────────── -->
@@ -228,6 +228,21 @@
 
       </section>
 
+      <!-- ══════ BLOQUE GESTIÓN DEL RESTAURANTE (Precios / Cierres) ══════
+           Deliberadamente separado del bloque de Reservas de arriba: no
+           tiene relación con reservas concretas, así que vive en su propia
+           tarjeta con cabecera propia y pestañas de otro color. ══════ -->
+      <div class="gestion-bloque">
+        <div class="gestion-bloque-header">
+          <h2 class="gestion-bloque-titulo">Gestión del restaurante</h2>
+          <p class="gestion-bloque-sub">Ajustes generales del local — no están ligados a ninguna reserva.</p>
+        </div>
+
+        <div class="view-tabs view-tabs--gestion" role="tablist" aria-label="Gestión del restaurante">
+          <button class="view-tab" id="tab-precios" role="tab" aria-selected="false" type="button">Precios</button>
+          <button class="view-tab" id="tab-cierres" role="tab" aria-selected="false" type="button">Cierres</button>
+        </div>
+
       <!-- ── VISTA PRECIOS (TABLA EDITABLE) ──────────────────── -->
       <section id="vista-precios" class="vista-panel hidden">
 
@@ -331,6 +346,8 @@
         </div>
 
       </section>
+
+      </div> <!-- /.gestion-bloque -->
 
     </main>
   </div>
