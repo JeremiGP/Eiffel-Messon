@@ -128,6 +128,19 @@ CREATE POLICY "admin_delete_reservas"
 --     borra y se crea de nuevo.
 
 
+-- ── RECORDATORIO 24H ANTES POR EMAIL ──────────────────────────
+-- Ver supabase/functions/recordatorio-reserva/ (código + README con
+-- el paso de despliegue) y supabase/migrations/20260720010000_recordatorio_cron.sql
+-- (habilita pg_cron/pg_net). Resumen:
+--   · Un Cron Job de Supabase llama a la edge function cada hora; la
+--     función solo actúa a las 10:00 hora de Madrid (evita que el
+--     cambio de horario de verano/invierno desajuste un cron en UTC).
+--   · A esa hora, busca reservas CONFIRMADAS de mañana con email y
+--     manda un recordatorio con Resend (misma cuenta que confirmar-reserva).
+--   · El cron.schedule(...) real, con el secret CRON_SECRET, se ejecuta
+--     una sola vez a mano — no se guarda en el repositorio.
+
+
 -- ── PASOS PARA LA CONEXIÓN (Fase 3 — pendiente) ───────────────
 --
 --  1. Crear proyecto en https://supabase.com
