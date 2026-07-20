@@ -49,11 +49,18 @@ function normalizarIdioma(v: string | undefined | null): Idioma {
 
 const LOCALES: Record<Idioma, string> = { es: 'es-ES', en: 'en-GB', fr: 'fr-FR' };
 
+// Dominio del sitio publicado. mesoncafeteriadeeiffel.es todavía apunta a
+// la web antigua que este proyecto va a sustituir — no cambia hasta que
+// el cliente lo apruebe. Hasta entonces, el sitio real vive en Netlify.
+// Cuando llegue ese momento: supabase secrets set SITE_URL=https://mesoncafeteriadeeiffel.es
+// (sin barra final) y no hace falta tocar este archivo.
+const SITE_URL = (Deno.env.get('SITE_URL') ?? 'https://eiffel-meson.netlify.app').replace(/\/$/, '');
+
 // Misma página de autogestión que usa confirmar-reserva (ver pages/gestionar.html)
 const URL_GESTION: Record<Idioma, string> = {
-  es: 'https://mesoncafeteriadeeiffel.es/pages/gestionar.html',
-  en: 'https://mesoncafeteriadeeiffel.es/en/pages/gestionar.html',
-  fr: 'https://mesoncafeteriadeeiffel.es/fr/pages/gestionar.html',
+  es: `${SITE_URL}/pages/gestionar.html`,
+  en: `${SITE_URL}/en/pages/gestionar.html`,
+  fr: `${SITE_URL}/fr/pages/gestionar.html`,
 };
 
 function formatFecha(iso: string, idioma: Idioma): string {

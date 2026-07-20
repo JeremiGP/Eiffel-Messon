@@ -667,10 +667,16 @@ document.addEventListener('click', (e) => {
 // cada reserva trae su propio token_gestion desde cargarReservas() (select('*')),
 // así que aquí solo hace falta construir la URL pública correcta según el
 // idioma en el que reservó el cliente y copiarla al portapapeles.
+// mesoncafeteriadeeiffel.es todavía apunta a la web antigua que este
+// proyecto va a sustituir — no cambia hasta que el cliente lo apruebe.
+// Hasta entonces, el sitio real vive en Netlify. Cuando cambie, basta con
+// actualizar esta única constante (mismo dominio que usan las edge
+// functions confirmar-reserva/recordatorio-reserva vía el secret SITE_URL).
+const SITE_URL_GESTION = 'https://eiffel-meson.netlify.app';
 const URL_GESTION_POR_IDIOMA = {
-  es: 'https://mesoncafeteriadeeiffel.es/pages/gestionar.html',
-  en: 'https://mesoncafeteriadeeiffel.es/en/pages/gestionar.html',
-  fr: 'https://mesoncafeteriadeeiffel.es/fr/pages/gestionar.html',
+  es: `${SITE_URL_GESTION}/pages/gestionar.html`,
+  en: `${SITE_URL_GESTION}/en/pages/gestionar.html`,
+  fr: `${SITE_URL_GESTION}/fr/pages/gestionar.html`,
 };
 
 function copiarEnlaceGestion(id) {
