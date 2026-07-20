@@ -141,6 +141,24 @@ CREATE POLICY "admin_delete_reservas"
 --     una sola vez a mano — no se guarda en el repositorio.
 
 
+-- ── AUTOGESTIÓN DE RESERVAS (CLIENTE) ─────────────────────────
+-- Ver supabase/migrations/20260721000000_autogestion_reservas.sql
+-- para el contenido completo. Resumen: el cliente puede cambiar o
+-- cancelar su propia reserva sin llamar ni crear cuenta, desde un
+-- enlace único que recibe al reservar (pantalla de confirmación +
+-- email de confirmar-reserva/recordatorio-reserva).
+--   · reservas.token_gestion — UUID aleatorio por reserva, funciona
+--     como "contraseña" del enlace público pages/gestionar.html.
+--   · reserva_por_token / cancelar_reserva_token / modificar_reserva_token
+--     — funciones SECURITY DEFINER; la tabla `reservas` sigue sin
+--     SELECT/UPDATE público directo, solo estas puertas concretas.
+--   · El trigger validar_capacidad_reserva pasa a disparar también en
+--     UPDATE de fecha/hora (antes solo INSERT), excluyendo la propia
+--     fila del conteo de aforo — así el cliente puede cambiar de
+--     franja con las mismas reglas (miércoles cerrado, cierres
+--     temporales, aforo) que ya protegen el formulario público.
+
+
 -- ── PASOS PARA LA CONEXIÓN (Fase 3 — pendiente) ───────────────
 --
 --  1. Crear proyecto en https://supabase.com

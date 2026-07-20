@@ -1,0 +1,125 @@
+/* ============================================================
+   Mesón Cafetería de Eiffel — Página "Gestionar mi reserva"
+   ------------------------------------------------------------
+   Reutiliza casi todo el estilo de reservas.css (.reserva-card,
+   .confirmado-*, .ff, .ff-grid, .btn...). Aquí solo lo específico
+   de esta página: estados (cargando/detalle/cancelada/error),
+   la tabla de resumen y el mini-form de cambiar fecha/hora.
+   ============================================================ */
+
+.gestion-estado {
+  text-align: center;
+  padding: 1rem 0.5rem 0.5rem;
+  max-width: 460px;
+  margin: 0 auto;
+  animation: stepIn 0.4s ease;
+}
+
+.gestion-cargando-txt {
+  text-align: center;
+  color: var(--gris);
+  font-size: 0.9rem;
+  padding: 2.5rem 0;
+}
+
+.confirmado-ico--error {
+  border-color: rgba(184,80,50,0.7);
+  background: rgba(184,80,50,0.08);
+}
+.confirmado-ico--error svg { stroke: #B85032; }
+
+/* ── Resumen de la reserva ── */
+.gestion-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.4rem 0 1.6rem;
+  text-align: left;
+}
+.gestion-tabla td {
+  padding: 0.5rem 0.4rem;
+  border-bottom: 1px solid rgba(107,92,78,0.15);
+  font-size: 0.88rem;
+}
+.gestion-tabla td:first-child {
+  color: var(--gris);
+  width: 40%;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.02em;
+}
+.gestion-tabla td:last-child {
+  color: var(--carbon);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.gestion-notas {
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--gris);
+  background: rgba(184,131,58,0.06);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  margin: -0.6rem 0 1.4rem;
+}
+
+/* ── Botones de acción ── */
+.gestion-acciones {
+  display: flex;
+  gap: 0.7rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
+.btn-outline-tierra {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+  text-decoration: none; font-size: 0.72rem; letter-spacing: 0.16em;
+  text-transform: uppercase; cursor: pointer;
+  font-family: 'Inter', sans-serif; font-weight: 400;
+  transition: all 0.35s ease; padding: 1rem 2.2rem; border-radius: 6px;
+  background: transparent; color: var(--tierra); border: 1px solid rgba(92,51,23,0.35);
+}
+.btn-outline-tierra:hover { background: rgba(92,51,23,0.06); border-color: var(--tierra); }
+
+.btn-link {
+  background: none; border: none; cursor: pointer;
+  font-family: 'Inter', sans-serif; font-size: 0.78rem;
+  color: var(--gris); text-decoration: underline;
+  padding: 0.6rem;
+}
+.btn-link:hover { color: var(--tierra); }
+
+.gestion-msg {
+  font-size: 0.85rem;
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  margin: 0.8rem 0 0;
+}
+.gestion-msg--ok    { background: rgba(107,142,90,0.12); color: #4C6E3E; }
+.gestion-msg--error { background: rgba(184,80,50,0.1);   color: #B85032; }
+
+/* ── Formularios inline (cambiar / confirmar cancelación) ── */
+.gestion-form {
+  text-align: left;
+  margin-top: 1.4rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(184,131,58,0.2);
+}
+.gestion-confirm-txt {
+  font-size: 0.88rem;
+  color: var(--carbon);
+  margin: 0 0 1.1rem;
+  text-align: center;
+}
+.gestion-form-botones {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+@media (max-width: 640px) {
+  .gestion-tabla td { font-size: 0.82rem; }
+  .gestion-acciones { flex-direction: column; align-items: stretch; }
+}

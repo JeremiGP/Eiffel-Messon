@@ -420,6 +420,8 @@ body {
 .act-cancel:hover svg { stroke: #d68910; }
 .act-delete:hover  { border-color: var(--rojo);   background: rgba(192,57,43,0.08); }
 .act-delete:hover svg { stroke: var(--rojo); }
+.act-copy:hover    { border-color: var(--dorado-cl); background: rgba(184,131,58,0.08); }
+.act-copy:hover svg { stroke: var(--dorado-cl); }
 
 /* ── EMPTY STATE ───────────────────────────────────────────── */
 .empty-state { text-align: center; padding: 4rem 2rem !important; }

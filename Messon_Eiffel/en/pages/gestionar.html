@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="../../assets/js/lang-detect.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Manage your booking at Mesón Cafetería de Eiffel: change the date, time or cancel it yourself.">
+  <title>Manage my booking — Mesón Cafetería de Eiffel</title>
+
+  <link rel="canonical" href="https://mesoncafeteriadeeiffel.es/en/pages/gestionar.html">
+
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon.svg">
+
+  <link rel="stylesheet" href="../../assets/css/fonts.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/reservas.css">
+  <link rel="stylesheet" href="../../assets/css/gestionar.css">
+</head>
+<body>
+
+<a class="skip-link" href="#contenido">Skip to content</a>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a href="../index.html" class="nav-logo" aria-label="Mesón Cafetería de Eiffel — home">
+    <img class="logo-emblema" src="../../assets/img/logo-nav.png" alt="" width="523" height="360" decoding="async">
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="nosotros.html">About</a></li>
+    <li><a href="carta.html">Menu</a></li>
+    <li><a href="reservas.html">Bookings</a></li>
+    <li><a href="contacto.html">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── CABECERA ── -->
+<main id="contenido">
+<div class="page-hero">
+  <div class="page-hero-content">
+    <div class="eyebrow"><div class="eyebrow-bar"></div>Your booking, your call</div>
+    <h1 class="section-h display">Manage <em>my booking</em></h1>
+  </div>
+</div>
+
+<section class="reservas-section">
+  <div class="reserva-card">
+
+    <!-- ── LOADING ── -->
+    <div class="gestion-estado" id="gestionCargando">
+      <p class="gestion-cargando-txt">Looking up your booking…</p>
+    </div>
+
+    <!-- ── ERROR (invalid link / not found) ── -->
+    <div class="gestion-estado" id="gestionError" style="display:none">
+      <div class="confirmado-ico confirmado-ico--error">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+      <p class="confirmado-eyebrow">Invalid link</p>
+      <h2 class="confirmado-title">We couldn't find <em style="color:#B8833A;font-style:italic">that booking</em></h2>
+      <p class="confirmado-sub" id="gestionErrorMsg">Check that the link matches the one you received by email, or give us a call and we'll help.</p>
+      <p class="confirmado-tel">958 87 24 24</p>
+    </div>
+
+    <!-- ── DETAILS + ACTIONS ── -->
+    <div class="gestion-estado" id="gestionDetalle" style="display:none">
+      <p class="confirmado-eyebrow" id="gEstadoEyebrow">Your booking</p>
+      <h2 class="confirmado-title" id="gNombre">—</h2>
+
+      <table class="gestion-tabla">
+        <tr><td>Date</td><td id="gFechaTxt">—</td></tr>
+        <tr><td>Time</td><td id="gHoraTxt">—</td></tr>
+        <tr><td>People</td><td id="gPersonasTxt">—</td></tr>
+      </table>
+
+      <p class="gestion-notas" id="gNotasTxt" style="display:none"></p>
+
+      <div class="gestion-acciones" id="gestionAcciones">
+        <button type="button" class="btn btn-tierra" id="btnCambiar">Change date or time</button>
+        <button type="button" class="btn btn-outline-tierra" id="btnCancelar">Cancel booking</button>
+      </div>
+
+      <p class="gestion-msg gestion-msg--ok" id="gestionOkMsg" style="display:none"></p>
+      <p class="gestion-msg gestion-msg--error" id="gestionAccionError" style="display:none"></p>
+
+      <!-- ── FORM: CHANGE DATE/TIME/PEOPLE ── -->
+      <div class="gestion-form" id="gestionFormCambiar" style="display:none">
+        <div class="ff-grid">
+          <div class="ff">
+            <label for="gFecha">Date</label>
+            <input type="date" id="gFecha">
+          </div>
+          <div class="ff">
+            <label for="gHora">Time</label>
+            <select id="gHora"><option value="">Choose a date first</option></select>
+          </div>
+          <div class="ff">
+            <label for="gPersonas">People</label>
+            <input type="number" id="gPersonas" min="1" max="80">
+          </div>
+        </div>
+        <div class="gestion-form-botones">
+          <button type="button" class="btn btn-tierra" id="gGuardarBtn">Save changes</button>
+          <button type="button" class="btn-link" id="gCancelarEdicion">Back</button>
+        </div>
+      </div>
+
+      <!-- ── CONFIRM CANCELLATION ── -->
+      <div class="gestion-form" id="gestionConfirmCancelar" style="display:none">
+        <p class="gestion-confirm-txt">Are you sure you want to cancel your booking? This can't be undone.</p>
+        <div class="gestion-form-botones">
+          <button type="button" class="btn btn-tierra" id="gConfirmSiBtn">Yes, cancel</button>
+          <button type="button" class="btn-link" id="gConfirmNoBtn">No, go back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ALREADY CANCELLED ── -->
+    <div class="gestion-estado" id="gestionCancelada" style="display:none">
+      <div class="confirmado-ico">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+      <p class="confirmado-eyebrow">Booking cancelled</p>
+      <h2 class="confirmado-title">This booking is <em style="color:#B8833A;font-style:italic">already cancelled</em></h2>
+      <p class="confirmado-sub">If you'd like to book again, we'd be happy to welcome you.</p>
+      <a href="reservas.html" class="btn btn-tierra">Make a new booking</a>
+    </div>
+
+  </div><!-- /reserva-card -->
+</section>
+</main>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top-bar"></div>
+  <div class="footer-inner">
+    <div class="footer-grid">
+
+      <div>
+        <div class="footer-brand">Mesón <span>de Eiffel</span></div>
+        <p class="footer-about">Timeless Andalusian cooking in the heart of Motril. Breakfasts, charcoal grill and good company. Open every day.</p>
+        <a class="footer-ig" href="https://www.instagram.com/meson_cafeteria_de_eiffel" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          @meson_cafeteria_de_eiffel
+        </a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul class="footer-contact-list">
+          <li>
+            <svg class="fc-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <a href="https://maps.google.com/?q=C/+Rio+Mundo+Local+2,+Motril,+Granada" target="_blank" rel="noopener">
+              C/ Rio Mundo, Local 2<br>Motril, Granada
+            </a>
+          </li>
+          <li>
+            <svg class="fc-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.72a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.72 16.92z"/></svg>
+            <a href="tel:+34958872424">958 87 24 24</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Bookings</h4>
+        <p class="footer-reservas-txt">Call us at <a href="tel:+34958872424">958 87 24 24</a> or book directly through our online form. For large groups, please contact us by phone.</p>
+        <a href="reservas.html" class="btn btn-solid footer-btn-reserva">
+          Book a table
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Mesón Cafetería de Eiffel · Motril, Granada</span>
+      <div class="lang-switch" aria-label="Choose language">
+        <a href="../../pages/gestionar.html" hreflang="es" lang="es">ES</a>
+        <a href="gestionar.html" hreflang="en" lang="en" aria-current="page">EN</a>
+        <a href="../../fr/pages/gestionar.html" hreflang="fr" lang="fr">FR</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/vendor/supabase-2.106.2.min.js"></script>
+<script src="../../assets/js/config.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script src="../../assets/js/i18n-strings.js"></script>
+<script src="../../assets/js/gestionar.js"></script>
+</body>
+</html>

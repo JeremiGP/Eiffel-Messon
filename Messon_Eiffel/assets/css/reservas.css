@@ -568,6 +568,18 @@ body { background: var(--arena-alt); }
   letter-spacing: 0.04em;
 }
 
+.confirmado-gestion {
+  margin-top: 1.8rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid rgba(184,131,58,0.2);
+}
+.confirmado-gestion-sub {
+  font-size: 0.8rem;
+  color: var(--gris);
+  line-height: 1.6;
+  margin: 0 0 0.9rem;
+}
+
 /* ── RESPONSIVE ─────────────────────────────────────────── */
 @media (max-width: 640px) {
   .reservas-section { padding: 2.5rem 1rem 4rem; }

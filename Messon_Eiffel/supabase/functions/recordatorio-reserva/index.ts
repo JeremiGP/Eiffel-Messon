@@ -38,6 +38,7 @@ interface ReservaRecord {
   hora: string;      // HH:MM
   personas: number;
   idioma?: string;   // 'es' | 'en' | 'fr'
+  token_gestion?: string; // UUID (migración 20260721000000); enlace de autogestión
 }
 
 type Idioma = 'es' | 'en' | 'fr';
@@ -47,6 +48,13 @@ function normalizarIdioma(v: string | undefined | null): Idioma {
 }
 
 const LOCALES: Record<Idioma, string> = { es: 'es-ES', en: 'en-GB', fr: 'fr-FR' };
+
+// Misma página de autogestión que usa confirmar-reserva (ver pages/gestionar.html)
+const URL_GESTION: Record<Idioma, string> = {
+  es: 'https://mesoncafeteriadeeiffel.es/pages/gestionar.html',
+  en: 'https://mesoncafeteriadeeiffel.es/en/pages/gestionar.html',
+  fr: 'https://mesoncafeteriadeeiffel.es/fr/pages/gestionar.html',
+};
 
 function formatFecha(iso: string, idioma: Idioma): string {
   const [y, m, d] = iso.split('-').map(Number);
@@ -63,35 +71,40 @@ const TEXTOS: Record<Idioma, {
   fecha: string; hora: string; personas: string;
   cambiar: string;
   llamar: string;
+  gestionarBtn: string;
 }> = {
   es: {
     asunto: (fecha) => `Recordatorio: tu reserva es mañana, ${fecha}`,
     hola: (nombre) => `Hola ${nombre},`,
     cuerpo: 'Te recordamos tu reserva de mañana:',
     fecha: 'Fecha', hora: 'Hora', personas: 'Personas',
-    cambiar: 'Si necesitas cambiar algo o cancelar, llámanos al',
+    cambiar: 'Si necesitas cambiar algo o cancelar, hazlo tú mismo desde aquí, o llámanos al',
     llamar: '958 87 24 24',
+    gestionarBtn: 'Gestionar mi reserva',
   },
   en: {
     asunto: (fecha) => `Reminder: your booking is tomorrow, ${fecha}`,
     hola: (nombre) => `Hi ${nombre},`,
     cuerpo: "Here's a reminder of your booking tomorrow:",
     fecha: 'Date', hora: 'Time', personas: 'People',
-    cambiar: 'If you need to change or cancel anything, call us at',
+    cambiar: 'If you need to change or cancel anything, do it yourself here, or call us at',
     llamar: '+34 958 87 24 24',
+    gestionarBtn: 'Manage my booking',
   },
   fr: {
     asunto: (fecha) => `Rappel : votre réservation est demain, ${fecha}`,
     hola: (nombre) => `Bonjour ${nombre},`,
     cuerpo: 'Petit rappel de votre réservation de demain :',
     fecha: 'Date', hora: 'Heure', personas: 'Personnes',
-    cambiar: 'Pour tout changement ou annulation, appelez-nous au',
+    cambiar: 'Pour tout changement ou annulation, faites-le vous-même ici, ou appelez-nous au',
     llamar: '+34 958 87 24 24',
+    gestionarBtn: 'Gérer ma réservation',
   },
 };
 
 function plantillaHtml(r: ReservaRecord, idioma: Idioma): string {
   const t = TEXTOS[idioma];
+  const enlaceGestion = r.token_gestion ? `${URL_GESTION[idioma]}?t=${r.token_gestion}` : null;
   return `
   <div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#1A110A">
     <h1 style="font-weight:normal;color:#5C3317">Mesón <em style="color:#B8833A">de Eiffel</em></h1>
@@ -103,6 +116,10 @@ function plantillaHtml(r: ReservaRecord, idioma: Idioma): string {
       <tr><td style="padding:4px 12px 4px 0"><strong>${t.personas}</strong></td><td>${r.personas}</td></tr>
     </table>
     <p>${t.cambiar} <a href="tel:+34958872424">${t.llamar}</a>.</p>
+    ${enlaceGestion ? `
+    <p style="margin:0.6em 0 1.4em">
+      <a href="${enlaceGestion}" style="display:inline-block;padding:10px 22px;background:#5C3317;color:#fff;text-decoration:none;border-radius:4px;font-family:Georgia,serif">${t.gestionarBtn}</a>
+    </p>` : ''}
     <p style="color:#6B5C4E;font-size:0.9em">C/ Rio Mundo, Local 2 · 18600 Motril, Granada</p>
   </div>`;
 }
@@ -146,7 +163,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   // (reservas solo es legible por el admin autenticado normalmente),
   // pero la key nunca sale de este entorno de servidor.
   const url = `${SUPABASE_URL}/rest/v1/reservas`
-    + `?select=nombre,email,fecha,hora,personas,idioma`
+    + `?select=nombre,email,fecha,hora,personas,idioma,token_gestion`
     + `&fecha=eq.${manana}&estado=eq.confirmada&email=not.is.null`;
 
   const resReservas = await fetch(url, {

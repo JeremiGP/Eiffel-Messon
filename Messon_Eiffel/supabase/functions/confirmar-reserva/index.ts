@@ -27,6 +27,7 @@ interface ReservaRecord {
   hora: string;     // HH:MM
   personas: number;
   idioma?: string;  // 'es' | 'en' | 'fr' (migración 20260719000000; puede faltar en filas antiguas)
+  token_gestion?: string; // UUID (migración 20260721000000); enlace de autogestión
 }
 
 type Idioma = 'es' | 'en' | 'fr';
@@ -36,6 +37,14 @@ function normalizarIdioma(v: string | undefined | null): Idioma {
 }
 
 const LOCALES: Record<Idioma, string> = { es: 'es-ES', en: 'en-GB', fr: 'fr-FR' };
+
+// Página pública de autogestión (ver pages/gestionar.html), una por idioma
+// (mismo patrón de carpetas que el resto del sitio: es en raíz, en/ y fr/).
+const URL_GESTION: Record<Idioma, string> = {
+  es: 'https://mesoncafeteriadeeiffel.es/pages/gestionar.html',
+  en: 'https://mesoncafeteriadeeiffel.es/en/pages/gestionar.html',
+  fr: 'https://mesoncafeteriadeeiffel.es/fr/pages/gestionar.html',
+};
 
 function formatFecha(iso: string, idioma: Idioma): string {
   const [y, m, d] = iso.split('-').map(Number);
@@ -53,6 +62,8 @@ const TEXTOS: Record<Idioma, {
   fecha: string; hora: string; personas: string;
   confirmacion: string;
   llamar: string;
+  gestionarBtn: string;
+  gestionarSub: string;
 }> = {
   es: {
     asunto: (fecha, hora) => `Solicitud de reserva recibida — ${fecha}, ${hora}`,
@@ -61,6 +72,8 @@ const TEXTOS: Record<Idioma, {
     fecha: 'Fecha', hora: 'Hora', personas: 'Personas',
     confirmacion: 'Te <strong>confirmaremos la disponibilidad por teléfono</strong> en breve. Si necesitas cambiar algo, llámanos al',
     llamar: '958 87 24 24',
+    gestionarBtn: 'Gestionar mi reserva',
+    gestionarSub: 'También puedes cambiar la fecha/hora o cancelar tú mismo desde este enlace, sin llamar:',
   },
   en: {
     asunto: (fecha, hora) => `Booking request received — ${fecha}, ${hora}`,
@@ -69,6 +82,8 @@ const TEXTOS: Record<Idioma, {
     fecha: 'Date', hora: 'Time', personas: 'People',
     confirmacion: "We'll <strong>confirm availability by phone</strong> shortly. If you need to change anything, call us at",
     llamar: '+34 958 87 24 24',
+    gestionarBtn: 'Manage my booking',
+    gestionarSub: "You can also change the date/time or cancel it yourself from this link, no call needed:",
   },
   fr: {
     asunto: (fecha, hora) => `Demande de réservation reçue — ${fecha}, ${hora}`,
@@ -77,11 +92,14 @@ const TEXTOS: Record<Idioma, {
     fecha: 'Date', hora: 'Heure', personas: 'Personnes',
     confirmacion: "Nous vous <strong>confirmerons la disponibilité par téléphone</strong> sous peu. Pour tout changement, appelez-nous au",
     llamar: '+34 958 87 24 24',
+    gestionarBtn: 'Gérer ma réservation',
+    gestionarSub: 'Vous pouvez aussi changer la date/l’heure ou annuler vous-même depuis ce lien, sans appeler :',
   },
 };
 
 function plantillaHtml(r: ReservaRecord, idioma: Idioma): string {
   const t = TEXTOS[idioma];
+  const enlaceGestion = r.token_gestion ? `${URL_GESTION[idioma]}?t=${r.token_gestion}` : null;
   // Texto plano + HTML mínimo: máxima entregabilidad, sin imágenes remotas
   return `
   <div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#1A110A">
@@ -94,6 +112,11 @@ function plantillaHtml(r: ReservaRecord, idioma: Idioma): string {
       <tr><td style="padding:4px 12px 4px 0"><strong>${t.personas}</strong></td><td>${r.personas}</td></tr>
     </table>
     <p>${t.confirmacion} <a href="tel:+34958872424">${t.llamar}</a>.</p>
+    ${enlaceGestion ? `
+    <p style="margin-top:1.4em">${t.gestionarSub}</p>
+    <p style="margin:0.6em 0 1.4em">
+      <a href="${enlaceGestion}" style="display:inline-block;padding:10px 22px;background:#5C3317;color:#fff;text-decoration:none;border-radius:4px;font-family:Georgia,serif">${t.gestionarBtn}</a>
+    </p>` : ''}
     <p style="color:#6B5C4E;font-size:0.9em">C/ Rio Mundo, Local 2 · 18600 Motril, Granada</p>
   </div>`;
 }

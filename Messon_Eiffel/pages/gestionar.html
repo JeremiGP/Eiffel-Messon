@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <script src="../assets/js/lang-detect.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Gestiona tu reserva en el Mesón Cafetería de Eiffel: cambia la fecha, la hora o cancélala tú mismo.">
+  <title>Gestionar mi reserva — Mesón Cafetería de Eiffel</title>
+
+  <link rel="canonical" href="https://mesoncafeteriadeeiffel.es/pages/gestionar.html">
+
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+
+  <!-- Fuentes autoalojadas (antes Google Fonts) -->
+  <link rel="stylesheet" href="../assets/css/fonts.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/reservas.css">
+  <link rel="stylesheet" href="../assets/css/gestionar.css">
+</head>
+<body>
+
+<!-- Enlace de salto para teclado / lectores de pantalla (WCAG 2.4.1) -->
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a href="../index.html" class="nav-logo" aria-label="Mesón Cafetería de Eiffel — inicio">
+    <img class="logo-emblema" src="../assets/img/logo-nav.png" alt="" width="523" height="360" decoding="async">
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="carta.html">Carta</a></li>
+    <li><a href="reservas.html">Reservas</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── CABECERA ── -->
+<main id="contenido">
+<div class="page-hero">
+  <div class="page-hero-content">
+    <div class="eyebrow"><div class="eyebrow-bar"></div>Tu reserva, en tus manos</div>
+    <h1 class="section-h display">Gestionar <em>mi reserva</em></h1>
+  </div>
+</div>
+
+<section class="reservas-section">
+  <div class="reserva-card">
+
+    <!-- ── CARGANDO ── -->
+    <div class="gestion-estado" id="gestionCargando">
+      <p class="gestion-cargando-txt">Buscando tu reserva…</p>
+    </div>
+
+    <!-- ── ERROR (enlace inválido / no encontrada) ── -->
+    <div class="gestion-estado" id="gestionError" style="display:none">
+      <div class="confirmado-ico confirmado-ico--error">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+      <p class="confirmado-eyebrow">Enlace no válido</p>
+      <h2 class="confirmado-title">No hemos encontrado <em style="color:#B8833A;font-style:italic">esa reserva</em></h2>
+      <p class="confirmado-sub" id="gestionErrorMsg">Comprueba que el enlace es el mismo que recibiste por email, o llámanos y te ayudamos.</p>
+      <p class="confirmado-tel">958 87 24 24</p>
+    </div>
+
+    <!-- ── DETALLE + ACCIONES ── -->
+    <div class="gestion-estado" id="gestionDetalle" style="display:none">
+      <p class="confirmado-eyebrow" id="gEstadoEyebrow">Tu reserva</p>
+      <h2 class="confirmado-title" id="gNombre">—</h2>
+
+      <table class="gestion-tabla">
+        <tr><td>Fecha</td><td id="gFechaTxt">—</td></tr>
+        <tr><td>Hora</td><td id="gHoraTxt">—</td></tr>
+        <tr><td>Personas</td><td id="gPersonasTxt">—</td></tr>
+      </table>
+
+      <p class="gestion-notas" id="gNotasTxt" style="display:none"></p>
+
+      <div class="gestion-acciones" id="gestionAcciones">
+        <button type="button" class="btn btn-tierra" id="btnCambiar">Cambiar fecha u hora</button>
+        <button type="button" class="btn btn-outline-tierra" id="btnCancelar">Cancelar reserva</button>
+      </div>
+
+      <p class="gestion-msg gestion-msg--ok" id="gestionOkMsg" style="display:none"></p>
+      <p class="gestion-msg gestion-msg--error" id="gestionAccionError" style="display:none"></p>
+
+      <!-- ── FORM: CAMBIAR FECHA/HORA/PERSONAS ── -->
+      <div class="gestion-form" id="gestionFormCambiar" style="display:none">
+        <div class="ff-grid">
+          <div class="ff">
+            <label for="gFecha">Fecha</label>
+            <input type="date" id="gFecha">
+          </div>
+          <div class="ff">
+            <label for="gHora">Hora</label>
+            <select id="gHora"><option value="">Elige una fecha primero</option></select>
+          </div>
+          <div class="ff">
+            <label for="gPersonas">Personas</label>
+            <input type="number" id="gPersonas" min="1" max="80">
+          </div>
+        </div>
+        <div class="gestion-form-botones">
+          <button type="button" class="btn btn-tierra" id="gGuardarBtn">Guardar cambios</button>
+          <button type="button" class="btn-link" id="gCancelarEdicion">Volver</button>
+        </div>
+      </div>
+
+      <!-- ── CONFIRMAR CANCELACIÓN ── -->
+      <div class="gestion-form" id="gestionConfirmCancelar" style="display:none">
+        <p class="gestion-confirm-txt">¿Seguro que quieres cancelar tu reserva? Esta acción no se puede deshacer.</p>
+        <div class="gestion-form-botones">
+          <button type="button" class="btn btn-tierra" id="gConfirmSiBtn">Sí, cancelar</button>
+          <button type="button" class="btn-link" id="gConfirmNoBtn">No, volver</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── YA CANCELADA ── -->
+    <div class="gestion-estado" id="gestionCancelada" style="display:none">
+      <div class="confirmado-ico">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+      <p class="confirmado-eyebrow">Reserva cancelada</p>
+      <h2 class="confirmado-title">Esta reserva ya <em style="color:#B8833A;font-style:italic">está cancelada</em></h2>
+      <p class="confirmado-sub">Si quieres reservar de nuevo, estaremos encantados de recibirte.</p>
+      <a href="reservas.html" class="btn btn-tierra">Hacer una nueva reserva</a>
+    </div>
+
+  </div><!-- /reserva-card -->
+</section>
+</main>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top-bar"></div>
+  <div class="footer-inner">
+    <div class="footer-grid">
+
+      <!-- MARCA -->
+      <div>
+        <div class="footer-brand">Mesón <span>de Eiffel</span></div>
+        <p class="footer-about">Cocina andaluza de siempre en el corazón de Motril. Desayunos, brasas y buena compañía. Abiertos todos los días.</p>
+        <a class="footer-ig" href="https://www.instagram.com/meson_cafeteria_de_eiffel" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          @meson_cafeteria_de_eiffel
+        </a>
+      </div>
+
+      <!-- CONTACTO -->
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <ul class="footer-contact-list">
+          <li>
+            <svg class="fc-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <a href="https://maps.google.com/?q=C/+Rio+Mundo+Local+2,+Motril,+Granada" target="_blank" rel="noopener">
+              C/ Rio Mundo, Local 2<br>Motril, Granada
+            </a>
+          </li>
+          <li>
+            <svg class="fc-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.72a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.72 16.92z"/></svg>
+            <a href="tel:+34958872424">958 87 24 24</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- RESERVAS -->
+      <div class="footer-col">
+        <h4>Reservas</h4>
+        <p class="footer-reservas-txt">Llámanos al <a href="tel:+34958872424">958 87 24 24</a> o reserva directamente desde nuestro formulario online. Para grupos grandes, contacta por teléfono.</p>
+        <a href="reservas.html" class="btn btn-solid footer-btn-reserva">
+          Reservar mesa
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Mesón Cafetería de Eiffel · Motril, Granada</span>
+      <div class="lang-switch" aria-label="Elegir idioma">
+        <a href="gestionar.html" hreflang="es" lang="es" aria-current="page">ES</a>
+        <a href="../en/pages/gestionar.html" hreflang="en" lang="en">EN</a>
+        <a href="../fr/pages/gestionar.html" hreflang="fr" lang="fr">FR</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- supabase-js autoalojado y pinneado (antes CDN con versión flotante @2):
+     misma origin → sin dependencia de jsdelivr ni riesgo de supply-chain -->
+<script src="../assets/js/vendor/supabase-2.106.2.min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/nav.js"></script>
+<script src="../assets/js/i18n-strings.js"></script>
+<script src="../assets/js/gestionar.js"></script>
+</body>
+</html>

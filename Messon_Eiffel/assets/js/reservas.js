@@ -638,6 +638,8 @@ document.addEventListener('DOMContentLoaded', () => {
       idioma:   window.MESON_LANG || 'es',
     };
 
+    let reservaCreada = null; // fila insertada (incluye token_gestion), solo en modo real
+
     if (supabaseClient) {
       // ── Revalidar cupo justo antes de enviar ──────────────
       // Cubre el caso típico: el usuario dejó el formulario abierto
@@ -658,7 +660,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // ── Modo real: guarda la reserva en Supabase ──────────
-      const { error } = await supabaseClient.from('reservas').insert([datos]);
+      // .select().single() para recuperar token_gestion (migración
+      // 20260721000000): es lo que permite mostrar el enlace de
+      // "gestionar mi reserva" en la pantalla de confirmación de abajo.
+      const { data, error } = await supabaseClient
+        .from('reservas')
+        .insert([datos])
+        .select()
+        .single();
+      reservaCreada = data;
       if (error) {
         console.error('Error al guardar la reserva:', error);
         btnSubmit.textContent = T.solicitarReserva || 'Solicitar reserva';
@@ -698,6 +708,18 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       // ── Modo demo: sin Supabase configurado, se simula el envío ──
       await new Promise(resolve => setTimeout(resolve, 900));
+    }
+
+    // Enlace de autogestión: solo existe en modo real (Supabase) y si la
+    // fila devuelta trae token_gestion (columna añadida en la migración
+    // 20260721000000; si el proyecto no tiene esa migración aplicada
+    // todavía, simplemente no se muestra el bloque, sin romper nada).
+    const token = reservaCreada ? reservaCreada.token_gestion : null;
+    const linkGestion = document.getElementById('linkGestion');
+    const bloqueGestion = document.getElementById('confirmadoGestion');
+    if (token && linkGestion && bloqueGestion) {
+      linkGestion.href = `gestionar.html?t=${token}`;
+      bloqueGestion.style.display = '';
     }
 
     form.style.display = 'none';
