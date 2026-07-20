@@ -110,6 +110,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const token = params.get('t');
 
+  // El selector de idioma del footer enlaza a gestionar.html de cada
+  // idioma sin más (mismo componente que el resto del sitio, ver
+  // nav.js): si no le añadimos el token aquí, cambiar de idioma desde
+  // esta página concreta te deja sin reserva que ver. Lo arreglamos
+  // en tiempo de ejecución en vez de tocar el HTML de los 3 idiomas.
+  if (token) {
+    document.querySelectorAll('.lang-switch a[href]').forEach(a => {
+      a.href = a.getAttribute('href') + '?t=' + encodeURIComponent(token);
+    });
+  }
+
   async function cargarReserva() {
     if (!token || !supabaseClient) {
       if (elErrorMsg) elErrorMsg.textContent = T.gErrNoEncontrada || 'No hemos encontrado esa reserva.';
@@ -253,6 +264,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultado = data && data[0];
     if (error || !resultado || !resultado.ok) {
       const codigo = resultado ? resultado.mensaje : (error ? error.message : '');
+      // La reserva se canceló entre que se cargó la página (o desde el
+      // admin, u otra pestaña) y que se le dio a "Guardar": en vez de un
+      // error genérico, saltamos directamente a la vista de "cancelada".
+      if (codigo && codigo.includes('YA_CANCELADA')) {
+        mostrarSolo(elCancelada);
+        return;
+      }
       elAccionError.textContent = mensajePorCodigo(codigo) || (T.gErrGenerico || 'No se pudo completar la operación.');
       elAccionError.style.display = '';
       return;
@@ -290,9 +308,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const resultado = data && data[0];
     if (error || !resultado || !resultado.ok) {
+      const codigo = resultado ? resultado.mensaje : (error ? error.message : '');
+      // Ya estaba cancelada (p. ej. desde otra pestaña o desde el admin
+      // mientras esta página seguía abierta): mostramos directamente la
+      // vista de "cancelada" en vez de un error confuso.
+      if (codigo && codigo.includes('YA_CANCELADA')) {
+        mostrarSolo(elCancelada);
+        return;
+      }
       btnConfirmSi.disabled = false;
       btnConfirmSi.textContent = txtConfirmSiOriginal;
-      const codigo = resultado ? resultado.mensaje : (error ? error.message : '');
       elAccionError.textContent = mensajePorCodigo(codigo) || (T.gErrGenerico || 'No se pudo completar la operación.');
       elAccionError.style.display = '';
       formConfirmCancelar.style.display = 'none';
