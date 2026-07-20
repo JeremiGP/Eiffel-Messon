@@ -31,13 +31,27 @@ const FILAS_POR_PAGINA = 20;
 // web pública rechazaría.
 const EMAIL_RE = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
 
-// Catálogo de franjas para agrupar la agenda del día (mismo orden
-// que supabase/migrations/20260706000000_capacidad_disponibilidad.sql
-// + 20260718000000_nuevo_horario.sql)
-const HORAS_CATALOGO = [
-  { grupo: 'Desayuno', horas: ['07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00'] },
-  { grupo: 'Comida',    horas: ['13:00', '13:30', '14:00', '14:30', '15:00', '15:30'] },
-  { grupo: 'Cena',      horas: ['20:00', '20:30', '21:00', '21:30', '22:00', '22:30'] },
+// Franjas para agrupar visualmente la agenda del día (Desayuno/Comida/Cena).
+// Son cortes de hora, no una lista fija de horas exactas — así cualquier
+// franja que se añada desde la pestaña "Horarios" (20260720000000_horarios_editables.sql)
+// se agrupa sola sin tener que tocar este archivo.
+const FRANJAS_AGENDA = [
+  { grupo: 'Desayuno', hasta: '12:30' },
+  { grupo: 'Comida',   hasta: '18:00' },
+  { grupo: 'Cena',     hasta: '23:59' },
+];
+function agruparHoraFranja(hora) {
+  const franja = FRANJAS_AGENDA.find(f => hora < f.hasta);
+  return (franja || FRANJAS_AGENDA[FRANJAS_AGENDA.length - 1]).grupo;
+}
+
+// Horas de fábrica para sembrar capacidadPorHora en modo demo (sin Supabase
+// real no hay tabla capacidad_horarios que leer, así que se asume 20 mesas
+// en el horario actual para poder enseñar la barra de ocupación).
+const DEMO_HORAS_DEFECTO = [
+  '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30',
+  '11:00', '11:30', '12:00', '13:00', '13:30', '14:00', '14:30', '15:00',
+  '15:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30',
 ];
 
 // ── CLIENTE DE SUPABASE (si config.js tiene claves reales) ────
@@ -58,7 +72,7 @@ let filtros           = { estado: '', fechaDesde: '', fechaHasta: '', texto: '' 
 let orden             = { campo: 'created_at', direccion: 'desc' };
 let paginaActual      = 1;
 let seleccionadas     = new Set();
-let vistaActual       = 'hoy'; // 'hoy' | 'todas' | 'precios' | 'cierres'
+let vistaActual       = 'hoy'; // 'hoy' | 'todas' | 'estadisticas' | 'precios' | 'horarios' | 'cierres'
 
 // ── PRECIOS (carta) ────────────────────────────────────────────
 let precios          = [];    // filas de la tabla `precios`
@@ -234,7 +248,7 @@ async function cargarReservas() {
   // En demo asumimos 20 mesas por franja para poder enseñar la
   // barra de ocupación de la agenda sin necesitar Supabase.
   capacidadPorHora = {};
-  HORAS_CATALOGO.forEach(g => g.horas.forEach(h => { capacidadPorHora[h] = 20; }));
+  DEMO_HORAS_DEFECTO.forEach(h => { capacidadPorHora[h] = 20; });
 }
 
 function guardarReservas() {
@@ -420,7 +434,7 @@ async function recargarTodo(mostrarSpinner) {
   const btnRefrescar = document.getElementById('btn-refrescar');
   if (mostrarSpinner && btnRefrescar) btnRefrescar.classList.add('is-loading');
   await cargarReservas();
-  renderTodo();
+  renderVistaActual();
   if (mostrarSpinner && btnRefrescar) btnRefrescar.classList.remove('is-loading');
 }
 
@@ -452,6 +466,58 @@ function renderStats() {
   }
 }
 
+// ── PESTAÑA ESTADÍSTICAS ───────────────────────────────────────
+// Todo se calcula en el navegador a partir de `reservas` (ya cargadas
+// para "Todas las reservas"): no hace falta ninguna consulta nueva.
+const DIAS_SEMANA = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+
+function renderBarraChart(contenedorId, entradas) {
+  const cont = document.getElementById(contenedorId);
+  if (!entradas.length) {
+    cont.innerHTML = '<p class="nd">Todavía no hay reservas suficientes.</p>';
+    return;
+  }
+  const max = Math.max(1, ...entradas.map(e => e.valor));
+  cont.innerHTML = entradas.map(e => `
+    <div class="barra-fila">
+      <span class="barra-etiqueta">${escHtml(e.etiqueta)}</span>
+      <div class="barra-track"><div class="barra-fill" style="width:${Math.round(e.valor / max * 100)}%"></div></div>
+      <span class="barra-valor">${e.valor}</span>
+    </div>
+  `).join('');
+}
+
+function renderEstadisticas() {
+  const total      = reservas.length;
+  const canceladas = reservas.filter(r => r.estado === 'cancelada').length;
+  const activas    = reservas.filter(r => r.estado !== 'cancelada');
+
+  document.getElementById('stat2-total-historico').textContent = total;
+  document.getElementById('stat2-cancelacion').textContent =
+    total ? `${Math.round((canceladas / total) * 100)}%` : '—';
+
+  // Por día de la semana (0=lunes … 6=domingo, para que la semana
+  // empiece en lunes como en el resto del sitio)
+  const porDia = [0, 0, 0, 0, 0, 0, 0];
+  activas.forEach(r => {
+    const [y, m, d] = r.fecha.split('-').map(Number);
+    const dowJs = new Date(y, m - 1, d).getDay(); // 0=domingo … 6=sábado
+    porDia[dowJs === 0 ? 6 : dowJs - 1]++;
+  });
+  renderBarraChart('chart-dias', DIAS_SEMANA.map((nombre, i) => ({ etiqueta: nombre, valor: porDia[i] })));
+  const maxDia = Math.max(...porDia);
+  document.getElementById('stat2-dia-top').textContent = maxDia > 0 ? DIAS_SEMANA[porDia.indexOf(maxDia)] : '—';
+
+  // Por franja horaria
+  const porHora = {};
+  activas.forEach(r => { porHora[r.hora] = (porHora[r.hora] || 0) + 1; });
+  const horasOrdenadas = Object.keys(porHora).sort();
+  renderBarraChart('chart-horas', horasOrdenadas.map(h => ({ etiqueta: h, valor: porHora[h] })));
+  let horaTop = '—', maxHora = 0;
+  horasOrdenadas.forEach(h => { if (porHora[h] > maxHora) { maxHora = porHora[h]; horaTop = h; } });
+  document.getElementById('stat2-hora-top').textContent = horaTop;
+}
+
 // ── AGENDA DE HOY ──────────────────────────────────────────────
 function nivelOcupacion(ocupadas, capacidad) {
   if (!capacidad) return 'alta';
@@ -480,12 +546,19 @@ function renderAgendaHoy() {
     return;
   }
 
+  // Agrupar las horas que tienen reservas hoy por franja (Desayuno/Comida/
+  // Cena), en ese orden — sin depender de una lista fija de horas exactas.
+  const horasConReservas = [...new Set(reservasHoy.map(r => r.hora))].sort();
+  const porFranja = {};
+  FRANJAS_AGENDA.forEach(f => { porFranja[f.grupo] = []; });
+  horasConReservas.forEach(h => { porFranja[agruparHoraFranja(h)].push(h); });
+
   let html = '';
-  HORAS_CATALOGO.forEach(grupo => {
-    const slotsConReservas = grupo.horas.filter(h => reservasHoy.some(r => r.hora === h));
+  FRANJAS_AGENDA.forEach(f => {
+    const slotsConReservas = porFranja[f.grupo];
     if (slotsConReservas.length === 0) return;
 
-    html += `<div class="agenda-grupo"><div class="agenda-grupo-titulo">${grupo.grupo}</div>`;
+    html += `<div class="agenda-grupo"><div class="agenda-grupo-titulo">${f.grupo}</div>`;
 
     slotsConReservas.forEach(hora => {
       const delSlot   = reservasHoy.filter(r => r.hora === hora);
@@ -718,31 +791,53 @@ async function ejecutarAccionEnLote(nuevoEstado) {
 }
 
 // ── VISTAS: TABS HOY / TODAS / PRECIOS ──────────────────────────
+// Todas las pestañas del panel (las dos filas: Reservas y Gestión del
+// restaurante). "gestion: true" marca las que viven fuera del bloque de
+// Reservas → esas ocultan la barra de estadísticas (no les aplica).
+const VISTAS = [
+  { id: 'hoy',          gestion: false },
+  { id: 'todas',        gestion: false },
+  { id: 'estadisticas', gestion: false },
+  { id: 'precios',      gestion: true },
+  { id: 'horarios',     gestion: true },
+  { id: 'cierres',      gestion: true },
+];
+
 function cambiarVista(nueva) {
   vistaActual = nueva;
-  document.getElementById('tab-hoy').classList.toggle('active', nueva === 'hoy');
-  document.getElementById('tab-todas').classList.toggle('active', nueva === 'todas');
-  document.getElementById('tab-precios').classList.toggle('active', nueva === 'precios');
-  document.getElementById('tab-cierres').classList.toggle('active', nueva === 'cierres');
-  document.getElementById('tab-hoy').setAttribute('aria-selected', String(nueva === 'hoy'));
-  document.getElementById('tab-todas').setAttribute('aria-selected', String(nueva === 'todas'));
-  document.getElementById('tab-precios').setAttribute('aria-selected', String(nueva === 'precios'));
-  document.getElementById('tab-cierres').setAttribute('aria-selected', String(nueva === 'cierres'));
-  document.getElementById('vista-hoy').classList.toggle('hidden', nueva !== 'hoy');
-  document.getElementById('vista-todas').classList.toggle('hidden', nueva !== 'todas');
-  document.getElementById('vista-precios').classList.toggle('hidden', nueva !== 'precios');
-  document.getElementById('vista-cierres').classList.toggle('hidden', nueva !== 'cierres');
+  VISTAS.forEach(v => {
+    const activa = v.id === nueva;
+    document.getElementById(`tab-${v.id}`).classList.toggle('active', activa);
+    document.getElementById(`tab-${v.id}`).setAttribute('aria-selected', String(activa));
+    document.getElementById(`vista-${v.id}`).classList.toggle('hidden', !activa);
+  });
 
-  // Las estadísticas son de reservas: no aplican en Precios/Cierres,
-  // así que se ocultan para remarcar que es una sección aparte.
-  document.getElementById('statsBar').classList.toggle('hidden', nueva === 'precios' || nueva === 'cierres');
+  // Las estadísticas de la cabecera son de reservas: no aplican en el
+  // bloque de Gestión, así que se ocultan para remarcar que es aparte.
+  const vistaNueva = VISTAS.find(v => v.id === nueva);
+  document.getElementById('statsBar').classList.toggle('hidden', !!(vistaNueva && vistaNueva.gestion));
 
-  if (nueva === 'precios') {
+  renderVistaActual();
+}
+
+// Renderiza lo que corresponda según vistaActual. Separado de cambiarVista
+// para que "Actualizar" (recargarTodo) también refresque la pestaña que
+// esté abierta en ese momento, sea cual sea, y no solo Hoy/Todas.
+function renderVistaActual() {
+  if (vistaActual === 'estadisticas') {
+    renderStats();
+    renderEstadisticas();
+  } else if (vistaActual === 'precios') {
+    renderStats();
     cargarYRenderPrecios();
-  } else if (nueva === 'cierres') {
+  } else if (vistaActual === 'horarios') {
+    renderStats();
+    cargarYRenderHorarios();
+  } else if (vistaActual === 'cierres') {
+    renderStats();
     cargarYRenderCierres();
   } else {
-    renderTodo();
+    renderTodo(); // ya llama a renderStats() internamente
   }
 }
 
@@ -1025,6 +1120,164 @@ function confirmarEliminacionCierre(id) {
   document.getElementById('confirm-text').innerHTML =
     `¿Seguro que quieres eliminar el cierre del <strong>${formatFecha(c.fecha_inicio)}</strong> al <strong>${formatFecha(c.fecha_fin)}</strong>? ` +
     `Esas fechas volverán a estar disponibles para reservar.`;
+  abrirConfirmModal();
+}
+
+// ── PESTAÑA HORARIOS (FRANJAS Y AFORO) ────────────────────────
+// A diferencia de Precios/Cierres no hace falta un "cargar" propio:
+// capacidadPorHora ya se recarga en cada cargarReservas() (arranque y
+// botón Actualizar), así que esta pestaña solo renderiza ese estado.
+async function cargarYRenderHorarios() {
+  const aviso = document.getElementById('horariosAvisoDemo');
+  if (!supabaseClient) {
+    // Modo demo (sin config.js real): no hay tabla que editar — se avisa
+    // en vez de fingir un CRUD contra localStorage para algo tan sensible
+    // como el aforo real.
+    aviso.classList.remove('hidden');
+    document.getElementById('horarios-tbody').innerHTML = '';
+    return;
+  }
+  aviso.classList.add('hidden');
+  renderHorarios();
+}
+
+function renderHorarios() {
+  const tbody = document.getElementById('horarios-tbody');
+  const horas = Object.keys(capacidadPorHora).sort();
+
+  if (!horas.length) {
+    tbody.innerHTML = '<tr><td colspan="3" class="nd" style="padding:1.5rem 1.2rem">No hay franjas horarias configuradas.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = horas.map(hora => `
+    <tr data-hora="${hora}">
+      <td>${hora}</td>
+      <td>
+        <div class="precio-campo">
+          <input type="text" inputmode="numeric" class="precio-input horario-input" data-campo="capacidad_mesas" value="${capacidadPorHora[hora]}">
+        </div>
+      </td>
+      <td>
+        <button type="button" class="precio-guardar-btn" data-accion="guardar-horario">Guardar</button>
+        <span class="precio-guardar-ok">Guardado ✓</span>
+        <button type="button" class="cierre-eliminar-btn" data-accion="eliminar-horario">Eliminar</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function guardarHorarioFila(tr) {
+  const hora  = tr.dataset.hora;
+  const input = tr.querySelector('.horario-input');
+  const btn   = tr.querySelector('.precio-guardar-btn');
+  const ok    = tr.querySelector('.precio-guardar-ok');
+
+  const valor = parseInt(input.value, 10);
+  if (Number.isNaN(valor) || valor < 0) {
+    mostrarToast('Número de mesas no válido.', 'error');
+    input.focus();
+    return;
+  }
+
+  btn.disabled = true;
+  const { error } = await supabaseClient
+    .from('capacidad_horarios')
+    .update({ capacidad_mesas: valor })
+    .eq('hora', hora);
+  btn.disabled = false;
+
+  if (error) {
+    mostrarToast('No se pudo guardar el aforo. Inténtalo de nuevo.', 'error');
+    return;
+  }
+
+  capacidadPorHora[hora] = valor;
+  renderStats();
+  ok.classList.add('show');
+  setTimeout(() => ok.classList.remove('show'), 2000);
+}
+
+// Cuenta reservas activas (no canceladas) futuras a partir de hoy en una
+// hora concreta, para avisar antes de quitarla de la lista de franjas
+// reservables (las reservas ya hechas NO se cancelan ni se ven afectadas).
+async function contarReservasFuturasEnHora(hora) {
+  if (!supabaseClient) return 0;
+  const { count, error } = await supabaseClient
+    .from('reservas')
+    .select('id', { count: 'exact', head: true })
+    .eq('hora', hora)
+    .gte('fecha', hoy())
+    .neq('estado', 'cancelada');
+  if (error) {
+    console.error('Error al contar reservas de la franja:', error);
+    return 0;
+  }
+  return count || 0;
+}
+
+async function manejarSubmitHorario(e) {
+  e.preventDefault();
+  if (!supabaseClient) return;
+
+  const horaInput = document.getElementById('horario-hora').value;
+  const capacidad = parseInt(document.getElementById('horario-capacidad').value, 10);
+
+  if (!horaInput) {
+    mostrarToast('Elige una hora.', 'error');
+    return;
+  }
+  if (Number.isNaN(capacidad) || capacidad < 0) {
+    mostrarToast('Número de mesas no válido.', 'error');
+    return;
+  }
+  // El input type="time" puede devolver segundos (HH:MM:SS) en algunos
+  // navegadores; capacidad_horarios guarda "HH:MM" como en el resto del sitio.
+  const hora = horaInput.slice(0, 5);
+
+  if (capacidadPorHora[hora] !== undefined) {
+    mostrarToast('Ya existe una franja a esa hora — edítala en la tabla de abajo.', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('horario-submit-btn');
+  btn.disabled = true;
+  const { error } = await supabaseClient
+    .from('capacidad_horarios')
+    .insert([{ hora, capacidad_mesas: capacidad }]);
+  btn.disabled = false;
+
+  if (error) {
+    console.error('Error al añadir la franja:', error);
+    mostrarToast('No se pudo añadir la franja horaria.', 'error');
+    return;
+  }
+
+  capacidadPorHora[hora] = capacidad;
+  renderHorarios();
+  renderStats();
+  document.getElementById('horario-form').reset();
+  mostrarToast('Franja añadida. Ya se puede reservar a esa hora.');
+}
+
+async function confirmarEliminacionHorario(hora) {
+  const numReservas = await contarReservasFuturasEnHora(hora);
+  pendingConfirmCallback = async () => {
+    const { error } = await supabaseClient.from('capacidad_horarios').delete().eq('hora', hora);
+    if (error) {
+      console.error('Error al eliminar la franja:', error);
+      mostrarToast('No se pudo eliminar la franja horaria.', 'error');
+      return;
+    }
+    delete capacidadPorHora[hora];
+    renderHorarios();
+    renderStats();
+    mostrarToast('Franja eliminada. Ya no se puede reservar a esa hora.');
+  };
+  document.getElementById('confirm-title').textContent = 'Eliminar franja horaria';
+  document.getElementById('confirm-text').innerHTML = numReservas > 0
+    ? `Hay <strong>${numReservas}</strong> reserva(s) activa(s) a las <strong>${hora}</strong> a partir de hoy. Esas reservas NO se cancelan — solo dejará de poder reservarse esa hora en el futuro. ¿Seguro que quieres eliminarla?`
+    : `¿Seguro que quieres eliminar la franja de las <strong>${hora}</strong>? Dejará de poder reservarse esa hora.`;
   abrirConfirmModal();
 }
 
@@ -1357,11 +1610,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ── ACTUALIZAR MANUAL ──
   document.getElementById('btn-refrescar').addEventListener('click', () => recargarTodo(true));
 
-  // ── TABS DE VISTA ──
-  document.getElementById('tab-hoy').addEventListener('click', () => cambiarVista('hoy'));
-  document.getElementById('tab-todas').addEventListener('click', () => cambiarVista('todas'));
-  document.getElementById('tab-precios').addEventListener('click', () => cambiarVista('precios'));
-  document.getElementById('tab-cierres').addEventListener('click', () => cambiarVista('cierres'));
+  // ── TABS DE VISTA (Reservas y Gestión del restaurante) ──
+  VISTAS.forEach(v => {
+    document.getElementById(`tab-${v.id}`).addEventListener('click', () => cambiarVista(v.id));
+  });
 
   // ── PRECIOS: filtros + guardar (delegado, las filas son dinámicas) ──
   document.getElementById('filtro-precios-categoria').addEventListener('change', e => {
@@ -1377,6 +1629,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!btn) return;
     const tr = btn.closest('tr[data-producto-id]');
     if (tr) guardarPrecioFila(tr);
+  });
+
+  // ── HORARIOS: formulario + guardar/eliminar (delegado, filas dinámicas) ──
+  document.getElementById('horario-form').addEventListener('submit', manejarSubmitHorario);
+  document.getElementById('horarios-tbody').addEventListener('click', e => {
+    const btnGuardar = e.target.closest('[data-accion="guardar-horario"]');
+    if (btnGuardar) {
+      const tr = btnGuardar.closest('tr[data-hora]');
+      if (tr) guardarHorarioFila(tr);
+      return;
+    }
+    const btnEliminar = e.target.closest('[data-accion="eliminar-horario"]');
+    if (btnEliminar) {
+      const tr = btnEliminar.closest('tr[data-hora]');
+      if (tr) confirmarEliminacionHorario(tr.dataset.hora);
+    }
   });
 
   // ── CIERRES: formulario + eliminar (delegado, las filas son dinámicas) ──

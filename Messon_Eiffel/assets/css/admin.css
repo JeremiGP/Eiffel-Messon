@@ -1031,3 +1031,102 @@ body {
   .cierre-form .ff input { width: 100%; }
   .cierre-form .btn-nueva { justify-content: center; }
 }
+
+/* ── PESTAÑA HORARIOS (FRANJAS Y AFORO) ────────────────────────
+   Reutiliza .cierre-form / .precio-input / .precio-guardar-btn /
+   .cierre-eliminar-btn — el formulario y la tabla son casi idénticos
+   a los de Cierres y Precios, solo cambia qué campos se editan. */
+#horario-hora { width: auto; }
+#horario-capacidad { width: 90px; }
+.horario-input { width: 70px; }
+
+/* ── PESTAÑA ESTADÍSTICAS ───────────────────────────────────────
+   Gráficas en CSS puro (barras horizontales): sin librerías externas
+   porque la CSP del sitio no permite cargar scripts de terceros. */
+.stats-resumen {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.stats-resumen-item {
+  background: var(--blanco);
+  border: 1px solid var(--hueso);
+  border-top: 3px solid var(--dorado);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.stats-resumen-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem;
+  color: var(--tierra);
+}
+.stats-resumen-lbl {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--gris);
+  text-transform: uppercase;
+}
+
+.stats-graficos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.75rem;
+}
+.stats-grafico {
+  background: var(--blanco);
+  border: 1px solid var(--hueso);
+  border-radius: 8px;
+  padding: 1.25rem 1.4rem;
+}
+.stats-grafico-titulo {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: normal;
+  font-size: 1.1rem;
+  color: var(--tierra);
+  margin: 0 0 1rem;
+}
+.barra-fila {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.55rem;
+}
+.barra-etiqueta {
+  flex: 0 0 78px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: var(--gris);
+  text-transform: capitalize;
+}
+.barra-track {
+  flex: 1 1 auto;
+  height: 10px;
+  background: var(--crema);
+  border: 1px solid var(--hueso);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.barra-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--dorado-cl), var(--dorado));
+  border-radius: 5px 0 0 5px;
+  transition: width 0.3s ease;
+}
+.barra-valor {
+  flex: 0 0 24px;
+  text-align: right;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: var(--tierra);
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .stats-resumen { grid-template-columns: repeat(2, 1fr); }
+  .stats-graficos { grid-template-columns: 1fr; }
+}

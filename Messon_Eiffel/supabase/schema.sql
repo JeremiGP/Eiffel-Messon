@@ -103,6 +103,16 @@ CREATE POLICY "admin_delete_reservas"
 --     HTML si hay un valor; si falla la consulta, no toca nada.
 
 
+-- ── HORARIOS/AFORO EDITABLES DESDE EL ADMIN ───────────────────
+-- Ver supabase/migrations/20260720000000_horarios_editables.sql.
+-- capacidad_horarios ya existía; esta migración solo añade políticas
+-- de INSERT/DELETE (antes solo se podía UPDATE) para que el admin
+-- pueda añadir o quitar franjas horarias desde la pestaña "Horarios",
+-- sin tocar SQL. disponibilidad_dia/mes y el trigger de validación
+-- ya leían esta tabla de forma genérica, así que no hizo falta
+-- tocarlos.
+
+
 -- ── CIERRES TEMPORALES (VACACIONES) ───────────────────────────
 -- Ver supabase/migrations/20260719020000_cierres_temporales.sql
 -- para el contenido completo. Se resume aquí:

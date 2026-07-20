@@ -117,6 +117,7 @@
       <div class="view-tabs" role="tablist" aria-label="Vista de reservas">
         <button class="view-tab active" id="tab-hoy" role="tab" aria-selected="true" type="button">Hoy</button>
         <button class="view-tab" id="tab-todas" role="tab" aria-selected="false" type="button">Todas las reservas</button>
+        <button class="view-tab" id="tab-estadisticas" role="tab" aria-selected="false" type="button">Estadísticas</button>
       </div>
 
       <!-- ── VISTA HOY (AGENDA) ──────────────────────────────── -->
@@ -228,7 +229,42 @@
 
       </section>
 
-      <!-- ══════ BLOQUE GESTIÓN DEL RESTAURANTE (Precios / Cierres) ══════
+      <!-- ── VISTA ESTADÍSTICAS (OCUPACIÓN) ──────────────────── -->
+      <section id="vista-estadisticas" class="vista-panel hidden">
+
+        <div class="stats-resumen">
+          <div class="stats-resumen-item">
+            <span class="stats-resumen-val" id="stat2-total-historico">0</span>
+            <span class="stats-resumen-lbl">Reservas totales</span>
+          </div>
+          <div class="stats-resumen-item">
+            <span class="stats-resumen-val" id="stat2-cancelacion">—</span>
+            <span class="stats-resumen-lbl">Tasa de cancelación</span>
+          </div>
+          <div class="stats-resumen-item">
+            <span class="stats-resumen-val" id="stat2-dia-top">—</span>
+            <span class="stats-resumen-lbl">Día más solicitado</span>
+          </div>
+          <div class="stats-resumen-item">
+            <span class="stats-resumen-val" id="stat2-hora-top">—</span>
+            <span class="stats-resumen-lbl">Franja más solicitada</span>
+          </div>
+        </div>
+
+        <div class="stats-graficos">
+          <div class="stats-grafico">
+            <h3 class="stats-grafico-titulo">Reservas por día de la semana</h3>
+            <div class="barra-chart" id="chart-dias"></div>
+          </div>
+          <div class="stats-grafico">
+            <h3 class="stats-grafico-titulo">Reservas por franja horaria</h3>
+            <div class="barra-chart" id="chart-horas"></div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════ BLOQUE GESTIÓN DEL RESTAURANTE (Precios / Horarios / Cierres) ══════
            Deliberadamente separado del bloque de Reservas de arriba: no
            tiene relación con reservas concretas, así que vive en su propia
            tarjeta con cabecera propia y pestañas de otro color. ══════ -->
@@ -240,6 +276,7 @@
 
         <div class="view-tabs view-tabs--gestion" role="tablist" aria-label="Gestión del restaurante">
           <button class="view-tab" id="tab-precios" role="tab" aria-selected="false" type="button">Precios</button>
+          <button class="view-tab" id="tab-horarios" role="tab" aria-selected="false" type="button">Horarios</button>
           <button class="view-tab" id="tab-cierres" role="tab" aria-selected="false" type="button">Cierres</button>
         </div>
 
@@ -289,6 +326,53 @@
               </tr>
             </thead>
             <tbody id="precios-tbody"></tbody>
+          </table>
+        </div>
+
+      </section>
+
+      <!-- ── VISTA HORARIOS (FRANJAS Y AFORO) ────────────────── -->
+      <section id="vista-horarios" class="vista-panel hidden">
+
+        <p class="cierres-intro">
+          Añade, edita o quita franjas horarias reservables y su aforo (nº de
+          mesas). El calendario público y el formulario de reserva se ajustan
+          solos: no hace falta tocar nada más.
+        </p>
+
+        <form id="horario-form" class="cierre-form">
+          <div class="ff">
+            <label for="horario-hora">Hora *</label>
+            <input id="horario-hora" type="time" required>
+          </div>
+          <div class="ff">
+            <label for="horario-capacidad">Mesas *</label>
+            <input id="horario-capacidad" type="number" min="0" step="1" placeholder="20" required>
+          </div>
+          <button id="horario-submit-btn" type="submit" class="btn-nueva">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Añadir franja
+          </button>
+        </form>
+
+        <!-- Aviso si el panel está en modo demo (sin Supabase real) -->
+        <p id="horariosAvisoDemo" class="precios-aviso-demo hidden">
+          Esto necesita la conexión real a Supabase (assets/js/config.js con claves reales) — en modo demo no hay horarios que editar.
+        </p>
+
+        <div class="table-wrap" role="region" aria-label="Tabla de horarios">
+          <table class="reservas-table cierres-table">
+            <thead>
+              <tr>
+                <th scope="col">Hora</th>
+                <th scope="col">Mesas</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="horarios-tbody"></tbody>
           </table>
         </div>
 
